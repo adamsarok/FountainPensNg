@@ -1,0 +1,50 @@
+using FountainPensNg.Server.Data;
+using FountainPensNg.Server.Services;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+string? conn;
+if (builder.Environment.IsDevelopment()) conn = builder.Configuration.GetConnectionString("DefaultConnection");
+else conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
+if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty"); //bad ide to throw here?
+
+builder.Services.AddDbContextFactory<DataContext>(opt =>
+    opt.UseNpgsql(conn));
+
+builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddSingleton<IRepository, Repository>();
+
+builder.Services.AddSwaggerGen(options => {
+    options.CustomSchemaIds(type => type.ToString());
+});
+
+var app = builder.Build();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment()) {
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.MapFallbackToFile("/index.html");
+
+app.Run();

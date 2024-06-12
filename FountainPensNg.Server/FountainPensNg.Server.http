@@ -1,0 +1,6 @@
+@FountainPensNg.Server_HostAddress = http://localhost:5166
+
+GET {{FountainPensNg.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
