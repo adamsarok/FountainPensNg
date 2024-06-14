@@ -22,12 +22,22 @@ builder.Services.AddDbContextFactory<DataContext>(opt =>
 
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddSingleton<IRepository, Repository>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddSwaggerGen(options => {
     options.CustomSchemaIds(type => type.ToString());
 });
 
 var app = builder.Build();
+
+#warning todo!!!
+//app.UseMiddleware<ExceptionMiddleware>();
+//app.UseHttpsRedirection();
+
+app.UseCors(x => x.AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()
+    .WithOrigins("https://localhost:4200", "http://localhost:4200"));
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

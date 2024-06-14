@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Pen } from '../../dtos/Pen';
+import { FountainPen } from '../../dtos/FountainPen';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,10 @@ export class PenService {
   constructor(private http: HttpClient) { }
 
   getPens() {
-    return this.http.get<Pen[]>(this.baseUrl + 'FountainPens/');
+    return this.http.get<FountainPen[]>(this.baseUrl + 'FountainPens/');
+  }
+
+  createPen(model: any) {
+    return this.http.post<FountainPen>(this.baseUrl + 'FountainPens/', model);
   }
 }

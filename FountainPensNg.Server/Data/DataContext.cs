@@ -13,45 +13,48 @@ namespace FountainPensNg.Server.Data {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<InkedUp>()
                 .HasOne(x => x.FountainPen)
-                .WithMany(x => x.InkedUps);
+                .WithMany(x => x.InkedUps)
+                .HasForeignKey(e => e.FountainPenId);
             modelBuilder.Entity<InkedUp>()
                 .HasOne(x => x.Ink)
-                .WithMany(x => x.InkedUps);
+                .WithMany(x => x.InkedUps)
+                .HasForeignKey(e => e.InkId);
             modelBuilder.Entity<FountainPen>()
                 .HasOne(x => x.CurrentInk)
-                .WithMany(x => x.CurrentPens);
+                .WithMany(x => x.CurrentPens)
+                .HasForeignKey(e => e.CurrentInkId);
             modelBuilder.Entity<Ink>()
                 .HasIndex(p => new { p.Maker, p.InkName })
                 .IsUnique(true);
 
             //seeb
-            modelBuilder.Entity<FountainPen>().HasData(
-                new FountainPen() {
-                    Id = 1,
-                    Maker = "Jinhao",
-                    ModelName = "X159",
-                    Nib = FountainPen.NibTypes.M,
-                    Status = FountainPen.Statuses.Favorite,
-                    Comment = "Nice writer, dries out quickly?",
-                },
-                new FountainPen() {
-                    Id = 2,
-                    Maker = "Jinhao",
-                    ModelName = "X159",
-                    Nib = FountainPen.NibTypes.M,
-                    Status = FountainPen.Statuses.Favorite,
-                    Comment = "Nice writer, dries out quickly?",
-                }
-            );
-            modelBuilder.Entity<Ink>().HasData(
-                new Ink() {
-                    Id = 1,
-                    Maker = "Pilot",
-                    InkName = "Iroshizuku Kon-Peki",
-                    Status = Ink.Statuses.Favorite,
-                    Comment = "striking blue"
-                }
-                );
+            //modelBuilder.Entity<FountainPen>().HasData(
+            //    new FountainPen() {
+            //        Id = 1,
+            //        Maker = "Jinhao",
+            //        ModelName = "X159",
+            //        Nib = FountainPen.NibTypes.M,
+            //        Status = FountainPen.Statuses.Favorite,
+            //        Comment = "Nice writer, dries out quickly?",
+            //    },
+            //    new FountainPen() {
+            //        Id = 2,
+            //        Maker = "Jinhao",
+            //        ModelName = "X159",
+            //        Nib = FountainPen.NibTypes.M,
+            //        Status = FountainPen.Statuses.Favorite,
+            //        Comment = "Nice writer, dries out quickly?",
+            //    }
+            //);
+            //modelBuilder.Entity<Ink>().HasData(
+            //    new Ink() {
+            //        Id = 1,
+            //        Maker = "Pilot",
+            //        InkName = "Iroshizuku Kon-Peki",
+            //        Status = Ink.Statuses.Favorite,
+            //        Comment = "striking blue"
+            //    }
+            //    );
         }
     }
 }

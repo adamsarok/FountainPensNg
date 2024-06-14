@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Models;
+using FountainPensNg.Server.Data.DTO;
+using AutoMapper.QueryableExtensions;
+using AutoMapper;
 
 namespace FountainPensNg.Server.Controllers
 {
@@ -15,17 +18,25 @@ namespace FountainPensNg.Server.Controllers
     public class InksController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public InksController(DataContext context)
+        public InksController(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Inks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Ink>>> GetInks()
+        public async Task<ActionResult<IEnumerable<InkListDTO>>> GetInks()
         {
-            return await _context.Inks.ToListAsync();
+            var query = _context
+                .Inks
+                .Include(x => x.CurrentPens.Take(1))
+                .AsQueryable();
+            return await query
+                .ProjectTo<InkListDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         // GET: api/Inks/5

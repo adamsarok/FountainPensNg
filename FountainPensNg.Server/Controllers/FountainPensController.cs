@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Models;
+using System.Text.Json;
 
 namespace FountainPensNg.Server.Controllers
 {
@@ -25,7 +26,10 @@ namespace FountainPensNg.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FountainPen>>> GetFountainPens()
         {
-            return await _context.FountainPens.ToListAsync();
+            return await _context
+                .FountainPens
+                .Include(x => x.CurrentInk)
+                .ToListAsync();
         }
 
         // GET: api/FountainPens/5

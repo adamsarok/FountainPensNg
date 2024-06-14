@@ -3,6 +3,7 @@ using System;
 using FountainPensNg.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FountainPensNg.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240614185419_ratings")]
+    partial class ratings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +67,7 @@ namespace FountainPensNg.Server.Migrations
 
                     b.HasIndex("CurrentInkId");
 
-                    b.ToTable("FountainPens", (string)null);
+                    b.ToTable("FountainPens");
                 });
 
             modelBuilder.Entity("FountainPensNg.Server.Data.Models.Ink", b =>
@@ -112,7 +115,7 @@ namespace FountainPensNg.Server.Migrations
                     b.HasIndex("Maker", "InkName")
                         .IsUnique();
 
-                    b.ToTable("Inks", (string)null);
+                    b.ToTable("Inks");
                 });
 
             modelBuilder.Entity("FountainPensNg.Server.Data.Models.InkedUp", b =>
@@ -145,7 +148,7 @@ namespace FountainPensNg.Server.Migrations
 
                     b.HasIndex("InkId");
 
-                    b.ToTable("InkedUps", (string)null);
+                    b.ToTable("InkedUps");
                 });
 
             modelBuilder.Entity("FountainPensNg.Server.Data.Models.FountainPen", b =>
