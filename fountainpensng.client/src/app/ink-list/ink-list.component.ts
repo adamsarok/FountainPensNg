@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { InkService } from '../services/ink.service';
-import { Ink } from '../../dtos/Ink';
+import { InkForListDTO } from '../../dtos/InkForListDTO';
 
 @Component({
   selector: 'app-ink-list',
@@ -12,8 +12,8 @@ import { Ink } from '../../dtos/Ink';
 })
 export class InkListComponent implements OnInit {
   //todo!!!!!!!!!
-  displayedColumns: string[] = ['maker', 'modelName', 'color'];
-  dataSource: Ink[] = [];
+  displayedColumns: string[] = ['maker', 'inkName', 'color', 'comment', 'rating', 'currentPen'];
+  dataSource: InkForListDTO[] = [];
 
   constructor(private inkService: InkService) {
 

@@ -11,7 +11,7 @@ import { FountainPen } from '../../dtos/FountainPen';
   styleUrl: './pen-list.component.css'
 })
 export class PenListComponent implements OnInit {
-  displayedColumns: string[] = ['maker', 'modelName', 'color'];
+  displayedColumns: string[] = ['maker', 'modelName', 'color', 'nib', 'rating', 'currentInk', 'inkColor'];
   dataSource: FountainPen[] = [];
 
   ngOnInit(): void {

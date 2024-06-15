@@ -10,6 +10,7 @@ import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InkForListDTO } from '../../dtos/InkForListDTO';
 
 @Component({
   selector: 'app-pen',
@@ -23,7 +24,7 @@ export class PenComponent implements OnInit {
     this.createPen();
   }
   penForm: FormGroup = new FormGroup({});
-  inks: Ink[] | undefined;
+  inks: InkForListDTO[] | undefined;
   validationErrors: string[] | undefined;
   constructor(private fb: FormBuilder, 
     private penService: PenService, 
