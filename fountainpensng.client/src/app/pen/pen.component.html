@@ -1,18 +1,18 @@
 <form [formGroup]="penForm" (ngSubmit)="onSubmit()">
   <div fxLayout="column" fxLayoutAlign="center center">
+    <div>{{pen?.maker}}</div>
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Maker</mat-label>
-        <input matInput formControlName="maker" name="maker">
+        <input matInput formControlName="maker" name="maker" [(ngModel)]="pen.maker">
         <mat-error *ngIf="penForm.get('maker')?.hasError('required')">This field is required</mat-error>
-        <!--<mat-error *ngIf="penForm.get('maker').hasError('pattern')">Must be your full name</mat-error>-->
       </mat-form-field>
     </div>
 
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Model</mat-label>
-        <input matInput formControlName="modelName" name="modelName">
+        <input matInput formControlName="modelName" name="modelName" [(ngModel)]="pen.modelName">
         <mat-error *ngIf="penForm.get('modelName')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
@@ -20,25 +20,23 @@
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Comment</mat-label>
-        <input matInput formControlName="comment" name="comment">
+        <input matInput formControlName="comment" name="comment" [(ngModel)]="pen.comment">
         <mat-error *ngIf="penForm.get('comment')?.hasError('required')">This field is required</mat-error>
-        <!--<mat-error *ngIf="penForm.get('maker').hasError('pattern')">Must be your full name</mat-error>-->
       </mat-form-field>
     </div>
 
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Color</mat-label>
-        <input type="color" matInput formControlName="color" name="color">
+        <input type="color" matInput formControlName="color" name="color" [(ngModel)]="pen.color">
         <mat-error *ngIf="penForm.get('color')?.hasError('required')">This field is required</mat-error>
-        <!--<mat-error *ngIf="penForm.get('maker').hasError('pattern')">Must be your full name</mat-error>-->
       </mat-form-field>
     </div>
 
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Rating</mat-label>
-        <input matInput formControlName="rating" name="rating">
+        <input matInput formControlName="rating" name="rating" [(ngModel)]="pen.rating">
         <mat-error *ngIf="penForm.get('rating')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
@@ -46,7 +44,7 @@
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Nib</mat-label>
-        <input matInput formControlName="nib" name="nib">
+        <input matInput formControlName="nib" name="nib" [(ngModel)]="pen.nib">
         <mat-error *ngIf="penForm.get('nib')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
@@ -54,11 +52,11 @@
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Ink</mat-label>
-        <mat-select matInput formControlName="currentInkId" name="currentInkId">
+        <mat-select matInput formControlName="currentInkId" name="currentInkId" [(ngModel)]="pen.currentInkId">
           <mat-option matInput *ngFor="let ink of inks" value="{{ink.id}}">{{ink.maker}} - {{ink.inkName}}</mat-option>
         </mat-select>
       </mat-form-field>
-    </div>
+    </div> 
 
     <div fxFlex="100%">
       <div class="row" *ngIf="validationErrors">

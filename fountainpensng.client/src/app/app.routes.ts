@@ -10,6 +10,7 @@ export const routes: Routes = [
   { path: 'pen-list', component: PenListComponent },
   { path: 'ink-list', component: InkListComponent },
   { path: 'pen', component: PenComponent },
+  { path: 'pen/:id', component: PenComponent },
   { path: 'ink', component: InkComponent }
 ];
 

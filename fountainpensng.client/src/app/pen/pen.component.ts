@@ -1,8 +1,8 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PenService } from '../services/pen.service';
 import { Router } from '@angular/router';
-import { Ink } from '../../dtos/Ink';
+import { FountainPen } from '../../dtos/FountainPen';
 import { InkService } from '../services/ink.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { InkForListDTO } from '../../dtos/InkForListDTO';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-pen',
@@ -20,9 +21,28 @@ import { InkForListDTO } from '../../dtos/InkForListDTO';
   styleUrl: './pen.component.css'
 })
 export class PenComponent implements OnInit {
-  onSubmit() {
-    this.createPen();
+  @Input()
+  set id(id: number) {
+    this.pen$ = this.penService.getPen(id);
+    console.log(id);
   }
+
+  //id: number | undefined;
+  pen: FountainPen = {
+    id: 0,
+    maker: '',
+    modelName: '',
+    comment: '',
+    photo: '',
+    color: '',
+    rating: 0,
+    nib: '',
+    inkedUps: [],
+    currentInk: null,
+    currentInkId: 0
+  };
+
+  pen$: Observable<FountainPen> | undefined;
   penForm: FormGroup = new FormGroup({});
   inks: InkForListDTO[] | undefined;
   validationErrors: string[] | undefined;
@@ -38,8 +58,16 @@ export class PenComponent implements OnInit {
       this.snackBar.open(msg, 'Close', { duration: 3000 });
     });
   }
-
+  onSubmit() {
+    this.createPen();
+  }
   ngOnInit(): void {
+    if (this.pen$) {
+      this.pen$.subscribe(
+        x => this.pen = x
+      );
+    }
+    console.log(this.pen);
     this.inkService.getInks().subscribe(x => {
       this.inks = x;
     })
@@ -57,17 +85,26 @@ export class PenComponent implements OnInit {
   }
 
   createPen() {
-    console.log(this.penForm.value);
-    this.penService.createPen(this.penForm.value).subscribe({
+    console.log(this.pen);
+    if (this.pen.id == 0) {
+      this.penService.createPen(this.pen).subscribe({
+        next: () => {
+          this.showSnack("Pen added!");
+        },
+        error: e => {
+          this.showSnack(e);
+        }
+    });
+  } else {
+    this.penService.updatePen(this.pen).subscribe({
       next: () => {
-        this.showSnack("Pen added!");
+        this.showSnack("Pen updated!");
       },
       error: e => {
         this.showSnack(e);
-        //console.log(e);
-        //this.validationErrors = e;
       }
     });
+    }
   }
 
 }

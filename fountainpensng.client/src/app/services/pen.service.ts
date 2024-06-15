@@ -14,8 +14,14 @@ export class PenService {
   getPens() {
     return this.http.get<FountainPen[]>(this.baseUrl + 'FountainPens/');
   }
-
-  createPen(model: any) {
-    return this.http.post<FountainPen>(this.baseUrl + 'FountainPens/', model);
+  getPen(id: number) {
+    return this.http.get<FountainPen>(this.baseUrl + 'FountainPens/' + id);
+  }
+  createPen(pen: FountainPen) {
+    return this.http.post<FountainPen>(this.baseUrl + 'FountainPens/', pen);
+  }
+  updatePen(pen: FountainPen) {
+    console.log(pen);
+    return this.http.put<FountainPen>(this.baseUrl + 'FountainPens/' + pen.id, pen);
   }
 }
