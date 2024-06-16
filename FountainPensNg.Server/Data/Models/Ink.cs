@@ -16,5 +16,7 @@ namespace FountainPensNg.Server.Data.Models {
         public virtual List<InkedUp> InkedUps { get; set; }
         [JsonIgnore]
         public virtual List<FountainPen> CurrentPens { get; set; }
+        public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
+        public DateTime ModifiedAt { get; set; }
     }
 }

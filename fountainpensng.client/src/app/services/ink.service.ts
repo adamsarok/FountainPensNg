@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Ink } from '../../dtos/Ink';
 import { InkForListDTO } from '../../dtos/InkForListDTO';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class InkService {
   baseUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
-  getInks() {
+  getInks(): Observable<InkForListDTO[]> {
     return this.http.get<InkForListDTO[]>(this.baseUrl + 'Inks/');
   }
 

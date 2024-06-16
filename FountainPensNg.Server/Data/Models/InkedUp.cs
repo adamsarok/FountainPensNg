@@ -1,7 +1,7 @@
 ﻿namespace FountainPensNg.Server.Data.Models {
     public class InkedUp {
         public int Id { get; set; }
-        public DateTime InkedAt { get; set; }
+        public DateTime InkedAt { get; set; } = DateTime.UtcNow;
         public string Comment { get; set; } = "";
         public int MatchRating { get; set; }
         public virtual FountainPen FountainPen { get; set; }

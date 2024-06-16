@@ -48,13 +48,25 @@
         <mat-error *ngIf="penForm.get('nib')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
-
+    
+    <!--[formControl]="myControl" -->
+    <!-- [(ngModel)]="pen.currentInkId" -->
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Ink</mat-label>
-        <mat-select matInput formControlName="currentInkId" name="currentInkId" [(ngModel)]="pen.currentInkId">
-          <mat-option matInput *ngFor="let ink of inks" value="{{ink.id}}">{{ink.maker}} - {{ink.inkName}}</mat-option>
-        </mat-select>
+        <input type="text"
+        placeholder="Pick one"
+        aria-label="Number"
+        matInput
+        formControlName="currentInk"
+        [matAutocomplete]="auto"
+        [(ngModel)]="currentInk"
+        >        
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          @for (option of filteredOptions | async; track option) {
+            <mat-option [value]="option">{{option.maker}} - {{option.inkName}}</mat-option>
+          }
+        </mat-autocomplete>
       </mat-form-field>
     </div> 
 
@@ -66,9 +78,9 @@
           </li>
         </ul>
       </div>
-      <button mat-stroked-button color="primary" type="submit"
+      <button mat-flat-button color="primary" type="submit"
               >
-        Register<mat-icon>chevron_right</mat-icon>
+        {{pen?.id ? "Update" : "Create"}}
       </button>
     </div>
   </div>

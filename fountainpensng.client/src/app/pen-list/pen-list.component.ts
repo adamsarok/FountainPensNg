@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { PenService } from '../services/pen.service';
 import { FountainPen } from '../../dtos/FountainPen';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pen-list',
@@ -21,7 +22,10 @@ export class PenListComponent implements OnInit {
       }
     });
   }
-  constructor(private penService: PenService) {
+  constructor(private penService: PenService, private router: Router) {
 
   }
+  openPen(id: number) {
+    this.router.navigate(['/pen/' + id]);
+  }    
 }
