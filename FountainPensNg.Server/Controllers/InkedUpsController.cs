@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Models;
+using FountainPensNg.Server.Data.DTO;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace FountainPensNg.Server.Controllers
 {
@@ -15,17 +18,24 @@ namespace FountainPensNg.Server.Controllers
     public class InkedUpsController : ControllerBase
     {
         private readonly DataContext _context;
-
-        public InkedUpsController(DataContext context)
+        private readonly IMapper _mapper;
+        public InkedUpsController(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/InkedUps
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InkedUp>>> GetInkedUps()
+        public async Task<ActionResult<IEnumerable<InkedUpForListDTO>>> GetInkedUps()
         {
-            return await _context.InkedUps.ToListAsync();
+            var query =_context.InkedUps
+                .Include(x => x.Ink)
+                .Include(x => x.FountainPen)
+                .AsQueryable();
+            return await query
+                .ProjectTo<InkedUpForListDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         // GET: api/InkedUps/5

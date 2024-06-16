@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { InkService } from '../services/ink.service';
-import { InkForListDTO } from '../../dtos/InkForListDTO';
+import { InkForListDTO } from '../../../dtos/InkForListDTO';
+import { InkService } from '../../services/ink.service';
 
 @Component({
   selector: 'app-ink-list',

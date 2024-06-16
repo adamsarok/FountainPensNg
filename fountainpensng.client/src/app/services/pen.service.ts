@@ -21,7 +21,6 @@ export class PenService {
     return this.http.post<FountainPen>(this.baseUrl + 'FountainPens/', pen);
   }
   updatePen(pen: FountainPen) {
-    console.log(pen);
     return this.http.put<FountainPen>(this.baseUrl + 'FountainPens/' + pen.id, pen);
   }
 }

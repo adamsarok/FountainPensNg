@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { PenService } from '../services/pen.service';
-import { FountainPen } from '../../dtos/FountainPen';
+
 import { Router } from '@angular/router';
+import { PenService } from '../../services/pen.service';
+import { FountainPen } from '../../../dtos/FountainPen';
 
 @Component({
   selector: 'app-pen-list',

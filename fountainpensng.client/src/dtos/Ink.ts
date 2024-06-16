@@ -8,11 +8,11 @@ export interface Ink {
   comment: string;
   photo: string;
   color: string;
-  color_CIELAB_L: number | null;
-  color_CIELAB_a: number | null;
-  color_CIELAB_b: number | null;
+  // color_CIELAB_L: number | null;
+  // color_CIELAB_a: number | null;
+  // color_CIELAB_b: number | null;
   rating: number;
-  inkedUps: InkedUp[];
-  currentPens: FountainPen[];
+  inkedUps: InkedUp[] | null;
+  currentPens: FountainPen[] | null;
   penDisplayName: string | null;
 }

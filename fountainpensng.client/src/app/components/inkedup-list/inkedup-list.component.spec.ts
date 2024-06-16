@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InkComponent } from './ink.component';
+import { InkedupListComponent } from './inkedup-list.component';
 
-describe('InkComponent', () => {
-  let component: InkComponent;
-  let fixture: ComponentFixture<InkComponent>;
+describe('InkedupListComponent', () => {
+  let component: InkedupListComponent;
+  let fixture: ComponentFixture<InkedupListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InkComponent]
+      imports: [InkedupListComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InkComponent);
+    fixture = TestBed.createComponent(InkedupListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

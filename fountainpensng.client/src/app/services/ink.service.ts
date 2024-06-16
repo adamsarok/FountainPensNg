@@ -20,4 +20,10 @@ export class InkService {
   createInk(model: any) {
     return this.http.post<Ink>(this.baseUrl + 'Inks/', model);
   }
+  getInk(id: number) {
+    return this.http.get<Ink>(this.baseUrl + 'Inks/' + id);
+  }
+  updateInk(ink: Ink) {
+    return this.http.put<Ink>(this.baseUrl + 'Inks/' + ink.id, ink);
+  }
 }

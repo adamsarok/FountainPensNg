@@ -1,19 +1,19 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PenService } from '../services/pen.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FountainPen } from '../../dtos/FountainPen';
-import { InkService } from '../services/ink.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { InkForListDTO } from '../../dtos/InkForListDTO';
 import { Observable, map, startWith } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { FountainPen } from '../../../dtos/FountainPen';
+import { InkForListDTO } from '../../../dtos/InkForListDTO';
+import { PenService } from '../../services/pen.service';
+import { InkService } from '../../services/ink.service';
 
 @Component({
   selector: 'app-pen',
@@ -38,7 +38,6 @@ export class PenComponent implements OnInit {
   @Input()
   set id(id: number) {
     this.pen$ = this.penService.getPen(id);
-    console.log(id);
   }
 
   //id: number | undefined;

@@ -10,6 +10,7 @@ using FountainPensNg.Server.Data.Models;
 using FountainPensNg.Server.Data.DTO;
 using AutoMapper.QueryableExtensions;
 using AutoMapper;
+using FountainPensNg.Server.Helpers;
 
 namespace FountainPensNg.Server.Controllers
 {
@@ -28,14 +29,14 @@ namespace FountainPensNg.Server.Controllers
 
         // GET: api/Inks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InkListDTO>>> GetInks()
+        public async Task<ActionResult<IEnumerable<InkForListDTO>>> GetInks()
         {
             var query = _context
                 .Inks
                 .Include(x => x.CurrentPens.Take(1))
                 .AsQueryable();
             return await query
-                .ProjectTo<InkListDTO>(_mapper.ConfigurationProvider)
+                .ProjectTo<InkForListDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
@@ -51,6 +52,41 @@ namespace FountainPensNg.Server.Controllers
             }
 
             return ink;
+        }
+
+        //todo: inks by color 
+
+        [HttpGet("ByColor/{color}")]
+        public async Task<ActionResult<IEnumerable<InkForListDTO>>> GetInksByColor(string colorHex) {
+            if (string.IsNullOrWhiteSpace(colorHex)) return NotFound();
+            //get cielab from html
+            var filterCielab = ColorHelper.ToCIELAB(colorHex);
+            //get distances of all colors from filter color in cielab
+            var filteredInks = new List<InkForListDTO>();
+            var inks = await GetInks();
+            if (inks == null) return NotFound();
+            foreach (var ink in inks.Value) {
+                if (!ink.Color_CIELAB_a.HasValue || !ink.Color_CIELAB_b.HasValue || !ink.Color_CIELAB_L.HasValue) continue;
+                var inkCieLAB = new ColorHelper.CIELAB() {
+                    L = ink.Color_CIELAB_L.Value,
+                    A = ink.Color_CIELAB_a.Value,
+                    B = ink.Color_CIELAB_b.Value
+                };
+                var dist = ColorHelper.GetEuclideanDistance(filterCielab, inkCieLAB);
+                if (dist < 50) { //dist between two blues: 5, orange->yellow: 35, b->w: 115, g->b: 258
+                    filteredInks.Add(ink);
+                }
+            }
+            return filteredInks;
+        }
+
+        private void FillCIELab(Ink ink) {
+            if (!string.IsNullOrWhiteSpace(ink.Color)) {
+                var cielab = ColorHelper.ToCIELAB(ink.Color);
+                ink.Color_CIELAB_L = cielab.L;
+                ink.Color_CIELAB_a = cielab.A;
+                ink.Color_CIELAB_b = cielab.B;
+            }
         }
 
         // PUT: api/Inks/5
