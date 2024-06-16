@@ -67,6 +67,13 @@
     </div> 
 
     <div fxFlex="100%">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Ink match rating</mat-label>
+        <input matInput formControlName="currentInkRating" name="currentInkRating" >
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="100%">
       <div class="row" *ngIf="validationErrors">
         <ul class="text-danger">
           <li *ngFor="let error of validationErrors">

@@ -53,7 +53,8 @@ export class PenComponent implements OnInit {
     nib: '',
     inkedUps: [],
     currentInk: null,
-    currentInkId: 0
+    currentInkId: 0,
+    currentInkRating: 0
   };
   
   myControl = new FormControl('');
@@ -62,7 +63,7 @@ export class PenComponent implements OnInit {
   penForm: FormGroup = new FormGroup({});
   inks: InkForListDTO[] = [];
   validationErrors: string[] | undefined;
-  currentInk: InkForListDTO | undefined;
+  //currentInk: InkForListDTO | undefined;
   constructor(private fb: FormBuilder, 
     private penService: PenService, 
     private router: Router, 
@@ -78,7 +79,7 @@ export class PenComponent implements OnInit {
     });
   }
   onSubmit() {
-    this.createPen();
+    this.upsertPen();
   }
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -100,23 +101,29 @@ export class PenComponent implements OnInit {
       rating: ['', Validators.required],
       nib: ['', Validators.required],
       currentInk: [''],
+      currentInkRating: ['']
       //confirmPassword: ['', [Validators.required, this.matchValue('password')]]
     }); //using builder service
 
     if (this.pen$) {
       this.pen$.subscribe(
-        x => { //would be better in prefetch
-          console.log(x);
-          this.pen = x;
+        p => { //would be better in prefetch
+          console.log(p);
+          this.pen = p;
+          let currentInk: InkForListDTO | undefined;
+          if (p.currentInkId) {
+            const ink = this.inks.filter(x => x.id === p.currentInkId);
+            if (ink) currentInk = ink[0];
+          }
           this.penForm.patchValue({
-            maker: x.maker,
-            modelName: x.modelName,
-            comment: x.comment,
-            color: x.color,
-            rating: x.rating,
-            nib: x.nib
-            //todo get ink
-            //this.penForm.value.currentInk = x.currentInkId;
+            maker: p.maker,
+            modelName: p.modelName,
+            comment: p.comment,
+            color: p.color,
+            rating: p.rating,
+            nib: p.nib,
+            currentInk: currentInk,
+            currentInkRating: p.currentInkRating
           });
         } 
       );
@@ -146,9 +153,16 @@ export class PenComponent implements OnInit {
         .includes(filterValue));
   }
 
-  createPen() {
-    console.log(this.pen);
-    console.log(this.currentInk);
+  upsertPen() {
+    console.log(this.penForm.value);
+    this.pen.maker = this.penForm.get('maker')?.value;
+    this.pen.modelName = this.penForm.get('modelName')?.value;
+    this.pen.comment = this.penForm.get('comment')?.value;
+    this.pen.rating = this.penForm.get('rating')?.value;
+    this.pen.nib = this.penForm.get('nib')?.value;
+    this.pen.currentInkRating = this.penForm.get('currentInkRating')?.value;
+    const ink = this.penForm.get('currentInk')?.value;
+    if (ink) this.pen.currentInkId = ink.id;
     if (this.pen.id == 0) {
       this.penService.createPen(this.pen).subscribe({
         next: () => {

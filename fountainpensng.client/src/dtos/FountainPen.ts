@@ -13,4 +13,5 @@ export interface FountainPen {
   inkedUps: InkedUp[];
   currentInk: Ink | null;
   currentInkId: number;
+  currentInkRating: number;
 }

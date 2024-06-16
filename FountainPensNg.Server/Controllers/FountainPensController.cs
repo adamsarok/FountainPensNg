@@ -81,12 +81,16 @@ namespace FountainPensNg.Server.Controllers
 
             
             var old = await _context.FountainPens.FindAsync(fountainPen.Id);
-            if (old != null && old.CurrentInkId != fountainPen.CurrentInkId) {
-                AddInkedUp(fountainPen);
-            }
+            if (old != null) {
+                if (old != null && old.CurrentInkId != fountainPen.CurrentInkId) {
+                    AddInkedUp(old);
+                    //_context.Entry(old).State = EntityState.Detached;
+                }
             
-
-            _context.Entry(fountainPen).State = EntityState.Modified;
+                _context.Entry(old).CurrentValues.SetValues(fountainPen);
+                old.ModifiedAt = DateTime.UtcNow;
+                //_context.Entry(fountainPen).State = EntityState.Modified;
+            }
 
             try
             {
