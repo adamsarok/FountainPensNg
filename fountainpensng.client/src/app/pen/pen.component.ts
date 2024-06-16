@@ -82,20 +82,11 @@ export class PenComponent implements OnInit {
   }
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      console.log('checking route data');
-      console.log(data['inks']);
+      // console.log('checking route data');
+      // console.log(data['inks']);
       this.inks = data['inks'];
     });
-    if (this.pen$) {
-      this.pen$.subscribe(
-        x => this.pen = x
-      );
-    }
-    // console.log(this.pen);
-    // this.inkService.getInks().subscribe(x => {
-    //   console.log(x);
-    //   this.inks = x;
-    // })
+
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
@@ -108,9 +99,28 @@ export class PenComponent implements OnInit {
       color: ['', Validators.required],
       rating: ['', Validators.required],
       nib: ['', Validators.required],
-      currentInkId: [''],
+      currentInk: [''],
       //confirmPassword: ['', [Validators.required, this.matchValue('password')]]
     }); //using builder service
+
+    if (this.pen$) {
+      this.pen$.subscribe(
+        x => { //would be better in prefetch
+          console.log(x);
+          this.pen = x;
+          this.penForm.patchValue({
+            maker: x.maker,
+            modelName: x.modelName,
+            comment: x.comment,
+            color: x.color,
+            rating: x.rating,
+            nib: x.nib
+            //todo get ink
+            //this.penForm.value.currentInk = x.currentInkId;
+          });
+        } 
+      );
+    }
   }
   displayFn(ink: InkForListDTO): string {
     //TODO: something is not right, remove ngModel and check if solved

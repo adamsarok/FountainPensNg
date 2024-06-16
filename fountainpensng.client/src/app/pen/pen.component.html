@@ -1,10 +1,9 @@
 <form [formGroup]="penForm" (ngSubmit)="onSubmit()">
   <div fxLayout="column" fxLayoutAlign="center center">
-    <div>{{pen?.maker}}</div>
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Maker</mat-label>
-        <input matInput formControlName="maker" name="maker" [(ngModel)]="pen.maker">
+        <input matInput formControlName="maker" name="maker" >
         <mat-error *ngIf="penForm.get('maker')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
@@ -12,7 +11,7 @@
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Model</mat-label>
-        <input matInput formControlName="modelName" name="modelName" [(ngModel)]="pen.modelName">
+        <input matInput formControlName="modelName" name="modelName" >
         <mat-error *ngIf="penForm.get('modelName')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
@@ -20,7 +19,7 @@
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Comment</mat-label>
-        <input matInput formControlName="comment" name="comment" [(ngModel)]="pen.comment">
+        <input matInput formControlName="comment" name="comment">
         <mat-error *ngIf="penForm.get('comment')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
@@ -28,7 +27,7 @@
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Color</mat-label>
-        <input type="color" matInput formControlName="color" name="color" [(ngModel)]="pen.color">
+        <input type="color" matInput formControlName="color" name="color" >
         <mat-error *ngIf="penForm.get('color')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
@@ -36,7 +35,7 @@
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Rating</mat-label>
-        <input matInput formControlName="rating" name="rating" [(ngModel)]="pen.rating">
+        <input matInput formControlName="rating" name="rating" >
         <mat-error *ngIf="penForm.get('rating')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
@@ -44,13 +43,11 @@
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Nib</mat-label>
-        <input matInput formControlName="nib" name="nib" [(ngModel)]="pen.nib">
+        <input matInput formControlName="nib" name="nib" >
         <mat-error *ngIf="penForm.get('nib')?.hasError('required')">This field is required</mat-error>
       </mat-form-field>
     </div>
     
-    <!--[formControl]="myControl" -->
-    <!-- [(ngModel)]="pen.currentInkId" -->
     <div fxFlex="100%">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Ink</mat-label>
@@ -60,7 +57,6 @@
         matInput
         formControlName="currentInk"
         [matAutocomplete]="auto"
-        [(ngModel)]="currentInk"
         >        
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           @for (option of filteredOptions | async; track option) {
