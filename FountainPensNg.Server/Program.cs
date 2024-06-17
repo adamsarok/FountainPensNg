@@ -12,8 +12,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 string? conn;
+Console.WriteLine($"Is development: {builder.Environment.IsDevelopment()}");
+Console.WriteLine($"Connection string variable: {Environment.GetEnvironmentVariable("CONNECTION_STRING")}");
 if (builder.Environment.IsDevelopment()) conn = builder.Configuration.GetConnectionString("DefaultConnection");
-else conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+else {
+    conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+    if (string.IsNullOrWhiteSpace(conn)) conn = builder.Configuration.GetConnectionString("DefaultConnection");
+}
 
 if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty"); //bad ide to throw here?
 
@@ -23,6 +28,7 @@ builder.Services.AddDbContextFactory<DataContext>(opt =>
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddSingleton<IRepository, Repository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddApplicationServices();
 
 builder.Services.AddSwaggerGen(options => {
     options.CustomSchemaIds(type => type.ToString());
@@ -49,12 +55,13 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+//app.MapFallbackToController("Index", "Fallback"); //???
 
 app.Run();

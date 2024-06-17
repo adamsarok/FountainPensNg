@@ -38,7 +38,7 @@ import { Ink } from '../../../dtos/Ink';
 export class InkComponent  implements OnInit {
   @Input()
   set id(id: number) {
-    this.ink$ = this.inkService.getInk(id);
+    if (id) this.ink$ = this.inkService.getInk(id);
   } 
 
   ink: Ink = {

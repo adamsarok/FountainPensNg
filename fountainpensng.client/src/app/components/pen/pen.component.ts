@@ -37,7 +37,7 @@ import { InkService } from '../../services/ink.service';
 export class PenComponent implements OnInit {
   @Input()
   set id(id: number) {
-    this.pen$ = this.penService.getPen(id);
+    if (id) this.pen$ = this.penService.getPen(id);
   }
 
   //id: number | undefined;

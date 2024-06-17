@@ -27,9 +27,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
-  <ItemGroup>
+   <ItemGroup>
     <ProjectReference Include="..\fountainpensng.client\fountainpensng.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-  </ItemGroup>
+  </ItemGroup> 
 </Project>
