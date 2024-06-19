@@ -26,7 +26,7 @@ builder.Services.AddDbContextFactory<DataContext>(opt =>
     opt.UseNpgsql(conn));
 
 builder.Services.AddTransient<IFileService, FileService>();
-builder.Services.AddSingleton<IRepository, Repository>();
+//builder.Services.AddSingleton<IRepository, Repository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //builder.Services.AddApplicationServices();
 

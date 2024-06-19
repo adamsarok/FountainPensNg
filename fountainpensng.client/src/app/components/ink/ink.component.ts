@@ -49,6 +49,7 @@ export class InkComponent  implements OnInit {
     photo: '',
     color: '',
     rating: 0,
+    ml: 0,
     inkedUps: [],
     currentPens: [],
     penDisplayName: null
@@ -83,6 +84,7 @@ export class InkComponent  implements OnInit {
       comment: ['', Validators.required],
       color: ['', Validators.required],
       rating: ['', Validators.required],
+      ml: ['', Validators.required],
     });
 
     if (this.ink$) {
@@ -96,6 +98,7 @@ export class InkComponent  implements OnInit {
             comment: i.comment,
             color: i.color,
             rating: i.rating,
+            ml: i.ml
           });
         } 
       );
@@ -109,7 +112,7 @@ export class InkComponent  implements OnInit {
     this.ink.color = this.form.get('color')?.value;
     this.ink.comment = this.form.get('comment')?.value;
     this.ink.rating = this.form.get('rating')?.value;
-    console.log("ide bejutottunk");
+    this.ink.ml = this.form.get('ml')?.value;
     if (this.ink.id == 0) {
       this.inkService.createInk(this.ink).subscribe({
         next: () => {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { InkForListDTO } from '../../../dtos/InkForListDTO';
 import { InkService } from '../../services/ink.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ink-list',
@@ -15,7 +16,7 @@ export class InkListComponent implements OnInit {
   displayedColumns: string[] = ['maker', 'inkName', 'color', 'comment', 'rating', 'currentPen'];
   dataSource: InkForListDTO[] = [];
 
-  constructor(private inkService: InkService) {
+  constructor(private inkService: InkService, private router: Router) {
 
   }
 
@@ -26,4 +27,8 @@ export class InkListComponent implements OnInit {
       }
     });
   }
+
+  openInk(id: number) {
+    this.router.navigate(['/ink/' + id]);
+  }    
 }

@@ -56,7 +56,7 @@ export class PenComponent implements OnInit {
     currentInkRating: 0
   };
   
-  myControl = new FormControl('');
+  currentInk = new FormControl('');
   filteredOptions: Observable<InkForListDTO[]> | undefined;
   pen$: Observable<FountainPen> | undefined;
   penForm: FormGroup = new FormGroup({});
@@ -87,7 +87,7 @@ export class PenComponent implements OnInit {
       this.inks = data['inks'];
     });
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.currentInk.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
@@ -99,7 +99,7 @@ export class PenComponent implements OnInit {
       color: ['', Validators.required],
       rating: ['', Validators.required],
       nib: ['', Validators.required],
-      currentInk: [''],
+      currentInk: this.currentInk, //if I define a form control earlier defining a different form control here ofc doesnt work
       currentInkRating: ['']
       //confirmPassword: ['', [Validators.required, this.matchValue('password')]]
     }); //using builder service
@@ -109,10 +109,11 @@ export class PenComponent implements OnInit {
         p => { //would be better in prefetch
           console.log(p);
           this.pen = p;
-          let currentInk: InkForListDTO | undefined;
+          let ink: InkForListDTO | undefined;
           if (p.currentInkId) {
-            const ink = this.inks.filter(x => x.id === p.currentInkId);
-            if (ink) currentInk = ink[0];
+            const inks = this.inks.filter(x => x.id === p.currentInkId);
+            if (inks) ink = inks[0];
+            console.log(ink);
           }
           this.penForm.patchValue({
             maker: p.maker,
@@ -121,7 +122,7 @@ export class PenComponent implements OnInit {
             color: p.color,
             rating: p.rating,
             nib: p.nib,
-            currentInk: currentInk,
+            currentInk: ink,
             currentInkRating: p.currentInkRating
           });
         } 
@@ -139,8 +140,11 @@ export class PenComponent implements OnInit {
     // console.log(reallyInk);
     return ink ? ink.maker + " - " + ink.inkName : '';
   }
-  private _filter(value: string): InkForListDTO[] {
-    console.log(this.inks);
+  private _filter(value: any): InkForListDTO[] {
+    if (value as InkForListDTO) return this.inks;
+    console.log('nem mukodo value:');
+    console.log(typeof value);
+    console.log(value as InkForListDTO);
     if (!this.inks) {
       const empty: InkForListDTO[] = [];
       return empty;
@@ -153,15 +157,24 @@ export class PenComponent implements OnInit {
   }
 
   upsertPen() {
-    console.log(this.penForm.value);
     this.pen.maker = this.penForm.get('maker')?.value;
     this.pen.modelName = this.penForm.get('modelName')?.value;
     this.pen.comment = this.penForm.get('comment')?.value;
     this.pen.rating = this.penForm.get('rating')?.value;
+    this.pen.color = this.penForm.get('color')?.value;
     this.pen.nib = this.penForm.get('nib')?.value;
-    this.pen.currentInkRating = this.penForm.get('currentInkRating')?.value;
+    if (this.penForm.get('currentInkRating')?.value) { //why doesn't a null coalesce work here?
+      this.pen.currentInkRating = this.penForm.get('currentInkRating')?.value;
+    } else {
+      this.pen.currentInkRating = null;
+    }
     const ink = this.penForm.get('currentInk')?.value;
-    if (ink) this.pen.currentInkId = ink.id;
+    if (ink) { 
+      this.pen.currentInk = ink;
+      this.pen.currentInkId = ink.id;
+    }
+    else this.pen.currentInkId = null;
+    console.log(this.pen);
     if (this.pen.id == 0) {
       this.penService.createPen(this.pen).subscribe({
         next: () => {

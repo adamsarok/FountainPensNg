@@ -8,9 +8,7 @@ export interface Ink {
   comment: string;
   photo: string;
   color: string;
-  // color_CIELAB_L: number | null;
-  // color_CIELAB_a: number | null;
-  // color_CIELAB_b: number | null;
+  ml: number;
   rating: number;
   inkedUps: InkedUp[] | null;
   currentPens: FountainPen[] | null;

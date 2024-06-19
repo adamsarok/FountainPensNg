@@ -46,29 +46,6 @@ namespace FountainPensNg.Server.Controllers
             return fountainPen;
         }
 
-        private async void AddInkedUpIfNeeded(FountainPen fountainPen) {
-            if (!fountainPen.CurrentInkId.HasValue || fountainPen.CurrentInkId < 1) return;
-            if (fountainPen.Id > 0) {
-                var old = await _context.FountainPens.FindAsync(fountainPen.Id);
-                if (old == null) return;
-                if (old.CurrentInkId != fountainPen.CurrentInkId) {
-                    AddInkedUp(fountainPen);
-                }
-            } else {
-                AddInkedUp(fountainPen);
-            }
-        }
-
-        private void AddInkedUp(FountainPen fountainPen)
-        {
-            if (!fountainPen.CurrentInkId.HasValue || fountainPen.CurrentInkId < 1) return;
-            _context.InkedUps.Add(new InkedUp() {
-                FountainPen = fountainPen,
-                InkId = fountainPen.CurrentInkId.Value,
-                MatchRating = fountainPen.CurrentInkRating ?? 0
-            });
-        }
-
         // PUT: api/FountainPens/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -82,11 +59,17 @@ namespace FountainPensNg.Server.Controllers
             
             var old = await _context.FountainPens.FindAsync(fountainPen.Id);
             if (old != null) {
-                if (old != null && old.CurrentInkId != fountainPen.CurrentInkId) {
-                    AddInkedUp(old);
-                    //_context.Entry(old).State = EntityState.Detached;
+                if (old != null 
+                    && old.CurrentInkId != fountainPen.CurrentInkId 
+                    && fountainPen.CurrentInkId.HasValue
+                    && fountainPen.CurrentInkId != 0) {
+                    _context.InkedUps.Add(new InkedUp() {
+                        FountainPenId = fountainPen.Id,
+                        InkId = fountainPen.CurrentInkId.Value,
+                        MatchRating = fountainPen.CurrentInkRating ?? 0
+                    });
                 }
-            
+                
                 _context.Entry(old).CurrentValues.SetValues(fountainPen);
                 old.ModifiedAt = DateTime.UtcNow;
                 //_context.Entry(fountainPen).State = EntityState.Modified;
@@ -117,7 +100,13 @@ namespace FountainPensNg.Server.Controllers
         public async Task<ActionResult<FountainPen>> PostFountainPen(FountainPen fountainPen)
         {
             _context.FountainPens.Add(fountainPen);
-            AddInkedUp(fountainPen);
+            if (fountainPen.CurrentInkId.HasValue && fountainPen.CurrentInkId > 0) {
+                _context.InkedUps.Add(new InkedUp() {
+                    FountainPen = fountainPen,
+                    InkId = fountainPen.CurrentInkId.Value,
+                    MatchRating = fountainPen.CurrentInkRating ?? 0
+                });
+            }
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetFountainPen", new { id = fountainPen.Id }, fountainPen);

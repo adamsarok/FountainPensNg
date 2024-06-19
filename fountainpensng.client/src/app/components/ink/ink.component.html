@@ -40,6 +40,14 @@
         </mat-form-field>
       </div>    
 
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Milliliters</mat-label>
+          <input matInput formControlName="ml" name="ml" >
+          <mat-error *ngIf="form.get('ml')?.hasError('ml')">This field is required</mat-error>
+        </mat-form-field>
+      </div>    
+
   
       <div fxFlex="100%">
         <div class="row" *ngIf="validationErrors">

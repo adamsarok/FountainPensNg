@@ -55,7 +55,7 @@
         placeholder="Pick one"
         aria-label="Number"
         matInput
-        formControlName="currentInk"
+        [formControl]="currentInk"
         [matAutocomplete]="auto"
         >        
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
