@@ -12,6 +12,7 @@ namespace FountainPensNg.Server.Data.DTO {
         public double? Color_CIELAB_a { get; set; }
         public double? Color_CIELAB_b { get; set; }
         public int Rating { get; set; }
-        public FountainPen? OneCurrentPen { get; set; } 
+        public string? OneCurrentPenMaker { get; set; }
+        public string? OneCurrentPenModelName { get; set; }
     }
 }

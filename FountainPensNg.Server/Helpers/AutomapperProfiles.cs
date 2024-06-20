@@ -8,11 +8,19 @@ public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
     {
+        CreateMap<FountainPen, FountainPenDTO>();
+        CreateMap<FountainPenDTO, FountainPen>();
+        CreateMap<InkForListDTO, Ink>();
         CreateMap<Ink, InkForListDTO>()
-            .ForMember(dest => dest.OneCurrentPen,
-                opt => opt.MapFrom(
-                    src => src.CurrentPens.FirstOrDefault()
-            ));
+            .ForMember(dest => dest.OneCurrentPenMaker,
+                opt => opt.MapFrom(src =>
+                    src.CurrentPens != null && src.CurrentPens.Any() ? src.CurrentPens.First().Maker : null)  
+            )
+            .ForMember(dest => dest.OneCurrentPenModelName,
+                opt => opt.MapFrom(src => 
+                    src.CurrentPens != null && src.CurrentPens.Any() ? src.CurrentPens.First().ModelName : null)
+            );
+        CreateMap<InkedUpForListDTO, InkedUp>();
         CreateMap<InkedUp, InkedUpForListDTO>()
             .ForMember(dest => dest.PenMaker,
                 opt => opt.MapFrom(

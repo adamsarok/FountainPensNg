@@ -21,7 +21,7 @@
     </ng-container>
     <ng-container matColumnDef="currentPen">
         <th mat-header-cell *matHeaderCellDef> Pen </th>
-        <td mat-cell *matCellDef="let element"> {{element.oneCurrentPen?.maker}} {{element.oneCurrentPen?.modelName}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.oneCurrentPenMaker}} {{element.oneCurrentPenModelName}} </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr (click)="openInk(row.id)" 

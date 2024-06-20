@@ -8,13 +8,11 @@ import { catchError, of } from 'rxjs';
 //   providedIn: 'root'
 // })
 export const inksResolver: ResolveFn<InkForListDTO[]> = (route, state) => {
-  console.log('resolver fires');
   const inkService = inject(InkService);
   return inkService.getInks().pipe(
     catchError(error => {
       console.error('Error in resolver', error);
-      return of([]); // return an empty array or handle error as needed
+      return of([]);
     })
   );
-  // return memberService.getInks();
 };

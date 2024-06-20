@@ -54,31 +54,31 @@ namespace FountainPensNg.Server.Controllers
             return ink;
         }
 
-        //todo: inks by color 
+        //todo: should not happen on the server!!! otherwise filter will be slow
 
-        [HttpGet("ByColor/{color}")]
-        public async Task<ActionResult<IEnumerable<InkForListDTO>>> GetInksByColor(string colorHex) {
-            if (string.IsNullOrWhiteSpace(colorHex)) return NotFound();
-            //get cielab from html
-            var filterCielab = ColorHelper.ToCIELAB(colorHex);
-            //get distances of all colors from filter color in cielab
-            var filteredInks = new List<InkForListDTO>();
-            var inks = await GetInks();
-            if (inks == null) return NotFound();
-            foreach (var ink in inks.Value) {
-                if (!ink.Color_CIELAB_a.HasValue || !ink.Color_CIELAB_b.HasValue || !ink.Color_CIELAB_L.HasValue) continue;
-                var inkCieLAB = new ColorHelper.CIELAB() {
-                    L = ink.Color_CIELAB_L.Value,
-                    A = ink.Color_CIELAB_a.Value,
-                    B = ink.Color_CIELAB_b.Value
-                };
-                var dist = ColorHelper.GetEuclideanDistance(filterCielab, inkCieLAB);
-                if (dist < 50) { //dist between two blues: 5, orange->yellow: 35, b->w: 115, g->b: 258
-                    filteredInks.Add(ink);
-                }
-            }
-            return filteredInks;
-        }
+        // [HttpGet("ByColor/{color}")]
+        // public async Task<ActionResult<IEnumerable<InkForListDTO>>> GetInksByColor(string colorHex) {
+        //     if (string.IsNullOrWhiteSpace(colorHex)) return NotFound();
+        //     //get cielab from html
+        //     var filterCielab = ColorHelper.ToCIELAB(colorHex);
+        //     //get distances of all colors from filter color in cielab
+        //     var filteredInks = new List<InkForListDTO>();
+        //     var inks = await GetInks();
+        //     if (inks == null) return NotFound();
+        //     foreach (var ink in inks.Value) {
+        //         if (!ink.Color_CIELAB_a.HasValue || !ink.Color_CIELAB_b.HasValue || !ink.Color_CIELAB_L.HasValue) continue;
+        //         var inkCieLAB = new ColorHelper.CIELAB() {
+        //             L = ink.Color_CIELAB_L.Value,
+        //             A = ink.Color_CIELAB_a.Value,
+        //             B = ink.Color_CIELAB_b.Value
+        //         };
+        //         var dist = ColorHelper.GetEuclideanDistance(filterCielab, inkCieLAB);
+        //         if (dist < 50) { //dist between two blues: 5, orange->yellow: 35, b->w: 115, g->b: 258
+        //             filteredInks.Add(ink);
+        //         }
+        //     }
+        //     return filteredInks;
+        // }
 
         private void FillCIELab(Ink ink) {
             if (!string.IsNullOrWhiteSpace(ink.Color)) {
@@ -98,7 +98,7 @@ namespace FountainPensNg.Server.Controllers
             {
                 return BadRequest();
             }
-
+            FillCIELab(ink);
             _context.Entry(ink).State = EntityState.Modified;
 
             try
@@ -125,6 +125,7 @@ namespace FountainPensNg.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Ink>> PostInk(Ink ink)
         {
+            FillCIELab(ink);
             _context.Inks.Add(ink);
             await _context.SaveChangesAsync();
 

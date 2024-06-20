@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { InkedupService } from '../../services/inkedup.service';
 import { MatTableModule } from '@angular/material/table';
 import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-inkedup-list',
   standalone: true,
-  imports: [MatTableModule],
+  imports: [MatTableModule, CommonModule],
   templateUrl: './inkedup-list.component.html',
   styleUrl: './inkedup-list.component.css'
 })

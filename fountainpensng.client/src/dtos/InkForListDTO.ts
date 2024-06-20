@@ -8,9 +8,10 @@ export interface InkForListDTO {
   comment: string;
   photo: string;
   color: string;
-  // color_CIELAB_L: number | null;
-  // color_CIELAB_a: number | null;
-  // color_CIELAB_b: number | null;
   rating: number;
-  oneCurrentPen: FountainPen;
+  oneCurrentPenMaker: string;
+  oneCurrentPenModelName: string;
+  color_CIELAB_L: number;
+  color_CIELAB_a: number;
+  color_CIELAB_b: number;
 }

@@ -14,6 +14,8 @@ import { FountainPen } from '../../../dtos/FountainPen';
 import { InkForListDTO } from '../../../dtos/InkForListDTO';
 import { PenService } from '../../services/pen.service';
 import { InkService } from '../../services/ink.service';
+import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-pen',
@@ -29,7 +31,8 @@ import { InkService } from '../../services/ink.service';
     CommonModule, 
     MatInputModule,
     MatButtonModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatTableModule
   ],
   templateUrl: './pen.component.html',
   styleUrl: './pen.component.css'
@@ -61,7 +64,9 @@ export class PenComponent implements OnInit {
   pen$: Observable<FountainPen> | undefined;
   penForm: FormGroup = new FormGroup({});
   inks: InkForListDTO[] = [];
+  inkedUps: InkedUpForListDTO[] = [];
   validationErrors: string[] | undefined;
+  inkedUpDisplayedColumns: string[] = ['inkedAt', 'matchRating', 'ink'];
   //currentInk: InkForListDTO | undefined;
   constructor(private fb: FormBuilder, 
     private penService: PenService, 
@@ -115,6 +120,7 @@ export class PenComponent implements OnInit {
             if (inks) ink = inks[0];
             console.log(ink);
           }
+          this.inkedUps = p.inkedUps;
           this.penForm.patchValue({
             maker: p.maker,
             modelName: p.modelName,
@@ -141,10 +147,7 @@ export class PenComponent implements OnInit {
     return ink ? ink.maker + " - " + ink.inkName : '';
   }
   private _filter(value: any): InkForListDTO[] {
-    if (value as InkForListDTO) return this.inks;
-    console.log('nem mukodo value:');
-    console.log(typeof value);
-    console.log(value as InkForListDTO);
+    if (typeof value != "string") return this.inks;
     if (!this.inks) {
       const empty: InkForListDTO[] = [];
       return empty;
