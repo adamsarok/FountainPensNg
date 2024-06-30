@@ -20,7 +20,7 @@ services:
 
 #client:
 docker build -t fuzzydice555/fountainpens-ng-cl .      
-docker run -p 4200:4200 fuzzydice555/fountainpens-ng-cl
+docker run -p 4200:80 fuzzydice555/fountainpens-ng-cl
 docker push fuzzydice555/fountainpens-ng-cl
 
 #api:
