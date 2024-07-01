@@ -40,9 +40,16 @@ namespace FountainPensNg.Server.Controllers
 
         // GET: api/InkedUps/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<InkedUp>> GetInkedUp(int id)
+        public async Task<ActionResult<InkedUpForListDTO>> GetInkedUp(int id)
         {
-            var inkedUp = await _context.InkedUps.FindAsync(id);
+            var query =_context.InkedUps
+                .Include(x => x.Ink)
+                .Include(x => x.FountainPen)
+                .Where(x => x.Id == id)
+                .AsQueryable();
+            var inkedUp = await query
+                .ProjectTo<InkedUpForListDTO>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
 
             if (inkedUp == null)
             {
@@ -55,8 +62,9 @@ namespace FountainPensNg.Server.Controllers
         // PUT: api/InkedUps/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInkedUp(int id, InkedUp inkedUp)
+        public async Task<IActionResult> PutInkedUp(int id, InkedUpForListDTO dto)
         {
+            var inkedUp = _mapper.Map<InkedUp>(dto);
             if (id != inkedUp.Id)
             {
                 return BadRequest();
@@ -86,8 +94,9 @@ namespace FountainPensNg.Server.Controllers
         // POST: api/InkedUps
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<InkedUp>> PostInkedUp(InkedUp inkedUp)
+        public async Task<ActionResult<InkedUp>> PostInkedUp(InkedUpForListDTO dto)
         {
+            var inkedUp = _mapper.Map<InkedUp>(dto);
             _context.InkedUps.Add(inkedUp);
             await _context.SaveChangesAsync();
 

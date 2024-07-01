@@ -3,6 +3,7 @@ import { InkedupService } from '../../services/inkedup.service';
 import { MatTableModule } from '@angular/material/table';
 import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inkedup-list',
@@ -16,7 +17,7 @@ export class InkedupListComponent implements OnInit {
   displayedColumns: string[] = ['inkedAt', 'matchRating', 'ink', 'pen'];
   dataSource: InkedUpForListDTO[] = [];
 
-  constructor(private inkedUpService: InkedupService) {
+  constructor(private inkedUpService: InkedupService, private router: Router) {
 
   }
 
@@ -28,4 +29,7 @@ export class InkedupListComponent implements OnInit {
       }
     });
   }
+  openInkedUp(id: number) {
+    this.router.navigate(['/inked-up/' + id]);
+  }    
 }

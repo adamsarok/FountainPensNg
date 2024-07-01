@@ -131,19 +131,12 @@ export class PenComponent implements OnInit {
             currentInk: ink,
             currentInkRating: p.currentInkRating
           });
+          
         } 
       );
     }
   }
   displayFn(ink: InkForListDTO): string {
-    //TODO: something is not right, remove ngModel and check if solved
-    // let reallyInk: InkForListDTO | undefined;
-    // if (typeof ink === 'number') {  //TODO: something is not right, remove ngModel and check if solved
-    //   console.log(this.inks);
-    //   const filtered = this.inks && this.inks.filter(x => x.id == ink).slice(1);
-    //   if (filtered && filtered[0]) reallyInk = filtered[0];
-    // } else reallyInk = ink;
-    // console.log(reallyInk);
     return ink ? ink.maker + " - " + ink.inkName : '';
   }
   private _filter(value: any): InkForListDTO[] {

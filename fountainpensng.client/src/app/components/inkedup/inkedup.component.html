@@ -1,0 +1,69 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div fxLayout="column" fxLayoutAlign="center center">
+        <div fxFlex="100%">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Pen</mat-label>
+              <input type="text"
+              placeholder="Pick one"
+              aria-label="Number"
+              matInput
+              [formControl]="pen"
+              name="pen" 
+              [matAutocomplete]="penAuto"
+              >        
+              <mat-autocomplete #penAuto="matAutocomplete" [displayWith]="displayPen">
+                @for (option of penFilteredOptions$ | async; track option) {
+                  <mat-option [value]="option">{{option.maker}} - {{option.modelName}}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+      </div> 
+      
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Ink</mat-label>
+          <input type="text"
+          placeholder="Pick one"
+          aria-label="Number"
+          matInput
+          [formControl]="ink"
+          name="ink" 
+          [matAutocomplete]="inkAuto"
+          >        
+          <mat-autocomplete #inkAuto="matAutocomplete" [displayWith]="displayInk">
+            @for (option of inkFilteredOptions$ | async; track option) {
+              <mat-option [value]="option">{{option.maker}} - {{option.inkName}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div> 
+  
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Ink match rating</mat-label>
+          <input matInput formControlName="matchRating" name="matchRating" >
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Inked at</mat-label>
+          <input matInput formControlName="inkedAt" name="inkedAt" >
+        </mat-form-field>
+      </div>
+  
+      <div fxFlex="100%">
+        <div class="row" *ngIf="validationErrors">
+          <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">
+              {{error}}
+            </li>
+          </ul>
+        </div>
+        <button mat-flat-button color="primary" type="submit"
+                >
+          {{inkedUp.id ? "Update" : "Create"}}
+        </button>
+      </div>
+    </div>
+  </form>
