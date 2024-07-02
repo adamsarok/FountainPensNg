@@ -119,8 +119,13 @@ namespace FountainPensNg.Server.Controllers
         // POST: api/FountainPens
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<FountainPen>> PostFountainPen(FountainPen fountainPen)
+        public async Task<ActionResult<FountainPen>> PostFountainPen(FountainPenDTO dto)
         {
+            var fountainPen = _mapper.Map<FountainPen>(dto);
+            if (fountainPen == null)
+            {
+                return BadRequest();
+            }
             _context.FountainPens.Add(fountainPen);
             if (fountainPen.CurrentInkId.HasValue && fountainPen.CurrentInkId > 0) {
                 _context.InkedUps.Add(new InkedUp() {
@@ -131,7 +136,7 @@ namespace FountainPensNg.Server.Controllers
             }
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFountainPen", new { id = fountainPen.Id }, fountainPen);
+            return CreatedAtAction("GetFountainPen", new { id = fountainPen.Id }, dto);
         }
 
         // DELETE: api/FountainPens/5

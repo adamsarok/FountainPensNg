@@ -11,7 +11,6 @@ export interface FountainPen {
   rating: number;
   nib: string;
   inkedUps: InkedUpForListDTO[];
-  currentInk: Ink | null;
   currentInkId: number | null;
   currentInkRating: number | null;
 }

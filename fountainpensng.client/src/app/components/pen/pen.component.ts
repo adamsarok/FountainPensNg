@@ -54,7 +54,6 @@ export class PenComponent implements OnInit {
     rating: 0,
     nib: '',
     inkedUps: [],
-    currentInk: null,
     currentInkId: 0,
     currentInkRating: 0
   };
@@ -166,7 +165,6 @@ export class PenComponent implements OnInit {
     }
     const ink = this.penForm.get('currentInk')?.value;
     if (ink) { 
-      this.pen.currentInk = ink;
       this.pen.currentInkId = ink.id;
     }
     else this.pen.currentInkId = null;
