@@ -1,3 +1,5 @@
+FountainPensNG: A simple app to track my fountain pens & inks
+
 docker build -t fuzzydice555/fountainpens-ng .
 docker run -p 4200:4200 fuzzydice555/fountainpens-ng
 docker push fuzzydice555/fountainpens-ng

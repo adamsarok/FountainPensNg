@@ -31,5 +31,5 @@ export class InkedupListComponent implements OnInit {
   }
   openInkedUp(id: number) {
     this.router.navigate(['/inked-up/' + id]);
-  }    
+  }
 }

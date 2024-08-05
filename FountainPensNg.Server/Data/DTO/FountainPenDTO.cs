@@ -14,7 +14,6 @@ namespace FountainPensNg.Server.Data.Models {
         public virtual List<InkedUpForListDTO>? InkedUps { get; set; } = new List<InkedUpForListDTO>();
         public virtual InkForListDTO? CurrentInk { get; set; }
         public int? CurrentInkId { get; set; }
-        //TODO: this is duplicate fix later so only inkedups store this
         public int? CurrentInkRating { get; set; } 
         public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
         public DateTime ModifiedAt { get; set; }

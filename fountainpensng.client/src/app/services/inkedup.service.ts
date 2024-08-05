@@ -3,7 +3,6 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { InkedUpForListDTO } from '../../dtos/InkedUpForListDTO';
-import { InkedUp } from '../../dtos/InkedUp';
 
 @Injectable({
   providedIn: 'root'
