@@ -4,9 +4,6 @@ import { InkService } from '../services/ink.service';
 import { inject } from '@angular/core';
 import { catchError, of } from 'rxjs';
 
-// @Injectable({
-//   providedIn: 'root'
-// })
 export const inksResolver: ResolveFn<InkForListDTO[]> = (route, state) => {
   const inkService = inject(InkService);
   return inkService.getInks().pipe(

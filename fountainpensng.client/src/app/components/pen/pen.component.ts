@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, map, startWith } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FountainPen } from '../../../dtos/FountainPen';
 import { InkForListDTO } from '../../../dtos/InkForListDTO';
 import { PenService } from '../../services/pen.service';
@@ -21,14 +21,14 @@ import { MatTableModule } from '@angular/material/table';
   selector: 'app-pen',
   standalone: true,
   imports: [
-    ReactiveFormsModule, 
-    MatFormField, 
-    MatLabel, 
-    MatError, 
-    MatSelect, 
-    MatOption, 
-    MatIcon, 
-    CommonModule, 
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatError,
+    MatSelect,
+    MatOption,
+    MatIcon,
+    CommonModule,
     MatInputModule,
     MatButtonModule,
     MatAutocompleteModule,
@@ -43,7 +43,6 @@ export class PenComponent implements OnInit {
     if (id) this.pen$ = this.penService.getPen(id);
   }
 
-  //id: number | undefined;
   pen: FountainPen = {
     id: 0,
     maker: '',
@@ -57,7 +56,7 @@ export class PenComponent implements OnInit {
     currentInkId: 0,
     currentInkRating: 0
   };
-  
+
   currentInk = new FormControl('');
   filteredOptions: Observable<InkForListDTO[]> | undefined;
   pen$: Observable<FountainPen> | undefined;
@@ -66,10 +65,10 @@ export class PenComponent implements OnInit {
   inkedUps: InkedUpForListDTO[] = [];
   validationErrors: string[] | undefined;
   inkedUpDisplayedColumns: string[] = ['inkedAt', 'matchRating', 'ink'];
-  //currentInk: InkForListDTO | undefined;
-  constructor(private fb: FormBuilder, 
-    private penService: PenService, 
-    private router: Router, 
+
+  constructor(private fb: FormBuilder,
+    private penService: PenService,
+    private router: Router,
     private inkService: InkService,
     private snackBar: MatSnackBar,
     private zone: NgZone,
@@ -86,8 +85,6 @@ export class PenComponent implements OnInit {
   }
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      // console.log('checking route data');
-      // console.log(data['inks']);
       this.inks = data['inks'];
     });
 
@@ -103,10 +100,9 @@ export class PenComponent implements OnInit {
       color: ['', Validators.required],
       rating: ['', Validators.required],
       nib: ['', Validators.required],
-      currentInk: this.currentInk, //if I define a form control earlier defining a different form control here ofc doesnt work
+      currentInk: this.currentInk,
       currentInkRating: ['']
-      //confirmPassword: ['', [Validators.required, this.matchValue('password')]]
-    }); //using builder service
+    });
 
     if (this.pen$) {
       this.pen$.subscribe(
@@ -130,8 +126,8 @@ export class PenComponent implements OnInit {
             currentInk: ink,
             currentInkRating: p.currentInkRating
           });
-          
-        } 
+
+        }
       );
     }
   }
@@ -158,13 +154,13 @@ export class PenComponent implements OnInit {
     this.pen.rating = this.penForm.get('rating')?.value;
     this.pen.color = this.penForm.get('color')?.value;
     this.pen.nib = this.penForm.get('nib')?.value;
-    if (this.penForm.get('currentInkRating')?.value) { //why doesn't a null coalesce work here?
+    if (this.penForm.get('currentInkRating')?.value) {
       this.pen.currentInkRating = this.penForm.get('currentInkRating')?.value;
     } else {
       this.pen.currentInkRating = null;
     }
     const ink = this.penForm.get('currentInk')?.value;
-    if (ink) { 
+    if (ink) {
       this.pen.currentInkId = ink.id;
     }
     else this.pen.currentInkId = null;
@@ -177,16 +173,16 @@ export class PenComponent implements OnInit {
         error: e => {
           this.showSnack(e);
         }
-    });
-  } else {
-    this.penService.updatePen(this.pen).subscribe({
-      next: () => {
-        this.showSnack("Pen updated!");
-      },
-      error: e => {
-        this.showSnack(e);
-      }
-    });
+      });
+    } else {
+      this.penService.updatePen(this.pen).subscribe({
+        next: () => {
+          this.showSnack("Pen updated!");
+        },
+        error: e => {
+          this.showSnack(e);
+        }
+      });
     }
   }
 
