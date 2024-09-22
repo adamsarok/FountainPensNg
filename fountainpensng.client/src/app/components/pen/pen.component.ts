@@ -75,7 +75,7 @@ export class PenComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  showSnack(msg: any): void {
+  showSnack(msg: string): void {
     this.zone.run(() => {
       this.snackBar.open(msg, 'Close', { duration: 3000 });
     });
@@ -134,7 +134,7 @@ export class PenComponent implements OnInit {
   displayFn(ink: InkForListDTO): string {
     return ink ? ink.maker + " - " + ink.inkName : '';
   }
-  private _filter(value: any): InkForListDTO[] {
+  private _filter(value: unknown): InkForListDTO[] {
     if (typeof value != "string") return this.inks;
     if (!this.inks) {
       const empty: InkForListDTO[] = [];

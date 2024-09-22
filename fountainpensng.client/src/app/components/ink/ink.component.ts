@@ -1,8 +1,6 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PenService } from '../../services/pen.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FountainPen } from '../../../dtos/FountainPen';
 import { InkService } from '../../services/ink.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
@@ -10,8 +8,7 @@ import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { InkForListDTO } from '../../../dtos/InkForListDTO';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { Ink } from '../../../dtos/Ink';
@@ -68,7 +65,7 @@ export class InkComponent  implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  showSnack(msg: any): void {
+  showSnack(msg: string): void {
     this.zone.run(() => {
       this.snackBar.open(msg, 'Close', { duration: 3000 });
     });

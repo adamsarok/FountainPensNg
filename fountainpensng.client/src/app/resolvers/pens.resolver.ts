@@ -4,7 +4,7 @@ import { inject } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { PenService } from '../services/pen.service';
 
-export const pensResolver: ResolveFn<FountainPen[]> = (route, state) => {
+export const pensResolver: ResolveFn<FountainPen[]> = () => {
   const penService = inject(PenService);
   return penService.getPens().pipe(
     catchError(error => {

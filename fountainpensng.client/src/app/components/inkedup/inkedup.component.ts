@@ -123,8 +123,9 @@ export class InkedupComponent implements OnInit {
     return pen ? pen.maker + " - " + pen.modelName : '';
   }
 
-  private _inkFilter(value: any): InkForListDTO[] {
+  private _inkFilter(value: unknown): InkForListDTO[] {
     if (typeof value != "string") return this.inks;
+    console.log(value);
     if (!this.inks) {
       const empty: InkForListDTO[] = [];
       return empty;
@@ -136,7 +137,7 @@ export class InkedupComponent implements OnInit {
         .includes(filterValue));
   }
 
-  private _penFilter(value: any): FountainPen[] {
+  private _penFilter(value: unknown): FountainPen[] {
     if (typeof value != "string") return this.pens;
     if (!this.pens) {
       const empty: FountainPen[] = [];
@@ -149,7 +150,7 @@ export class InkedupComponent implements OnInit {
         .includes(filterValue));
   }
 
-  showSnack(msg: any): void {
+  showSnack(msg: string): void {
     this.zone.run(() => {
       this.snackBar.open(msg, 'Close', { duration: 3000 });
     });
