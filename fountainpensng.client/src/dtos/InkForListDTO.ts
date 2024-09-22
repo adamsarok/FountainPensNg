@@ -1,6 +1,3 @@
-import { InkedUp } from "./InkedUp";
-import { FountainPen } from "./FountainPen";
-
 export interface InkForListDTO {
   id: number;
   maker: string;

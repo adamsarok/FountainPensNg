@@ -1,7 +1,7 @@
 import { ResolveFn } from '@angular/router';
 import { InkForListDTO } from '../../dtos/InkForListDTO';
 import { InkService } from '../services/ink.service';
-import { Injectable, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { catchError, of } from 'rxjs';
 
 // @Injectable({

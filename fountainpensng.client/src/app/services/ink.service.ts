@@ -17,7 +17,7 @@ export class InkService {
     return this.http.get<InkForListDTO[]>(this.baseUrl + 'Inks/');
   }
 
-  createInk(model: any) {
+  createInk(model: Ink) {
     return this.http.post<Ink>(this.baseUrl + 'Inks/', model);
   }
   getInk(id: number) {

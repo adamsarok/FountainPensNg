@@ -1,4 +1,3 @@
-import { Ink } from "./Ink";
 import { InkedUpForListDTO } from "./InkedUpForListDTO";
 
 export interface FountainPen {
