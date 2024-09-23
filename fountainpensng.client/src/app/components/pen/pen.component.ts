@@ -107,13 +107,11 @@ export class PenComponent implements OnInit {
     if (this.pen$) {
       this.pen$.subscribe(
         p => { //would be better in prefetch
-          console.log(p);
           this.pen = p;
           let ink: InkForListDTO | undefined;
           if (p.currentInkId) {
             const inks = this.inks.filter(x => x.id === p.currentInkId);
             if (inks) ink = inks[0];
-            console.log(ink);
           }
           this.inkedUps = p.inkedUps;
           this.penForm.patchValue({
@@ -164,7 +162,6 @@ export class PenComponent implements OnInit {
       this.pen.currentInkId = ink.id;
     }
     else this.pen.currentInkId = null;
-    console.log(this.pen);
     if (this.pen.id == 0) {
       this.penService.createPen(this.pen).subscribe({
         next: () => {

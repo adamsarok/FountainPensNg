@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+//import { HomeComponent } from './home/home.component';
 import { InkComponent } from './components/ink/ink.component';
 import { inksResolver } from './resolvers/inks.resolver';
 import { pensResolver } from './resolvers/pens.resolver';
@@ -10,7 +10,7 @@ import { InkedupListComponent } from './components/inkedup-list/inkedup-list.com
 import { InkedupComponent } from './components/inkedup/inkedup.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: PenListComponent },
   { path: 'inkedup-list', component: InkedupListComponent },
   { path: 'pen-list', component: PenListComponent },
   { path: 'ink-list', component: InkListComponent, resolve: {inks: inksResolver} },
