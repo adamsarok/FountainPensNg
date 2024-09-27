@@ -29,29 +29,53 @@ export class ColorWheelComponent implements OnInit {
   ngOnInit(): void {
     this.canvas = this.canvasRef.nativeElement;
     this.ctx = this.canvas.getContext('2d')!;
-    this.drawColorWheel();
     this.route.data.subscribe(data => {
       this.pens = data['pens'];
-      console.log(this.pens);
-      this.plotInkColors();
+      this.plotColorGrid();
     });
   }
 
-  //TODO: we don't actually want a color wheel but a component that can show lightness as well!
-  drawColorWheel(): void {
-    //TODO fix weird gradient
-    const numSegments = 360;
-    const step = (2 * Math.PI) / numSegments;
-    for (let i = 0; i < numSegments; i++) {
-      const angle = i * step;
-      const hue = i;
-      const [r, g, b] = this.hslToRgb(hue / 360, 1, 0.5);
-      this.ctx.beginPath();
-      this.ctx.moveTo(this.canvas.width / 2, this.canvas.height / 2);
-      this.ctx.arc(this.canvas.width / 2, this.canvas.height / 2, this.wheelRadius, angle, angle + step);
-      this.ctx.fillStyle = `rgb(${r},${g},${b})`;
-      this.ctx.fill();
+  plotColorGrid(): void { //TODO: top white row not necessary
+    const numColumns = 20;
+    const numRows = 20;
+  
+    const squareSize = Math.min(this.canvas.width / numColumns, this.canvas.height / numRows);
+  
+    for (let i = 0; i < numColumns; i++) {
+      for (let j = 0; j < numRows; j++) {
+        const hue = (i / numColumns) * 360; // X-axis controls hue
+        const lightness = 1 - (j / numRows); // Y-axis controls lightness (inverted for dark to light)
+  
+        const [r, g, b] = this.hslToRgb(hue / 360, 1, lightness);
+  
+        const x = i * squareSize;
+        const y = j * squareSize;
+  
+        this.ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+        this.ctx.fillRect(x, y, squareSize, squareSize);
+      }
     }
+
+    this.pens.forEach(pen => { //todo: only current ink, not all inkups
+      if (pen.inkedUps && pen.inkedUps.length > 0) {
+        const ink = pen.inkedUps[0];
+        const rgb = this.hexToRgb(ink.inkColor);
+        if (!rgb.err) {
+          console.log(rgb);
+          const [h, s, l] = this.rgbToHsl(rgb.r, rgb.g, rgb.b); //hue, saturation, lightness
+          const column = Math.floor((h / 360) * numColumns); // X-axis based on hue
+          const row = Math.floor((1 - l) * numRows); // Y-axis based on lightness (inverted)
+
+          const x = column * squareSize + squareSize / 2;
+          const y = row * squareSize + squareSize / 2;
+      
+          this.ctx.beginPath();
+          this.ctx.arc(x, y, 5, 0, 2 * Math.PI);
+          this.ctx.fillStyle = 'black';
+          this.ctx.fill();
+        }
+      }
+    });
   }
 
   hexToRgb(hex: string): RGB { //todo: colorservice
@@ -67,30 +91,6 @@ export class ColorWheelComponent implements OnInit {
     const g = parseInt(hex.substring(2, 4), 16);
     const b = parseInt(hex.substring(4, 6), 16);
     return { r, g, b, err: false };
-  }
-
-  plotInkColors(): void {
-    //console.log(this.inkColors);
-    //console.log(this.canvas);
-    this.pens.forEach(pen => { //todo: only current ink, not all inkups
-      if (pen.inkedUps && pen.inkedUps.length > 0) {
-        const ink = pen.inkedUps[0];
-        const rgb = this.hexToRgb(ink.inkColor);
-        if (!rgb.err) {
-          console.log(rgb);
-          const [h, s, l] = this.rgbToHsl(rgb.r, rgb.g, rgb.b); //hue, saturation, lightness
-          const angle = (h * Math.PI) / 180;
-          const radius = this.wheelRadius * s;
-          const x = this.canvas.width / 2 + radius * Math.cos(angle);
-          const y = this.canvas.height / 2 + radius * Math.sin(angle);
-          console.log(`x:${x} y:${y}`);
-          this.ctx.beginPath();
-          this.ctx.arc(x, y, 5, 0, 2 * Math.PI); // Plot a small circle for the ink color
-          this.ctx.fillStyle = `rgb(${rgb.r},${rgb.g},${rgb.b})`;
-          this.ctx.fill();
-        }
-      }
-    });
   }
 
   // Helper function to convert HSL to RGB
