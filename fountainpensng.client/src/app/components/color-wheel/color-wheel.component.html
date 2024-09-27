@@ -1,1 +1,16 @@
-<canvas #colorCanvas width="400" height="400"></canvas>
+<div style="position: relative; display: inline-block;">
+    <canvas #colorCanvas width="370" height="370"></canvas>
+    <div *ngFor="let marker of markers"
+        [ngStyle]="{
+            'position': 'absolute',
+            'left.px': marker.x - 10,
+            'top.px': marker.y - 10,
+            'width.px': 20,
+            'height.px': 20,
+            'z-index': 0
+        }"
+        matTooltip="Ink: {{marker.ink.maker}} - {{marker.ink.inkName}} {{marker.ink.oneCurrentPenMaker ? '\n Pen: ' + marker.ink.oneCurrentPenMaker + ' - ' + marker.ink.oneCurrentPenModelName : ''}}"
+        matTooltipPosition="above"
+        >
+    </div>
+</div>

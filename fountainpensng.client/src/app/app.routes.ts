@@ -21,6 +21,6 @@ export const routes: Routes = [
   { path: 'ink/:id', component: InkComponent },
   { path: 'inked-up', component: InkedupComponent, resolve: { inks: inksResolver, pens: pensResolver } },
   { path: 'inked-up/:id', component: InkedupComponent, resolve: { inks: inksResolver, pens: pensResolver } },
-  { path: 'colors', component: ColorWheelComponent, resolve: { pens: pensResolver } },
+  { path: 'colors', component: ColorWheelComponent, resolve: { inks: inksResolver } },
 ];
 

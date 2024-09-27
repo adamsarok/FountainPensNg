@@ -6,6 +6,7 @@ export interface InkForListDTO {
   photo: string;
   color: string;
   rating: number;
+  ml: number;
   oneCurrentPenMaker: string;
   oneCurrentPenModelName: string;
   color_CIELAB_L: number;
