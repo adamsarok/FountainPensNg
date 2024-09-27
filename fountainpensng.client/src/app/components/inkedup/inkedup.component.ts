@@ -99,7 +99,6 @@ export class InkedupComponent implements OnInit {
     if (this.inkedUp$) {
       this.inkedUp$.subscribe(
         p => { //would be better in prefetch
-          console.log(p);
           this.inkedUp = p;
           const ink = this.inks.filter(x => x.id === p.inkId);
           if (!ink) return;
@@ -111,7 +110,6 @@ export class InkedupComponent implements OnInit {
             matchRating: p.matchRating,
             inkedAt: p.inkedAt
           });
-          console.log(this.form.value);
         }
       );
     }
@@ -125,7 +123,6 @@ export class InkedupComponent implements OnInit {
 
   private _inkFilter(value: unknown): InkForListDTO[] {
     if (typeof value != "string") return this.inks;
-    console.log(value);
     if (!this.inks) {
       const empty: InkForListDTO[] = [];
       return empty;

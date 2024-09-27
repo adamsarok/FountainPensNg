@@ -54,8 +54,9 @@ namespace FountainPensNg.Server.Controllers
         public async Task<ActionResult<FountainPenDTO>> GetFountainPen(int id)
         {
             var fountainPen = await _context.FountainPens
-                .Include(x => x.CurrentInk)
-                .Include(x => x.InkedUps)
+                .Include(pen => pen.CurrentInk)
+                .Include(pen => pen.InkedUps)
+                .ThenInclude(inkup => inkup.Ink)
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
 

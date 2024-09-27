@@ -87,7 +87,6 @@ export class InkComponent  implements OnInit {
     if (this.ink$) {
       this.ink$.subscribe(
         i => { //would be better in prefetch
-          console.log(i);
           this.ink = i;
           this.form.patchValue({
             maker: i.maker,
@@ -103,7 +102,6 @@ export class InkComponent  implements OnInit {
   }
 
   upsertInk() {
-    console.log(this.form.value);
     this.ink.maker = this.form.get('maker')?.value;
     this.ink.inkName = this.form.get('inkName')?.value;
     this.ink.color = this.form.get('color')?.value;

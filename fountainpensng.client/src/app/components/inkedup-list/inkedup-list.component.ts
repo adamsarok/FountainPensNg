@@ -24,7 +24,6 @@ export class InkedupListComponent implements OnInit {
   ngOnInit(): void {
     this.inkedUpService.getInkedUps().subscribe({
       next: r => {
-        console.log(r);
         this.dataSource = r;
       }
     });
