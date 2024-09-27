@@ -1,6 +1,6 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
@@ -13,7 +13,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FountainPen } from '../../../dtos/FountainPen';
 import { InkForListDTO } from '../../../dtos/InkForListDTO';
 import { PenService } from '../../services/pen.service';
-import { InkService } from '../../services/ink.service';
 import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
 import { MatTableModule } from '@angular/material/table';
 
@@ -68,8 +67,6 @@ export class PenComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private penService: PenService,
-    private router: Router,
-    private inkService: InkService,
     private snackBar: MatSnackBar,
     private zone: NgZone,
     private route: ActivatedRoute
