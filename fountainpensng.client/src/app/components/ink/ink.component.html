@@ -64,7 +64,5 @@
       </div>
     </div>
 
-    <!--<app-image-uploader></app-image-uploader>-->
   </form>
-  
-          <!-- [disabled]="!penForm.valid" -->
+  <app-image-uploader [onUploadComplete]="handleUploadComplete" [onError]="handleUploadError" ></app-image-uploader>

@@ -67,6 +67,14 @@ export class InkComponent  implements OnInit {
     private route: ActivatedRoute
   ) { }
 
+  handleUploadComplete(guid: string): void {
+    console.log('Upload completed with response:', guid);
+  }
+
+  handleUploadError(msg: string): void {
+    console.log('Upload failed with response:', msg);
+  }
+
   showSnack(msg: string): void {
     this.zone.run(() => {
       this.snackBar.open(msg, 'Close', { duration: 3000 });
