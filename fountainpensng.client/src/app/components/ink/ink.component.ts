@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { Ink } from '../../../dtos/Ink';
+import { ImageUploaderComponent } from '../image-uploader/image-uploader.component';
 
 @Component({
   selector: 'app-ink',
@@ -27,7 +28,8 @@ import { Ink } from '../../../dtos/Ink';
     CommonModule, 
     MatInputModule,
     MatButtonModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    ImageUploaderComponent
   ],
   templateUrl: './ink.component.html',
   styleUrl: './ink.component.css'

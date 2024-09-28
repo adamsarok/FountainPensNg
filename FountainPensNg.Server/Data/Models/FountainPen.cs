@@ -13,7 +13,8 @@ namespace FountainPensNg.Server.Data.Models {
         public virtual List<InkedUp> InkedUps { get; set; } = new List<InkedUp>();
         public virtual Ink? CurrentInk { get; set; }
         public int? CurrentInkId { get; set; }
-        public int? CurrentInkRating { get; set; } 
+        public int? CurrentInkRating { get; set; }
+        public string ImageObjectKey { get; set; } = "";
         public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
         public DateTime ModifiedAt { get; set; }
     }

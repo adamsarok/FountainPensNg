@@ -1,5 +1,4 @@
 using FountainPensNg.Server.Data;
-using FountainPensNg.Server.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,10 +24,8 @@ if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is e
 builder.Services.AddDbContextFactory<DataContext>(opt =>
     opt.UseNpgsql(conn));
 
-builder.Services.AddTransient<IFileService, FileService>();
-//builder.Services.AddSingleton<IRepository, Repository>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-//builder.Services.AddApplicationServices();
 
 // builder.Services.AddSwaggerGen(options => {
 //     options.CustomSchemaIds(type => type.ToString());

@@ -4,8 +4,8 @@ using System.Text.Json.Serialization;
 namespace FountainPensNg.Server.Data.Models {
     public class Ink {
         public int Id { get; set; }
-        public string Maker { get; set; }
-        public string InkName { get; set; }
+        public string Maker { get; set; } = "";
+        public string InkName { get; set; } = "";
         public string Comment { get; set; } = "";
         public string Photo { get; set; } = "";
         public string Color { get; set; } = "";
@@ -14,7 +14,7 @@ namespace FountainPensNg.Server.Data.Models {
         public double? Color_CIELAB_b { get; set; }
         public int Rating { get; set; }
         public int Ml { get; set; }
-
+        public string ImageObjectKey { get; set; } = "";
         public virtual List<InkedUp>? InkedUps { get; set; }
         [JsonIgnore]
         public virtual List<FountainPen>? CurrentPens { get; set; }
