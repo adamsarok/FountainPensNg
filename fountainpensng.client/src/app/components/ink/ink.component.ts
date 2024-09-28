@@ -1,5 +1,11 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InkService } from '../../services/ink.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
@@ -10,35 +16,38 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Ink } from '../../../dtos/Ink';
 import { ImageUploaderComponent } from '../image-uploader/image-uploader.component';
+import { R2UploadService } from '../../services/r2-upload.service';
 
 @Component({
   selector: 'app-ink',
   standalone: true,
   imports: [
-    ReactiveFormsModule, 
-    MatFormField, 
-    MatLabel, 
-    MatError, 
-    MatSelect, 
-    MatOption, 
-    MatIcon, 
-    CommonModule, 
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatError,
+    MatSelect,
+    MatOption,
+    MatIcon,
+    CommonModule,
     MatInputModule,
     MatButtonModule,
     MatAutocompleteModule,
-    ImageUploaderComponent
+    ImageUploaderComponent,
   ],
   templateUrl: './ink.component.html',
-  styleUrl: './ink.component.css'
+  styleUrl: './ink.component.css',
 })
-export class InkComponent  implements OnInit {
+export class InkComponent implements OnInit {
+  toUploadFile: File | null = null;
+
   @Input()
   set id(id: number) {
     if (id) this.ink$ = this.inkService.getInk(id);
-  } 
+  }
 
   ink: Ink = {
     id: 0,
@@ -51,38 +60,32 @@ export class InkComponent  implements OnInit {
     ml: 0,
     inkedUps: [],
     currentPens: [],
-    penDisplayName: null
-  }
+    penDisplayName: null,
+    imageObjectKey: '',
+    imageUrl: ''
+  };
 
   myControl = new FormControl('');
   ink$: Observable<Ink> | undefined;
   form: FormGroup = new FormGroup({});
   validationErrors: string[] | undefined;
 
-  constructor(private fb: FormBuilder, 
-    private router: Router, 
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
     private inkService: InkService,
     private snackBar: MatSnackBar,
     private zone: NgZone,
-    private route: ActivatedRoute
-  ) { }
-
-  handleUploadComplete(guid: string): void {
-    console.log('Upload completed with response:', guid);
-  }
-
-  handleUploadError(msg: string): void {
-    console.log('Upload failed with response:', msg);
-  }
+    private route: ActivatedRoute,
+    private r2: R2UploadService
+  ) {}
 
   showSnack(msg: string): void {
     this.zone.run(() => {
       this.snackBar.open(msg, 'Close', { duration: 3000 });
     });
   }
-  onSubmit() {
-    this.upsertInk();
-  }
+
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -95,19 +98,45 @@ export class InkComponent  implements OnInit {
     });
 
     if (this.ink$) {
-      this.ink$.subscribe(
-        i => { //would be better in prefetch
-          this.ink = i;
-          this.form.patchValue({
-            maker: i.maker,
-            inkName: i.inkName,
-            comment: i.comment,
-            color: i.color,
-            rating: i.rating,
-            ml: i.ml
-          });
-        } 
-      );
+      this.ink$.subscribe((i) => {
+        //would be better in prefetch
+        this.ink = i;
+        i.imageUrl = this.r2.getImageUrl(i.imageObjectKey);
+        console.log(i.imageUrl);
+        this.form.patchValue({
+          maker: i.maker,
+          inkName: i.inkName,
+          comment: i.comment,
+          color: i.color,
+          rating: i.rating,
+          ml: i.ml,
+        });
+      });
+    }
+  }
+
+  onFileSelected(file: File | null): void {
+    this.toUploadFile = file;
+  }
+
+  onSubmit() {
+    if (this.toUploadFile) {
+      this.r2.uploadFile(this.toUploadFile).subscribe({
+        next: (r) => {
+            if (r.errorMsg) {
+                this.showSnack(r.errorMsg);
+            } else if (r.guid) {
+                this.showSnack('Image upload successful');
+                this.ink.imageObjectKey = r.guid;
+                this.upsertInk();
+            }
+        },
+        error: (err) => {
+            this.showSnack('Upload failed:' + err);
+        }
+      });
+    } else {
+      this.upsertInk();
     }
   }
 
@@ -121,22 +150,21 @@ export class InkComponent  implements OnInit {
     if (this.ink.id == 0) {
       this.inkService.createInk(this.ink).subscribe({
         next: () => {
-          this.showSnack("Ink added!");
+          this.showSnack('Ink added!');
         },
-        error: e => {
+        error: (e) => {
           this.showSnack(e);
-        }
-    });
-  } else {
-    this.inkService.updateInk(this.ink).subscribe({
-      next: () => {
-        this.showSnack("Ink updated!");
-      },
-      error: e => {
-        this.showSnack(e);
-      }
-    });
+        },
+      });
+    } else {
+      this.inkService.updateInk(this.ink).subscribe({
+        next: () => {
+          this.showSnack('Ink updated!');
+        },
+        error: (e) => {
+          this.showSnack(e);
+        },
+      });
     }
   }
-
 }

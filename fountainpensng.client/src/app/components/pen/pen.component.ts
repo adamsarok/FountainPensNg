@@ -15,6 +15,8 @@ import { InkForListDTO } from '../../../dtos/InkForListDTO';
 import { PenService } from '../../services/pen.service';
 import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
 import { MatTableModule } from '@angular/material/table';
+import { R2UploadService } from '../../services/r2-upload.service';
+import { ImageUploaderComponent } from '../image-uploader/image-uploader.component';
 
 @Component({
   selector: 'app-pen',
@@ -31,12 +33,15 @@ import { MatTableModule } from '@angular/material/table';
     MatInputModule,
     MatButtonModule,
     MatAutocompleteModule,
-    MatTableModule
+    MatTableModule,
+    ImageUploaderComponent
   ],
   templateUrl: './pen.component.html',
   styleUrl: './pen.component.css'
 })
 export class PenComponent implements OnInit {
+  toUploadFile: File | null = null;
+
   @Input()
   set id(id: number) {
     if (id) this.pen$ = this.penService.getPen(id);
@@ -53,7 +58,9 @@ export class PenComponent implements OnInit {
     nib: '',
     inkedUps: [],
     currentInkId: 0,
-    currentInkRating: 0
+    currentInkRating: 0,
+    imageObjectKey: '',
+    imageUrl: ''
   };
 
   currentInk = new FormControl('');
@@ -69,7 +76,8 @@ export class PenComponent implements OnInit {
     private penService: PenService,
     private snackBar: MatSnackBar,
     private zone: NgZone,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private r2: R2UploadService,
   ) { }
 
   showSnack(msg: string): void {
@@ -77,9 +85,10 @@ export class PenComponent implements OnInit {
       this.snackBar.open(msg, 'Close', { duration: 3000 });
     });
   }
-  onSubmit() {
-    this.upsertPen();
+  onFileSelected(file: File | null): void {
+    this.toUploadFile = file;
   }
+
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.inks = data['inks'];
@@ -100,7 +109,6 @@ export class PenComponent implements OnInit {
       currentInk: this.currentInk,
       currentInkRating: ['']
     });
-
     if (this.pen$) {
       this.pen$.subscribe(
         p => { //would be better in prefetch
@@ -110,6 +118,8 @@ export class PenComponent implements OnInit {
             const inks = this.inks.filter(x => x.id === p.currentInkId);
             if (inks) ink = inks[0];
           }
+          p.imageUrl = this.r2.getImageUrl(p.imageObjectKey);
+          console.log(p.imageUrl);
           this.inkedUps = p.inkedUps;
           this.penForm.patchValue({
             maker: p.maker,
@@ -141,7 +151,27 @@ export class PenComponent implements OnInit {
         .toLowerCase()
         .includes(filterValue));
   }
-
+  onSubmit() {
+    if (this.toUploadFile) {
+      this.r2.uploadFile(this.toUploadFile).subscribe({
+        next: (r) => {
+            if (r.errorMsg) {
+                this.showSnack(r.errorMsg);
+            } else if (r.guid) {
+                this.showSnack('Image upload successful');
+                this.pen.imageObjectKey = r.guid;
+                console.log(this.pen);
+                this.upsertPen();
+            }
+        },
+        error: (err) => {
+            this.showSnack('Upload failed:' + err);
+        }
+      });
+    } else {
+      this.upsertPen();
+    }
+  }
   upsertPen() {
     this.pen.maker = this.penForm.get('maker')?.value;
     this.pen.modelName = this.penForm.get('modelName')?.value;

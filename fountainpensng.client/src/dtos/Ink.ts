@@ -13,4 +13,6 @@ export interface Ink {
   inkedUps: InkedUp[] | null;
   currentPens: FountainPen[] | null;
   penDisplayName: string | null;
+  imageObjectKey: string;
+  imageUrl: string;
 }

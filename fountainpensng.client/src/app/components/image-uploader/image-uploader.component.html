@@ -1,15 +1,11 @@
 <div>
-    <input
+    <input 
       type="file"
       id="file-input"
       (change)="onFileSelected($event)"
       style="display: 'none'"
     />
-    <button mat-button as="label" htmlFor="file-input">
+    <label as="label" htmlFor="file-input">
       {{selectedFile ? selectedFile.name : 'Choose File'}}
-    </button>
-    <button mat-button 
-      className='ml-4' 
-      (click)="handleUpload(selectedFile)"
-    >Upload File</button>
+    </label>
 </div>

@@ -38,5 +38,17 @@ export class AppComponent {
       'angle-right',
       this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/angle-right.svg')
     );
+    this.matIconRegistry.addSvgIcon(
+      'caret-up',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/caret-up.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'ban',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/ban.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'pen-nib',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/pen-nib.svg')
+    );
   }
 }

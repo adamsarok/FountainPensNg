@@ -12,4 +12,6 @@ export interface FountainPen {
   inkedUps: InkedUpForListDTO[];
   currentInkId: number | null;
   currentInkRating: number | null;
+  imageObjectKey: string;
+  imageUrl: string;
 }

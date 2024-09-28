@@ -1,109 +1,110 @@
-<form [formGroup]="penForm" (ngSubmit)="onSubmit()">
-  <div fxLayout="column" fxLayoutAlign="center center">
-    <div fxFlex="100%">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Maker</mat-label>
-        <input matInput formControlName="maker" name="maker" >
-        <mat-error *ngIf="penForm.get('maker')?.hasError('required')">This field is required</mat-error>
-      </mat-form-field>
-    </div>
-
-    <div fxFlex="100%">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Model</mat-label>
-        <input matInput formControlName="modelName" name="modelName" >
-        <mat-error *ngIf="penForm.get('modelName')?.hasError('required')">This field is required</mat-error>
-      </mat-form-field>
-    </div>
-
-    <div fxFlex="100%">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Comment</mat-label>
-        <input matInput formControlName="comment" name="comment">
-        <mat-error *ngIf="penForm.get('comment')?.hasError('required')">This field is required</mat-error>
-      </mat-form-field>
-    </div>
-
-    <div fxFlex="100%">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Color</mat-label>
-        <input type="color" matInput formControlName="color" name="color" >
-        <mat-error *ngIf="penForm.get('color')?.hasError('required')">This field is required</mat-error>
-      </mat-form-field>
-    </div>
-
-    <div fxFlex="100%">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Rating</mat-label>
-        <input matInput formControlName="rating" name="rating" >
-        <mat-error *ngIf="penForm.get('rating')?.hasError('required')">This field is required</mat-error>
-      </mat-form-field>
-    </div>
-
-    <div fxFlex="100%">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Nib</mat-label>
-        <input matInput formControlName="nib" name="nib" >
-        <mat-error *ngIf="penForm.get('nib')?.hasError('required')">This field is required</mat-error>
-      </mat-form-field>
-    </div>
-    
-    <div fxFlex="100%">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Ink</mat-label>
-        <input type="text"
-        placeholder="Pick one"
-        aria-label="Number"
-        matInput
-        [formControl]="currentInk"
-        [matAutocomplete]="auto"
-        >        
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          @for (option of filteredOptions | async; track option) {
-            <mat-option [value]="option">{{option.maker}} - {{option.inkName}}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
-    </div> 
-
-    <div fxFlex="100%">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Ink match rating</mat-label>
-        <input matInput formControlName="currentInkRating" name="currentInkRating" >
-      </mat-form-field>
-    </div>
-
-    <div fxFlex="100%">
-      <div class="row" *ngIf="validationErrors">
-        <ul class="text-danger">
-          <li *ngFor="let error of validationErrors">
-            {{error}}
-          </li>
-        </ul>
-      </div>
-      <button mat-flat-button color="primary" type="submit"
-              >
-        {{pen.id ? "Update" : "Create"}}
-      </button>
-    </div>
+<div class="root-div">
+  <div class="image-container">
+    <img alt="image of fountain pen" src={{pen.imageUrl}} *ngIf="pen.imageUrl">
+    <mat-icon style="width: 100%; height: 100%; opacity: 0.25;" svgIcon="pen-nib" *ngIf="!pen.imageUrl">menu</mat-icon>
   </div>
-</form>
+  <app-image-uploader (selectedFile)="onFileSelected($event)"></app-image-uploader>
+  <form style="margin-top: 16px;" [formGroup]="penForm" (ngSubmit)="onSubmit()">
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Maker</mat-label>
+          <input matInput formControlName="maker" name="maker">
+          <mat-error *ngIf="penForm.get('maker')?.hasError('required')">This field is required</mat-error>
+        </mat-form-field>
+      </div>
 
-<table mat-table [dataSource]="inkedUps">
-  <ng-container matColumnDef="inkedAt">
-    <th mat-header-cell *matHeaderCellDef> Inked At </th>
-    <td mat-cell *matCellDef="let element"> {{element.inkedAt}} </td>
-  </ng-container>
-  <ng-container matColumnDef="matchRating">
-    <th mat-header-cell *matHeaderCellDef> Match Rating </th>
-    <td mat-cell *matCellDef="let element"> {{element.matchRating}} </td>
-  </ng-container> 
-  <ng-container matColumnDef="ink">
-    <th mat-header-cell *matHeaderCellDef> Ink </th>
-    <td mat-cell *matCellDef="let element"> {{element.inkMaker}} {{element.inkName}}  <input type="color" value="{{element.inkColor}}" disabled> </td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="inkedUpDisplayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: inkedUpDisplayedColumns;"></tr>
-</table>
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Model</mat-label>
+          <input matInput formControlName="modelName" name="modelName">
+          <mat-error *ngIf="penForm.get('modelName')?.hasError('required')">This field is required</mat-error>
+        </mat-form-field>
+      </div>
 
-        <!-- [disabled]="!penForm.valid" -->
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Comment</mat-label>
+          <input matInput formControlName="comment" name="comment">
+          <mat-error *ngIf="penForm.get('comment')?.hasError('required')">This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Color</mat-label>
+          <input type="color" matInput formControlName="color" name="color">
+          <mat-error *ngIf="penForm.get('color')?.hasError('required')">This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Rating</mat-label>
+          <input matInput formControlName="rating" name="rating">
+          <mat-error *ngIf="penForm.get('rating')?.hasError('required')">This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Nib</mat-label>
+          <input matInput formControlName="nib" name="nib">
+          <mat-error *ngIf="penForm.get('nib')?.hasError('required')">This field is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Ink</mat-label>
+          <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="currentInk"
+            [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            @for (option of filteredOptions | async; track option) {
+            <mat-option [value]="option">{{option.maker}} - {{option.inkName}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Ink match rating</mat-label>
+          <input matInput formControlName="currentInkRating" name="currentInkRating">
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100%">
+        <div class="row" *ngIf="validationErrors">
+          <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">
+              {{error}}
+            </li>
+          </ul>
+        </div>
+        <button mat-flat-button color="primary" type="submit">
+          {{pen.id ? "Update" : "Create"}}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <table mat-table [dataSource]="inkedUps">
+    <ng-container matColumnDef="inkedAt">
+      <th mat-header-cell *matHeaderCellDef> Inked At </th>
+      <td mat-cell *matCellDef="let element"> {{element.inkedAt}} </td>
+    </ng-container>
+    <ng-container matColumnDef="matchRating">
+      <th mat-header-cell *matHeaderCellDef> Match Rating </th>
+      <td mat-cell *matCellDef="let element"> {{element.matchRating}} </td>
+    </ng-container>
+    <ng-container matColumnDef="ink">
+      <th mat-header-cell *matHeaderCellDef> Ink </th>
+      <td mat-cell *matCellDef="let element"> {{element.inkMaker}} {{element.inkName}} <input type="color"
+          value="{{element.inkColor}}" disabled> </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="inkedUpDisplayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: inkedUpDisplayedColumns;"></tr>
+  </table>
+</div>
+<!-- [disabled]="!penForm.valid" -->
