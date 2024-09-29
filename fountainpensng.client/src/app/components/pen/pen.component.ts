@@ -1,6 +1,12 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
@@ -17,6 +23,8 @@ import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
 import { MatTableModule } from '@angular/material/table';
 import { R2UploadService } from '../../services/r2-upload.service';
 import { ImageUploaderComponent } from '../image-uploader/image-uploader.component';
+import { MessageBoxComponent } from '../message-box/message-box.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-pen',
@@ -34,10 +42,10 @@ import { ImageUploaderComponent } from '../image-uploader/image-uploader.compone
     MatButtonModule,
     MatAutocompleteModule,
     MatTableModule,
-    ImageUploaderComponent
+    ImageUploaderComponent,
   ],
   templateUrl: './pen.component.html',
-  styleUrl: './pen.component.css'
+  styleUrl: './pen.component.css',
 })
 export class PenComponent implements OnInit {
   toUploadFile: File | null = null;
@@ -60,7 +68,7 @@ export class PenComponent implements OnInit {
     currentInkId: 0,
     currentInkRating: 0,
     imageObjectKey: '',
-    imageUrl: ''
+    imageUrl: '',
   };
 
   currentInk = new FormControl('');
@@ -72,13 +80,16 @@ export class PenComponent implements OnInit {
   validationErrors: string[] | undefined;
   inkedUpDisplayedColumns: string[] = ['inkedAt', 'matchRating', 'ink'];
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private penService: PenService,
     private snackBar: MatSnackBar,
     private zone: NgZone,
     private route: ActivatedRoute,
     private r2: R2UploadService,
-  ) { }
+    private dialog: MatDialog,
+    private router: Router
+  ) {}
 
   showSnack(msg: string): void {
     this.zone.run(() => {
@@ -90,13 +101,13 @@ export class PenComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
+    this.route.data.subscribe((data) => {
       this.inks = data['inks'];
     });
 
     this.filteredOptions = this.currentInk.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || '')),
+      map((value) => this._filter(value || ''))
     );
 
     this.penForm = this.fb.group({
@@ -107,66 +118,63 @@ export class PenComponent implements OnInit {
       rating: ['', Validators.required],
       nib: ['', Validators.required],
       currentInk: this.currentInk,
-      currentInkRating: ['']
+      currentInkRating: [''],
     });
     if (this.pen$) {
-      this.pen$.subscribe(
-        p => { //would be better in prefetch
-          this.pen = p;
-          let ink: InkForListDTO | undefined;
-          if (p.currentInkId) {
-            const inks = this.inks.filter(x => x.id === p.currentInkId);
-            if (inks) ink = inks[0];
-          }
-          p.imageUrl = this.r2.getImageUrl(p.imageObjectKey);
-          console.log(p.imageUrl);
-          this.inkedUps = p.inkedUps;
-          this.penForm.patchValue({
-            maker: p.maker,
-            modelName: p.modelName,
-            comment: p.comment,
-            color: p.color,
-            rating: p.rating,
-            nib: p.nib,
-            currentInk: ink,
-            currentInkRating: p.currentInkRating
-          });
-
+      this.pen$.subscribe((p) => {
+        //would be better in prefetch
+        this.pen = p;
+        let ink: InkForListDTO | undefined;
+        if (p.currentInkId) {
+          const inks = this.inks.filter((x) => x.id === p.currentInkId);
+          if (inks) ink = inks[0];
         }
-      );
+        p.imageUrl = this.r2.getImageUrl(p.imageObjectKey);
+        console.log(p.imageUrl);
+        this.inkedUps = p.inkedUps;
+        this.penForm.patchValue({
+          maker: p.maker,
+          modelName: p.modelName,
+          comment: p.comment,
+          color: p.color,
+          rating: p.rating,
+          nib: p.nib,
+          currentInk: ink,
+          currentInkRating: p.currentInkRating,
+        });
+      });
     }
   }
   displayFn(ink: InkForListDTO): string {
-    return ink ? ink.maker + " - " + ink.inkName : '';
+    return ink ? ink.maker + ' - ' + ink.inkName : '';
   }
   private _filter(value: unknown): InkForListDTO[] {
-    if (typeof value != "string") return this.inks;
+    if (typeof value != 'string') return this.inks;
     if (!this.inks) {
       const empty: InkForListDTO[] = [];
       return empty;
     }
     const filterValue = value.toLowerCase();
-    return this.inks?.filter(
-      option => (option.maker + " " + option.inkName)
-        .toLowerCase()
-        .includes(filterValue));
+    return this.inks?.filter((option) =>
+      (option.maker + ' ' + option.inkName).toLowerCase().includes(filterValue)
+    );
   }
   onSubmit() {
     if (this.toUploadFile) {
       this.r2.uploadFile(this.toUploadFile).subscribe({
         next: (r) => {
-            if (r.errorMsg) {
-                this.showSnack(r.errorMsg);
-            } else if (r.guid) {
-                this.showSnack('Image upload successful');
-                this.pen.imageObjectKey = r.guid;
-                console.log(this.pen);
-                this.upsertPen();
-            }
+          if (r.errorMsg) {
+            this.showSnack(r.errorMsg);
+          } else if (r.guid) {
+            this.showSnack('Image upload successful');
+            this.pen.imageObjectKey = r.guid;
+            console.log(this.pen);
+            this.upsertPen();
+          }
         },
         error: (err) => {
-            this.showSnack('Upload failed:' + err);
-        }
+          this.showSnack('Upload failed:' + err);
+        },
       });
     } else {
       this.upsertPen();
@@ -187,27 +195,49 @@ export class PenComponent implements OnInit {
     const ink = this.penForm.get('currentInk')?.value;
     if (ink) {
       this.pen.currentInkId = ink.id;
-    }
-    else this.pen.currentInkId = null;
+    } else this.pen.currentInkId = null;
     if (this.pen.id == 0) {
       this.penService.createPen(this.pen).subscribe({
         next: () => {
-          this.showSnack("Pen added!");
+          this.showSnack('Pen added!');
         },
-        error: e => {
+        error: (e) => {
           this.showSnack(e);
-        }
+        },
       });
     } else {
       this.penService.updatePen(this.pen).subscribe({
         next: () => {
-          this.showSnack("Pen updated!");
+          this.showSnack('Pen updated!');
         },
-        error: e => {
+        error: (e) => {
           this.showSnack(e);
+        },
+      });
+    }
+  }
+  deletePen(): void {
+    if (this.pen.id) {
+      const dialogRef = this.dialog.open(MessageBoxComponent, {
+        width: '250px',
+        data: {
+          title: 'Confirm Action',
+          message: 'Are you sure you want to proceed?',
+        },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.penService.deletePen(this.pen.id).subscribe({
+            next: () => {
+              this.showSnack('Pen deleted!');
+              this.router.navigate(['/']);
+            },
+            error: (e) => {
+              this.showSnack(e);
+            },
+          });
         }
       });
     }
   }
-
 }

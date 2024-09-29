@@ -25,4 +25,7 @@ export class InkService {
   updateInk(ink: Ink) {
     return this.http.put<Ink>(this.baseUrl + 'Inks/' + ink.id, ink);
   }
+  deleteInk(id: number) {
+    return this.http.delete(this.baseUrl + 'Inks/' + id);
+  }
 }

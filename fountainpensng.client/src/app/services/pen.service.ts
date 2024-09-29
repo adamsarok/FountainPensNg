@@ -22,4 +22,7 @@ export class PenService {
   updatePen(pen: FountainPen) {
     return this.http.put<FountainPen>(this.baseUrl + 'FountainPens/' + pen.id, pen);
   }
+  deletePen(id: number) {
+    return this.http.delete(this.baseUrl + 'FountainPens/' + id);
+  }
 }

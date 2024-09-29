@@ -142,6 +142,10 @@ namespace FountainPensNg.Server.Controllers
                 return NotFound();
             }
 
+            await _context.FountainPens
+                .Where(x => x.CurrentInkId == ink.Id)
+                .ForEachAsync(x => x.CurrentInk = null);
+
             _context.Inks.Remove(ink);
             await _context.SaveChangesAsync();
 

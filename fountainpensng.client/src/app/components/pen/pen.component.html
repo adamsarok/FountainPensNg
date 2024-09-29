@@ -82,9 +82,15 @@
             </li>
           </ul>
         </div>
-        <button mat-flat-button color="primary" type="submit">
-          {{pen.id ? "Update" : "Create"}}
-        </button>
+
+        <div class="btn-container">
+          <button mat-flat-button color="primary" type="submit">
+            {{pen.id ? "Update" : "Create"}}
+          </button>
+          <button *ngIf="pen.id" mat-flat-button color="warn" type="button" (click)="deletePen()">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </form>

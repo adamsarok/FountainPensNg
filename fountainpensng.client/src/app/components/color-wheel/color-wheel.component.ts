@@ -37,6 +37,7 @@ export class ColorWheelComponent implements OnInit {
     this.ctx = this.canvas.getContext('2d')!;
     this.route.data.subscribe((data) => {
       this.inks = data['inks'];
+      console.log(this.inks);
       this.plotColorGrid();
     });
   }

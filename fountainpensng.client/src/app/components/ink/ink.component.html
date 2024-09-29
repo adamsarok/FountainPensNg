@@ -63,9 +63,14 @@
             </li>
           </ul>
         </div>
-        <button mat-flat-button color="primary" type="submit">
-          {{ink.id ? "Update" : "Create"}}
-        </button>
+        <div class="btn-container">
+          <button mat-flat-button color="primary" type="submit">
+            {{ink.id ? "Update" : "Create"}}
+          </button>
+          <button *ngIf="ink.id" mat-flat-button color="warn" type="button" (click)="deleteInk()">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
 

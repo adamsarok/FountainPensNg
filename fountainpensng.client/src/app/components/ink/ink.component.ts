@@ -20,6 +20,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Ink } from '../../../dtos/Ink';
 import { ImageUploaderComponent } from '../image-uploader/image-uploader.component';
 import { R2UploadService } from '../../services/r2-upload.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageBoxComponent } from '../message-box/message-box.component';
 
 @Component({
   selector: 'app-ink',
@@ -37,6 +39,7 @@ import { R2UploadService } from '../../services/r2-upload.service';
     MatButtonModule,
     MatAutocompleteModule,
     ImageUploaderComponent,
+    
   ],
   templateUrl: './ink.component.html',
   styleUrl: './ink.component.css',
@@ -77,7 +80,8 @@ export class InkComponent implements OnInit {
     private snackBar: MatSnackBar,
     private zone: NgZone,
     private route: ActivatedRoute,
-    private r2: R2UploadService
+    private r2: R2UploadService,
+    private dialog: MatDialog
   ) {}
 
   showSnack(msg: string): void {
@@ -164,6 +168,32 @@ export class InkComponent implements OnInit {
         error: (e) => {
           this.showSnack(e);
         },
+      });
+    }
+  }
+
+  deleteInk() : void {
+    if (this.ink.id) {
+      const dialogRef = this.dialog.open(MessageBoxComponent, {
+        width: '250px',
+        data: {
+          title: 'Confirm Action',
+          message: 'Are you sure you want to proceed?'
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.inkService.deleteInk(this.ink.id).subscribe({
+            next: () => {
+              this.showSnack('Ink deleted!');
+              this.router.navigate(['/']);
+              //go back to main
+            },
+            error: (e) => {
+              this.showSnack(e);
+            },
+          });
+        } 
       });
     }
   }
