@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MessageBoxComponent } from './message-box.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 describe('MessageBoxComponent', () => {
   let component: MessageBoxComponent;
@@ -8,7 +9,10 @@ describe('MessageBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MessageBoxComponent]
+      imports: [MessageBoxComponent],
+      providers: [ 
+        { provide: MatDialogRef, useValue: {} },
+      ]
     })
     .compileComponents();
 

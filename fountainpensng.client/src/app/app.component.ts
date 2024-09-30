@@ -25,7 +25,7 @@ import { MatIconRegistry } from '@angular/material/icon';
     ReactiveFormsModule,
     MatMenuTrigger,
     MatMenu,
-    MatMenuItem
+    MatMenuItem,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

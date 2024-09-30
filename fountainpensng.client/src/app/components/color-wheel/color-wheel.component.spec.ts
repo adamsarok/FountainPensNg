@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ColorWheelComponent } from './color-wheel.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('ColorWheelComponent', () => {
   let component: ColorWheelComponent;
@@ -8,7 +9,10 @@ describe('ColorWheelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ColorWheelComponent]
+      imports: [ColorWheelComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: {} }
+      ]
     })
     .compileComponents();
 
