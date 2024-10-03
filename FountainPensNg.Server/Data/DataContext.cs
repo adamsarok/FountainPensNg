@@ -6,6 +6,8 @@ namespace FountainPensNg.Server.Data {
         public DataContext(DbContextOptions options) : base(options) {
 
         }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //    => optionsBuilder.LogTo(Console.WriteLine);
         public DbSet<Ink> Inks { get; set; }
         public DbSet<FountainPen> FountainPens { get; set; }
         public DbSet<InkedUp> InkedUps { get; set; }

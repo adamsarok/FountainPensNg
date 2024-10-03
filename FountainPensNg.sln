@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FountainPensNg.Server", "FountainPensNg.Server\FountainPensNg.Server.csproj", "{E60371AE-6882-4B32-9E0E-350D56D4B69F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FountainPensNg.Server", "FountainPensNg.Server\FountainPensNg.Server.csproj", "{E60371AE-6882-4B32-9E0E-350D56D4B69F}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "fountainpensng.client", "fountainpensng.client\fountainpensng.client.esproj", "{844CC12C-39B2-414B-974F-9286E795BE41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FountainPensNg.xTests", "FountainPensNg.xTests\FountainPensNg.xTests.csproj", "{C0396EF1-8C67-495B-8A36-3916DA8F882F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{844CC12C-39B2-414B-974F-9286E795BE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{844CC12C-39B2-414B-974F-9286E795BE41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{844CC12C-39B2-414B-974F-9286E795BE41}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C0396EF1-8C67-495B-8A36-3916DA8F882F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0396EF1-8C67-495B-8A36-3916DA8F882F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0396EF1-8C67-495B-8A36-3916DA8F882F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0396EF1-8C67-495B-8A36-3916DA8F882F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

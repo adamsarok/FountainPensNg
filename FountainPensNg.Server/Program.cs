@@ -62,3 +62,5 @@ app.MapFallbackToFile("/index.html");
 //app.MapFallbackToController("Index", "Fallback"); //???
 
 app.Run();
+
+public partial class Program { } //for integration tests
