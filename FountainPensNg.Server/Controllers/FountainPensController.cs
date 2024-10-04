@@ -37,16 +37,9 @@ namespace FountainPensNg.Server.Controllers
                 .ToListAsync();
             var res = new List<FountainPenDTO>();
             foreach (var f in temp) {
-                res.Add(MapFountainPen(f));
+                res.Add(_mapper.Map<FountainPenDTO>(f));
             }
             return res;
-        }
-
-        private FountainPenDTO MapFountainPen(FountainPen f) {
-            var dto = _mapper.Map<FountainPenDTO>(f);
-            dto.CurrentInk = _mapper.Map<InkForListDTO>(f.CurrentInk);
-            dto.InkedUps = _mapper.Map<List<InkedUpForListDTO>>(f.InkedUps);
-            return dto;
         }
 
         // GET: api/FountainPens/5
@@ -65,7 +58,7 @@ namespace FountainPensNg.Server.Controllers
                 return NotFound();
             }
 
-            return MapFountainPen(fountainPen);
+            return _mapper.Map<FountainPenDTO>(fountainPen);
         }
 
         // PUT: api/FountainPens/5
