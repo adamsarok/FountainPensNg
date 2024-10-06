@@ -28,23 +28,23 @@ namespace FountainPensNg.Server.Controllers
 
         // GET: api/FountainPens
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FountainPenDTO>>> GetFountainPens()
+        public async Task<ActionResult<IEnumerable<FountainPenDownloadDTO>>> GetFountainPens()
         {
             var temp = await _context
                 .FountainPens
                 .Include(x => x.CurrentInk)
                 .Include(x => x.InkedUps)
                 .ToListAsync();
-            var res = new List<FountainPenDTO>();
+            var res = new List<FountainPenDownloadDTO>();
             foreach (var f in temp) {
-                res.Add(_mapper.Map<FountainPenDTO>(f));
+                res.Add(_mapper.Map<FountainPenDownloadDTO>(f));
             }
             return res;
         }
 
         // GET: api/FountainPens/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<FountainPenDTO>> GetFountainPen(int id)
+        public async Task<ActionResult<FountainPenDownloadDTO>> GetFountainPen(int id)
         {
             var fountainPen = await _context.FountainPens
                 .Include(pen => pen.CurrentInk)
@@ -58,13 +58,12 @@ namespace FountainPensNg.Server.Controllers
                 return NotFound();
             }
 
-            return _mapper.Map<FountainPenDTO>(fountainPen);
+            return _mapper.Map<FountainPenDownloadDTO>(fountainPen);
         }
 
         // PUT: api/FountainPens/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFountainPen(int id, FountainPenDTO dto)
+        public async Task<IActionResult> PutFountainPen(int id, FountainPenUploadDTO dto)
         {
             var fountainPen = _mapper.Map<FountainPen>(dto);
             if (fountainPen == null || id != fountainPen.Id)
@@ -72,24 +71,23 @@ namespace FountainPensNg.Server.Controllers
                 return BadRequest();
             }
 
+            var find = await _context.FountainPens.FindAsync(fountainPen.Id);
+            if (find == null) return NotFound();
             
-            var old = await _context.FountainPens.FindAsync(fountainPen.Id);
-            if (old != null) {
-                if (old != null 
-                    && old.CurrentInkId != fountainPen.CurrentInkId 
-                    && fountainPen.CurrentInkId.HasValue
-                    && fountainPen.CurrentInkId != 0) {
-                    _context.InkedUps.Add(new InkedUp() {
-                        FountainPenId = fountainPen.Id,
-                        InkId = fountainPen.CurrentInkId.Value,
-                        MatchRating = fountainPen.CurrentInkRating ?? 0
-                    });
-                }
-                
-                _context.Entry(old).CurrentValues.SetValues(fountainPen);
-                old.ModifiedAt = DateTime.UtcNow;
-                //_context.Entry(fountainPen).State = EntityState.Modified;
+            FountainPen old = find;
+            if (old.CurrentInkId != fountainPen.CurrentInkId 
+                && fountainPen.CurrentInkId.HasValue
+                && fountainPen.CurrentInkId != 0) {
+                _context.InkedUps.Add(new InkedUp() {
+                    FountainPenId = fountainPen.Id,
+                    InkId = fountainPen.CurrentInkId.Value,
+                    MatchRating = fountainPen.CurrentInkRating ?? 0
+                });
             }
+                
+            _context.Entry(old).CurrentValues.SetValues(fountainPen);
+            old.ModifiedAt = DateTime.UtcNow;
+    
 
             try
             {
@@ -111,9 +109,8 @@ namespace FountainPensNg.Server.Controllers
         }
 
         // POST: api/FountainPens
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<FountainPen>> PostFountainPen(FountainPenDTO dto)
+        public async Task<ActionResult<FountainPen>> PostFountainPen(FountainPenUploadDTO dto)
         {
             var fountainPen = _mapper.Map<FountainPen>(dto);
             if (fountainPen == null)

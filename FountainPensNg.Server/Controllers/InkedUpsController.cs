@@ -27,20 +27,20 @@ namespace FountainPensNg.Server.Controllers
 
         // GET: api/InkedUps
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InkedUpForListDTO>>> GetInkedUps()
+        public async Task<ActionResult<IEnumerable<InkedUpDTO>>> GetInkedUps()
         {
             var query =_context.InkedUps
                 .Include(x => x.Ink)
                 .Include(x => x.FountainPen)
                 .AsQueryable();
             return await query
-                .ProjectTo<InkedUpForListDTO>(_mapper.ConfigurationProvider)
+                .ProjectTo<InkedUpDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
         // GET: api/InkedUps/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<InkedUpForListDTO>> GetInkedUp(int id)
+        public async Task<ActionResult<InkedUpDTO>> GetInkedUp(int id)
         {
             var query =_context.InkedUps
                 .Include(x => x.Ink)
@@ -48,7 +48,7 @@ namespace FountainPensNg.Server.Controllers
                 .Where(x => x.Id == id)
                 .AsQueryable();
             var inkedUp = await query
-                .ProjectTo<InkedUpForListDTO>(_mapper.ConfigurationProvider)
+                .ProjectTo<InkedUpDTO>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
             if (inkedUp == null)
@@ -60,9 +60,8 @@ namespace FountainPensNg.Server.Controllers
         }
 
         // PUT: api/InkedUps/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInkedUp(int id, InkedUpForListDTO dto)
+        public async Task<IActionResult> PutInkedUp(int id, InkedUpDTO dto)
         {
             var inkedUp = _mapper.Map<InkedUp>(dto);
             if (id != inkedUp.Id)
@@ -92,9 +91,8 @@ namespace FountainPensNg.Server.Controllers
         }
 
         // POST: api/InkedUps
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<InkedUp>> PostInkedUp(InkedUpForListDTO dto)
+        public async Task<ActionResult<InkedUp>> PostInkedUp(InkedUpDTO dto)
         {
             var inkedUp = _mapper.Map<InkedUp>(dto);
             _context.InkedUps.Add(inkedUp);

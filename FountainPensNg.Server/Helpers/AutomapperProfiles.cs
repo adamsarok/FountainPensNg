@@ -8,10 +8,12 @@ public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
     {
-        CreateMap<FountainPen, FountainPenDTO>();
-        CreateMap<FountainPenDTO, FountainPen>();
-        CreateMap<InkForListDTO, Ink>();
-        CreateMap<Ink, InkForListDTO>()
+        CreateMap<FountainPen, FountainPenDownloadDTO>();
+        CreateMap<FountainPenDownloadDTO, FountainPen>();
+        CreateMap<FountainPen, FountainPenUploadDTO>();
+        CreateMap<FountainPenUploadDTO, FountainPen>();
+        CreateMap<InkDTO, Ink>();
+        CreateMap<Ink, InkDTO>()
             .ForMember(dest => dest.OneCurrentPenMaker,
                 opt => opt.MapFrom(src =>
                     src.CurrentPens != null && src.CurrentPens.Any() ? src.CurrentPens.First().Maker : null)  
@@ -20,8 +22,8 @@ public class AutoMapperProfiles : Profile
                 opt => opt.MapFrom(src => 
                     src.CurrentPens != null && src.CurrentPens.Any() ? src.CurrentPens.First().ModelName : null)
             );
-        CreateMap<InkedUpForListDTO, InkedUp>();
-        CreateMap<InkedUp, InkedUpForListDTO>()
+        CreateMap<InkedUpDTO, InkedUp>();
+        CreateMap<InkedUp, InkedUpDTO>()
             .ForMember(dest => dest.PenMaker,
                 opt => opt.MapFrom(
                     src => src.FountainPen.Maker

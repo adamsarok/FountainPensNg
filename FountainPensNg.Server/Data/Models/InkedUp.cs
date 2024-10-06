@@ -4,9 +4,9 @@
         public DateTime InkedAt { get; set; } = DateTime.UtcNow;
         public string Comment { get; set; } = "";
         public int MatchRating { get; set; }
-        public virtual FountainPen FountainPen { get; set; }
+        public virtual FountainPen FountainPen { get; set; } = new FountainPen();
         public int FountainPenId { get; set; }
-        public virtual Ink Ink { get; set; }
+        public virtual Ink Ink { get; set; } = new Ink();
         public int InkId { get; set; }
     }
 }

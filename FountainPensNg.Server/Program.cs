@@ -1,5 +1,6 @@
 using FountainPensNg.Server.Data;
 using Microsoft.EntityFrameworkCore;
+//using Microsoft.AspNetCore.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 string? conn;
 Console.WriteLine($"Is development: {builder.Environment.IsDevelopment()}");
@@ -27,9 +28,9 @@ builder.Services.AddDbContextFactory<DataContext>(opt =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// builder.Services.AddSwaggerGen(options => {
-//     options.CustomSchemaIds(type => type.ToString());
-// });
+builder.Services.AddSwaggerGen(options => {
+     options.CustomSchemaIds(type => type.ToString());
+});
 
 var app = builder.Build();
 
@@ -45,12 +46,12 @@ app.UseCors(x => x.AllowAnyHeader()
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment()) {
-
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
+//Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment()) {
+    //app.UseOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 //app.UseHttpsRedirection();
 

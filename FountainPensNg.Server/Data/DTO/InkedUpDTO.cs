@@ -1,5 +1,5 @@
 namespace FountainPensNg.Server.Data.DTO {
-    public class InkedUpForListDTO {
+    public class InkedUpDTO {
         public int Id { get; set; }
         public DateTime InkedAt { get; set; }
         public int MatchRating { get; set; }
