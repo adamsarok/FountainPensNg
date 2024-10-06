@@ -27,7 +27,7 @@ namespace FountainPensNg.Server.Controllers {
         {
             var query = _context
                 .Inks
-                .Include(x => x.CurrentPens != null ? x.CurrentPens.Take(1) : null)
+                .Include(x => x.CurrentPens)
                 .AsQueryable();
             return await query
                 .ProjectTo<InkDTO>(_mapper.ConfigurationProvider)
