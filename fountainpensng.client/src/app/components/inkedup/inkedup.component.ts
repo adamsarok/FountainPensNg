@@ -15,6 +15,8 @@ import { InkedupService } from '../../services/inkedup.service';
 import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
 import { FountainPen } from '../../../dtos/FountainPen';
 import { InkForListDTO } from '../../../dtos/InkForListDTO';
+import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-inkedup',
@@ -31,7 +33,9 @@ import { InkForListDTO } from '../../../dtos/InkForListDTO';
     MatInputModule,
     MatButtonModule,
     MatAutocompleteModule,
-    MatTableModule
+    MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule 
   ],
   templateUrl: './inkedup.component.html',
   styleUrl: './inkedup.component.css'
@@ -158,6 +162,7 @@ export class InkedupComponent implements OnInit {
 
   upsertInkUp() {
     this.inkedUp.matchRating = this.form.get('matchRating')?.value;
+    console.log(this.inkedUp);
     const ink = this.form.get('ink')?.value;
     if (ink) {
       this.inkedUp.inkId = ink.id;
@@ -166,12 +171,14 @@ export class InkedupComponent implements OnInit {
     if (pen) {
       this.inkedUp.fountainPenId = pen.id;
     } else return; //TODO: error
+    this.inkedUp.inkedAt = this.form.get('inkedAt')?.value;
     if (this.inkedUp.id == 0) {
       this.inkedUpService.createInkedUp(this.inkedUp).subscribe({
         next: () => {
           this.showSnack("Ink-up added!");
         },
         error: e => {
+          console.log(e);
           this.showSnack(e);
         }
       });
@@ -181,6 +188,7 @@ export class InkedupComponent implements OnInit {
           this.showSnack("Ink-up updated!");
         },
         error: e => {
+          console.log(e);
           this.showSnack(e);
         }
       });

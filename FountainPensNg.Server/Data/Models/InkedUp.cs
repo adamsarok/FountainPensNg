@@ -8,5 +8,6 @@
         public int FountainPenId { get; set; }
         public virtual Ink Ink { get; set; } = new Ink();
         public int InkId { get; set; }
+        public bool IsCurrent { get; set; } = true; //TODO: create repo, make sure only 1 ink can be current per pen
     }
 }

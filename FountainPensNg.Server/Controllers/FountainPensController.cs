@@ -32,12 +32,13 @@ namespace FountainPensNg.Server.Controllers
         {
             var temp = await _context
                 .FountainPens
-                .Include(x => x.CurrentInk)
                 .Include(x => x.InkedUps)
                 .ToListAsync();
             var res = new List<FountainPenDownloadDTO>();
             foreach (var f in temp) {
-                res.Add(_mapper.Map<FountainPenDownloadDTO>(f));
+                var dto = _mapper.Map<FountainPenDownloadDTO>(f);
+                SetCurrentInkup(f, dto);
+                res.Add(dto);
             }
             return res;
         }
@@ -47,7 +48,6 @@ namespace FountainPensNg.Server.Controllers
         public async Task<ActionResult<FountainPenDownloadDTO>> GetFountainPen(int id)
         {
             var fountainPen = await _context.FountainPens
-                .Include(pen => pen.CurrentInk)
                 .Include(pen => pen.InkedUps)
                 .ThenInclude(inkup => inkup.Ink)
                 .Where(x => x.Id == id)
@@ -58,7 +58,18 @@ namespace FountainPensNg.Server.Controllers
                 return NotFound();
             }
 
-            return _mapper.Map<FountainPenDownloadDTO>(fountainPen);
+            var result = _mapper.Map<FountainPenDownloadDTO>(fountainPen);
+            SetCurrentInkup(fountainPen, result);
+            return result;
+        }
+
+        private void SetCurrentInkup(FountainPen fountainPen, FountainPenDownloadDTO fountainPenDownloadDTO) {
+            var currInkup = fountainPen.InkedUps.FirstOrDefault(x => x.IsCurrent);
+            if (currInkup != null) {
+                fountainPenDownloadDTO.CurrentInk =  _mapper.Map<InkDTO>(currInkup.Ink);
+                fountainPenDownloadDTO.CurrentInkId = currInkup.Ink.Id;
+                fountainPenDownloadDTO.CurrentInkRating = currInkup.MatchRating;
+            }
         }
 
         // PUT: api/FountainPens/5
@@ -75,15 +86,17 @@ namespace FountainPensNg.Server.Controllers
             if (find == null) return NotFound();
             
             FountainPen old = find;
-            if (old.CurrentInkId != fountainPen.CurrentInkId 
-                && fountainPen.CurrentInkId.HasValue
-                && fountainPen.CurrentInkId != 0) {
-                _context.InkedUps.Add(new InkedUp() {
-                    FountainPenId = fountainPen.Id,
-                    InkId = fountainPen.CurrentInkId.Value,
-                    MatchRating = fountainPen.CurrentInkRating ?? 0
-                });
-            }
+
+            //TODO: auto add inkedup 
+            // if (old.CurrentInkId != fountainPen.CurrentInkId 
+            //     && fountainPen.CurrentInkId.HasValue
+            //     && fountainPen.CurrentInkId != 0) {
+            //     _context.InkedUps.Add(new InkedUp() {
+            //         FountainPenId = fountainPen.Id,
+            //         InkId = fountainPen.CurrentInkId.Value,
+            //         MatchRating = fountainPen.CurrentInkRating ?? 0
+            //     });
+            // }
                 
             _context.Entry(old).CurrentValues.SetValues(fountainPen);
             old.ModifiedAt = DateTime.UtcNow;
@@ -118,13 +131,14 @@ namespace FountainPensNg.Server.Controllers
                 return BadRequest();
             }
             _context.FountainPens.Add(fountainPen);
-            if (fountainPen.CurrentInkId.HasValue && fountainPen.CurrentInkId > 0) {
-                _context.InkedUps.Add(new InkedUp() {
-                    FountainPen = fountainPen,
-                    InkId = fountainPen.CurrentInkId.Value,
-                    MatchRating = fountainPen.CurrentInkRating ?? 0
-                });
-            }
+            //TODO: auto add inkedup 
+            // if (fountainPen.CurrentInkId.HasValue && fountainPen.CurrentInkId > 0) {
+            //     _context.InkedUps.Add(new InkedUp() {
+            //         FountainPen = fountainPen,
+            //         InkId = fountainPen.CurrentInkId.Value,
+            //         MatchRating = fountainPen.CurrentInkRating ?? 0
+            //     });
+            // }
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetFountainPen", new { id = fountainPen.Id }, dto);

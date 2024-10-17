@@ -27,7 +27,8 @@ namespace FountainPensNg.Server.Controllers {
         {
             var query = _context
                 .Inks
-                .Include(x => x.CurrentPens)
+                .Include(x => x.InkedUps)
+                //.ThenInclude(inkedup => inkedup.FountainPen) //TODO fill FP
                 .AsQueryable();
             return await query
                 .ProjectTo<InkDTO>(_mapper.ConfigurationProvider)
@@ -111,10 +112,6 @@ namespace FountainPensNg.Server.Controllers {
             {
                 return NotFound();
             }
-
-            await _context.FountainPens
-                .Where(x => x.CurrentInkId == ink.Id)
-                .ForEachAsync(x => x.CurrentInk = null);
 
             _context.Inks.Remove(ink);
             await _context.SaveChangesAsync();
