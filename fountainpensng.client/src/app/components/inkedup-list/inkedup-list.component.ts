@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InkedupService } from '../../services/inkedup.service';
 import { MatTableModule } from '@angular/material/table';
-import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
+import { InkedUpForListDTO } from '../../../dtos/InkedUpDTO';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 

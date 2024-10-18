@@ -94,6 +94,11 @@ namespace FountainPensNg.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<InkedUp>> PostInkedUp(InkedUpDTO dto)
         {
+            await _context
+                .InkedUps
+                .Where(x => x.FountainPenId == dto.FountainPenId && x.IsCurrent)
+                .ExecuteUpdateAsync(s => s.SetProperty(e => e.IsCurrent, false));
+
             var inkedUp = _mapper.Map<InkedUp>(dto); //something really cursed is happening here w automapper
             inkedUp.Ink = null;
             inkedUp.FountainPen = null;

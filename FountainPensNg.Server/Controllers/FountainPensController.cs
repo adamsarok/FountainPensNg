@@ -33,6 +33,7 @@ namespace FountainPensNg.Server.Controllers
             var temp = await _context
                 .FountainPens
                 .Include(x => x.InkedUps)
+                .ThenInclude(inkup => inkup.Ink)
                 .ToListAsync();
             var res = new List<FountainPenDownloadDTO>();
             foreach (var f in temp) {

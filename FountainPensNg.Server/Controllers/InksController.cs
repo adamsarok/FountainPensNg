@@ -27,12 +27,53 @@ namespace FountainPensNg.Server.Controllers {
         {
             var query = _context
                 .Inks
-                .Include(x => x.InkedUps)
-                //.ThenInclude(inkedup => inkedup.FountainPen) //TODO fill FP
-                .AsQueryable();
-            return await query
-                .ProjectTo<InkDTO>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .Select(ink => new InkDTO {
+                        Id = ink.Id,
+                        Color = ink.Color,
+                        Color_CIELAB_a = ink.Color_CIELAB_a,
+                        Color_CIELAB_b = ink.Color_CIELAB_b,
+                        Color_CIELAB_L = ink.Color_CIELAB_L,
+                        Comment = ink.Comment,
+                        InkName = ink.InkName,
+                        Maker = ink.Maker,
+                        Ml = ink.Ml,
+                        Photo = ink.Photo,
+                        Rating = ink.Rating,
+                        //OneCurrentPenMaker =
+                        // Other properties of Ink
+                        InkedUpDTOs = ink.InkedUps!
+                            .Where(iu => iu.IsCurrent) // Apply filter here
+                            .Select(iu => new InkedUpDTO
+                            {
+                                Id = iu.Id,
+                                FountainPenId = iu.FountainPenId,
+                                PenMaker = iu.FountainPen.Maker,
+                                PenColor = iu.FountainPen.Color,
+                                PenName = iu.FountainPen.ModelName,
+                            })
+                            .ToList() // Ensure the collection is materialized
+                    });
+        
+            var result = await query.ToListAsync();
+            foreach (var i in result) {
+                if (i.InkedUpDTOs != null && i.InkedUpDTOs.Any()) {
+                    var pen = i.InkedUpDTOs.OrderByDescending(x => x.InkedAt).FirstOrDefault();
+                    if (pen != null) {
+                        i.OneCurrentPenMaker = pen.PenMaker;
+                        i.OneCurrentPenModelName = pen.PenName;
+                        i.OneCurrentPenColor = pen.PenColor;
+                    }
+                }
+            }
+            return result;
+            // var query = _context
+            //     .Inks
+            //     .Include(x => x.InkedUps!.Where(iu => iu.IsCurrent))
+            //     .ThenInclude(inkedup => inkedup.FountainPen) //TODO fill FP
+            //     .AsQueryable();
+            // return await query
+            //     .ProjectTo<InkDTO>(_mapper.ConfigurationProvider)
+            //     .ToListAsync();
         }
 
         // GET: api/Inks/5

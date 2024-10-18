@@ -4,11 +4,12 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { PenService } from '../../services/pen.service';
 import { FountainPen } from '../../../dtos/FountainPen';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-pen-list',
   standalone: true,
-  imports: [MatTableModule, MatSortModule],
+  imports: [MatTableModule, MatSortModule, CommonModule],
   templateUrl: './pen-list.component.html',
   styleUrl: './pen-list.component.css',
 })
@@ -20,7 +21,6 @@ export class PenListComponent implements OnInit {
     'nib',
     'rating',
     'currentInk',
-    'inkColor',
   ];
   dataSource: FountainPen[] = [];
   sortedData: FountainPen[] = [];
@@ -33,7 +33,7 @@ export class PenListComponent implements OnInit {
       },
     });
   }
-  constructor(private penService: PenService, private router: Router) { }
+  constructor(private penService: PenService, private router: Router) {}
   openPen(id: number) {
     this.router.navigate(['/pen/' + id]);
   }
@@ -60,8 +60,6 @@ export class PenListComponent implements OnInit {
           return this.compare(a.rating, b.rating, isAsc);
         // case 'currentInk': TODO ???
         //   return compare(a.c, b.currentInk, isAsc);
-        // case 'inkColor':
-        //   return compare(a.inkColor, b.inkColor, isAsc);
         default:
           return 0;
       }

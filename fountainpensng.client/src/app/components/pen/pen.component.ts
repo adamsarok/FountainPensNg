@@ -19,12 +19,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FountainPen } from '../../../dtos/FountainPen';
 import { InkForListDTO } from '../../../dtos/InkForListDTO';
 import { PenService } from '../../services/pen.service';
-import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
+import { InkedUpForListDTO } from '../../../dtos/InkedUpDTO';
 import { MatTableModule } from '@angular/material/table';
 import { R2UploadService } from '../../services/r2-upload.service';
 import { ImageUploaderComponent } from '../image-uploader/image-uploader.component';
 import { MessageBoxComponent } from '../message-box/message-box.component';
 import { MatDialog } from '@angular/material/dialog';
+import { InkedupService } from '../../services/inkedup.service';
 
 @Component({
   selector: 'app-pen',
@@ -75,6 +76,7 @@ export class PenComponent implements OnInit {
   filteredOptions: Observable<InkForListDTO[]> | undefined;
   pen$: Observable<FountainPen> | undefined;
   penForm: FormGroup = new FormGroup({});
+  inkupForm: FormGroup = new FormGroup({});
   inks: InkForListDTO[] = [];
   inkedUps: InkedUpForListDTO[] = [];
   validationErrors: string[] | undefined;
@@ -83,6 +85,7 @@ export class PenComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private penService: PenService,
+    private inkedUpService: InkedupService,
     private snackBar: MatSnackBar,
     private zone: NgZone,
     private route: ActivatedRoute,
@@ -117,9 +120,13 @@ export class PenComponent implements OnInit {
       color: ['', Validators.required],
       rating: ['', Validators.required],
       nib: ['', Validators.required],
+    });
+
+    this.inkupForm = this.fb.group({
       currentInk: this.currentInk,
       currentInkRating: [''],
     });
+
     if (this.pen$) {
       this.pen$.subscribe((p) => {
         //would be better in prefetch
@@ -139,6 +146,8 @@ export class PenComponent implements OnInit {
           color: p.color,
           rating: p.rating,
           nib: p.nib,
+        });
+        this.inkupForm.patchValue({
           currentInk: ink,
           currentInkRating: p.currentInkRating,
         });
@@ -187,15 +196,6 @@ export class PenComponent implements OnInit {
     this.pen.rating = this.penForm.get('rating')?.value;
     this.pen.color = this.penForm.get('color')?.value;
     this.pen.nib = this.penForm.get('nib')?.value;
-    if (this.penForm.get('currentInkRating')?.value) {
-      this.pen.currentInkRating = this.penForm.get('currentInkRating')?.value;
-    } else {
-      this.pen.currentInkRating = null;
-    }
-    const ink = this.penForm.get('currentInk')?.value;
-    if (ink) {
-      this.pen.currentInkId = ink.id;
-    } else this.pen.currentInkId = null;
     if (this.pen.id == 0) {
       this.penService.createPen(this.pen).subscribe({
         next: () => {
@@ -216,6 +216,34 @@ export class PenComponent implements OnInit {
       });
     }
   }
+  onInkUp() {
+    const inkRating = this.inkupForm.get('currentInkRating')?.value;
+    const ink = this.inkupForm.get('currentInk')?.value;
+    console.log(ink);
+    if (!inkRating || !ink || !ink.id)
+      this.showSnack('Select an ink and a match rating');
+    else {
+      this.inkedUpService
+        .createInkedUp({
+          id: 0,
+          inkedAt: new Date(),
+          matchRating: inkRating,
+          fountainPenId: this.pen.id,
+          inkId: ink.id,
+          isCurrent: true,
+        })
+        .subscribe({
+          next: () => {
+            this.showSnack('Inked up!');
+          },
+          error: (e) => {
+            this.showSnack(e);
+            console.log(e);
+          },
+        });
+    }
+  }
+
   deletePen(): void {
     if (this.pen.id) {
       const dialogRef = this.dialog.open(MessageBoxComponent, {

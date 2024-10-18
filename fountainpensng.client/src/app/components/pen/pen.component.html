@@ -55,6 +55,30 @@
       </div>
 
       <div fxFlex="100%">
+        <div class="row" *ngIf="validationErrors">
+          <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">
+              {{error}}
+            </li>
+          </ul>
+        </div>
+
+        <div class="btn-container">
+          <button mat-flat-button color="primary" type="submit">
+            {{pen.id ? "Update" : "Create"}}
+          </button>
+          <button *ngIf="pen.id" mat-flat-button color="warn" type="button" (click)="deletePen()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form style="margin-top: 16px;" [formGroup]="inkupForm" (ngSubmit)="onInkUp()">
+    <div fxLayout="column" fxLayoutAlign="center center">
+
+      <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Ink</mat-label>
           <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="currentInk"
@@ -84,11 +108,8 @@
         </div>
 
         <div class="btn-container">
-          <button mat-flat-button color="primary" type="submit">
-            {{pen.id ? "Update" : "Create"}}
-          </button>
-          <button *ngIf="pen.id" mat-flat-button color="warn" type="button" (click)="deletePen()">
-            Delete
+          <button *ngIf="pen.id" mat-flat-button color="primary" type="submit">
+            Ink up
           </button>
         </div>
       </div>

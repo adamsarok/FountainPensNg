@@ -3,11 +3,12 @@ import { MatTableModule } from '@angular/material/table';
 import { InkForListDTO } from '../../../dtos/InkForListDTO';
 import { InkService } from '../../services/ink.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-ink-list',
   standalone: true,
-  imports: [MatTableModule],
+  imports: [MatTableModule, CommonModule],
   templateUrl: './ink-list.component.html',
   styleUrl: './ink-list.component.css'
 })

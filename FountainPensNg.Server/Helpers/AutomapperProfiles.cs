@@ -13,16 +13,17 @@ public class AutoMapperProfiles : Profile
         CreateMap<FountainPen, FountainPenUploadDTO>();
         CreateMap<FountainPenUploadDTO, FountainPen>();
         CreateMap<InkDTO, Ink>();
-        CreateMap<Ink, InkDTO>();
-        //TODO: fix mapping
-            // .ForMember(dest => dest.OneCurrentPenMaker,
-            //     opt => opt.MapFrom(src =>
-            //         src.CurrentPens != null && src.CurrentPens.Any() ? src.CurrentPens.First().Maker : null)  
-            // )
-            // .ForMember(dest => dest.OneCurrentPenModelName,
-            //     opt => opt.MapFrom(src => 
-            //         src.CurrentPens != null && src.CurrentPens.Any() ? src.CurrentPens.First().ModelName : null)
-            // );
+        CreateMap<Ink, InkDTO>() //TODO: this is handled also in one of the controller as projection this is duplicate but needed - refactor
+            .ForMember(dest => dest.OneCurrentPenMaker,
+                opt => opt.MapFrom(src =>
+                    src.InkedUps != null && src.InkedUps.Any() ? 
+                    src.InkedUps.First().FountainPen.Maker : null)  
+            )
+            .ForMember(dest => dest.OneCurrentPenModelName,
+                opt => opt.MapFrom(src => 
+                    src.InkedUps != null && src.InkedUps.Any() ? 
+                    src.InkedUps.First().FountainPen.ModelName : null)
+            );
         CreateMap<InkedUpDTO, InkedUp>();
         CreateMap<InkedUp, InkedUpDTO>()
             .ForMember(dest => dest.PenMaker,

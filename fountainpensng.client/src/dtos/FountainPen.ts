@@ -1,4 +1,4 @@
-import { InkedUpForListDTO } from "./InkedUpForListDTO";
+import { InkedUpForListDTO } from "./InkedUpDTO";
 
 export interface FountainPen {
   id: number;

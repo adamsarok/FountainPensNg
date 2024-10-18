@@ -15,5 +15,7 @@ namespace FountainPensNg.Server.Data.DTO {
         public int Ml { get; set; }
         public string? OneCurrentPenMaker { get; set; }
         public string? OneCurrentPenModelName { get; set; }
+        public string? OneCurrentPenColor { get; set; }
+        public List<InkedUpDTO> InkedUpDTOs { get; set; } = new List<InkedUpDTO>();
     }
 }

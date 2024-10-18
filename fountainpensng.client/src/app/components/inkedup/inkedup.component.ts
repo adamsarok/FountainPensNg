@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTableModule } from '@angular/material/table';
 import { InkedupService } from '../../services/inkedup.service';
-import { InkedUpForListDTO } from '../../../dtos/InkedUpForListDTO';
+import { InkedUpForListDTO } from '../../../dtos/InkedUpDTO';
 import { FountainPen } from '../../../dtos/FountainPen';
 import { InkForListDTO } from '../../../dtos/InkForListDTO';
 import { MatDatepickerModule} from '@angular/material/datepicker';
@@ -57,7 +57,7 @@ export class InkedupComponent implements OnInit {
 
   inkedUp: InkedUpForListDTO = {
     id: 0,
-    inkedAt: '',
+    inkedAt: new Date(),
     matchRating: 0,
     penMaker: '',
     penName: '',
@@ -66,7 +66,8 @@ export class InkedupComponent implements OnInit {
     inkName: '',
     inkColor: '',
     fountainPenId: 0,
-    inkId: 0
+    inkId: 0,
+    isCurrent: false
   };
 
   constructor(private inkedUpService: InkedupService,
