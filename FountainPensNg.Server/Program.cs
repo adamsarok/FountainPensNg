@@ -12,8 +12,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 string? conn;
-Console.WriteLine($"Is development: {builder.Environment.IsDevelopment()}");
-Console.WriteLine($"Connection string variable: {Environment.GetEnvironmentVariable("CONNECTION_STRING")}");
 if (builder.Environment.IsDevelopment()) conn = builder.Configuration.GetConnectionString("DefaultConnection");
 else {
     conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
