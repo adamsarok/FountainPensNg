@@ -38,7 +38,6 @@ export class PenListComponent implements OnInit {
     this.router.navigate(['/pen/' + id]);
   }
   sortData(sort: Sort) {
-    console.log(sort);
     const data = this.dataSource.slice();
     if (!sort.active || sort.direction === '') {
       this.sortedData = data;

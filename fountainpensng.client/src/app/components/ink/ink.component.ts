@@ -39,7 +39,6 @@ import { MessageBoxComponent } from '../message-box/message-box.component';
     MatButtonModule,
     MatAutocompleteModule,
     ImageUploaderComponent,
-    
   ],
   templateUrl: './ink.component.html',
   styleUrl: './ink.component.css',
@@ -65,7 +64,7 @@ export class InkComponent implements OnInit {
     currentPens: [],
     penDisplayName: null,
     imageObjectKey: '',
-    imageUrl: ''
+    imageUrl: '',
   };
 
   myControl = new FormControl('');
@@ -90,7 +89,6 @@ export class InkComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.form = this.fb.group({
       maker: ['', Validators.required],
@@ -106,7 +104,6 @@ export class InkComponent implements OnInit {
         //would be better in prefetch
         this.ink = i;
         i.imageUrl = this.r2.getImageUrl(i.imageObjectKey);
-        console.log(i.imageUrl);
         this.form.patchValue({
           maker: i.maker,
           inkName: i.inkName,
@@ -127,17 +124,17 @@ export class InkComponent implements OnInit {
     if (this.toUploadFile) {
       this.r2.uploadFile(this.toUploadFile).subscribe({
         next: (r) => {
-            if (r.errorMsg) {
-                this.showSnack(r.errorMsg);
-            } else if (r.guid) {
-                this.showSnack('Image upload successful');
-                this.ink.imageObjectKey = r.guid;
-                this.upsertInk();
-            }
+          if (r.errorMsg) {
+            this.showSnack(r.errorMsg);
+          } else if (r.guid) {
+            this.showSnack('Image upload successful');
+            this.ink.imageObjectKey = r.guid;
+            this.upsertInk();
+          }
         },
         error: (err) => {
-            this.showSnack('Upload failed:' + err);
-        }
+          this.showSnack('Upload failed:' + err);
+        },
       });
     } else {
       this.upsertInk();
@@ -172,16 +169,16 @@ export class InkComponent implements OnInit {
     }
   }
 
-  deleteInk() : void {
+  deleteInk(): void {
     if (this.ink.id) {
       const dialogRef = this.dialog.open(MessageBoxComponent, {
         width: '250px',
         data: {
           title: 'Confirm Action',
-          message: 'Are you sure you want to proceed?'
-        }
+          message: 'Are you sure you want to proceed?',
+        },
       });
-      dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           this.inkService.deleteInk(this.ink.id).subscribe({
             next: () => {
@@ -193,7 +190,7 @@ export class InkComponent implements OnInit {
               this.showSnack(e);
             },
           });
-        } 
+        }
       });
     }
   }

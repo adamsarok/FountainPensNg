@@ -137,7 +137,6 @@ export class PenComponent implements OnInit {
           if (inks) ink = inks[0];
         }
         p.imageUrl = this.r2.getImageUrl(p.imageObjectKey);
-        console.log(p.imageUrl);
         this.inkedUps = p.inkedUps;
         this.penForm.patchValue({
           maker: p.maker,
@@ -177,7 +176,6 @@ export class PenComponent implements OnInit {
           } else if (r.guid) {
             this.showSnack('Image upload successful');
             this.pen.imageObjectKey = r.guid;
-            console.log(this.pen);
             this.upsertPen();
           }
         },
@@ -219,7 +217,6 @@ export class PenComponent implements OnInit {
   onInkUp() {
     const inkRating = this.inkupForm.get('currentInkRating')?.value;
     const ink = this.inkupForm.get('currentInk')?.value;
-    console.log(ink);
     if (!inkRating || !ink || !ink.id)
       this.showSnack('Select an ink and a match rating');
     else {

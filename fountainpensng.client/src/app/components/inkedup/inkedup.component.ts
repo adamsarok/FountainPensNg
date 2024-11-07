@@ -163,7 +163,6 @@ export class InkedupComponent implements OnInit {
 
   upsertInkUp() {
     this.inkedUp.matchRating = this.form.get('matchRating')?.value;
-    console.log(this.inkedUp);
     const ink = this.form.get('ink')?.value;
     if (ink) {
       this.inkedUp.inkId = ink.id;

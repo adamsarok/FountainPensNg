@@ -20,9 +20,6 @@ export class R2UploadService {
     if (!file) return of({ errorMsg: 'File not selected' });
     if (!this.r2ApiUrl)
       return of({ errorMsg: 'R2 API not set in envirment variable' });
-    console.log('uploadservice called');
-    console.log(file);
-    console.log(this.r2ApiUrl);
     return this.http
       .put<UploadResult>(
         `${this.r2ApiUrl}/upload-image?fileName=${encodeURIComponent(
@@ -33,7 +30,6 @@ export class R2UploadService {
       )
       .pipe(
         map((r) => {
-          console.log(r);
           return r;
         }),
         catchError((error: HttpErrorResponse) => {

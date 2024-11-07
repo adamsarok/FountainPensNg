@@ -1,7 +1,9 @@
 using FountainPensNg.Server.Data.Models;
 
-namespace FountainPensNg.Server.Data.DTO {
-    public class InkDTO {
+namespace FountainPensNg.Server.Data.DTO
+{
+    public class InkDTO
+    {
         public int Id { get; set; }
         public string Maker { get; set; } = "";
         public string InkName { get; set; } = "";
@@ -16,6 +18,7 @@ namespace FountainPensNg.Server.Data.DTO {
         public string? OneCurrentPenMaker { get; set; }
         public string? OneCurrentPenModelName { get; set; }
         public string? OneCurrentPenColor { get; set; }
+        public string ImageObjectKey { get; set; } = "";
         public List<InkedUpDTO> InkedUpDTOs { get; set; } = new List<InkedUpDTO>();
     }
 }
