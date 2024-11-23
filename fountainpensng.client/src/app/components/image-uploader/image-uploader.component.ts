@@ -23,7 +23,6 @@ export class ImageUploaderComponent {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      console.log(input.files[0]);
       this.selectedFile.emit(input.files[0]);
     } else {
       this.selectedFile.emit(null);

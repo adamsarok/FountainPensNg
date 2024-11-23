@@ -37,7 +37,6 @@ export class ColorWheelComponent implements OnInit {
     this.ctx = this.canvas.getContext('2d')!;
     this.route.data.subscribe((data) => {
       this.inks = data['inks'];
-      console.log(this.inks);
       this.plotColorGrid();
     });
   }
@@ -73,7 +72,6 @@ export class ColorWheelComponent implements OnInit {
       .forEach((ink) => {
       const rgb = this.hexToRgb(ink.color);
       if (!rgb.err) {
-        console.log(rgb);
         const [h, s, l] = this.rgbToHsl(rgb.r, rgb.g, rgb.b); //hue, saturation, lightness
         const column = Math.floor((h / 360) * numColumns); // X-axis based on hue
         const row = Math.floor((1 - l) * numRows); // Y-axis based on lightness (inverted)
