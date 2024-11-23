@@ -1,6 +1,7 @@
 using AutoMapper;
 using FountainPensNg.Server.Data.DTO;
 using FountainPensNg.Server.Data.Models;
+using static FountainPensNg.Server.Data.DTO.SearchResultDTO;
 
 namespace API;
 
@@ -8,6 +9,15 @@ public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
     {
+        CreateMap<Paper, SearchResultDTO>()
+              .ForMember(dest => dest.SearhResultType, opt => opt.MapFrom(o => SearhResultTypes.Paper.ToString()));
+        CreateMap<FountainPen, SearchResultDTO>()
+              .ForMember(dest => dest.SearhResultType, opt => opt.MapFrom(o => SearhResultTypes.Pen.ToString()));
+        CreateMap<Ink, SearchResultDTO>()
+             .ForMember(dest => dest.SearhResultType, opt => opt.MapFrom(o => SearhResultTypes.Ink.ToString()));
+
+        CreateMap<Paper, PaperDTO>();
+        CreateMap<PaperDTO, Paper>();
         CreateMap<FountainPen, FountainPenDownloadDTO>();
         CreateMap<FountainPenDownloadDTO, FountainPen>();
         CreateMap<FountainPen, FountainPenUploadDTO>();

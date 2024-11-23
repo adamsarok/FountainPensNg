@@ -1,4 +1,5 @@
 using FountainPensNg.Server.Data;
+using FountainPensNg.Server.Data.Repos;
 using Microsoft.EntityFrameworkCore;
 //using Microsoft.AspNetCore.OpenApi;
 
@@ -29,6 +30,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSwaggerGen(options => {
      options.CustomSchemaIds(type => type.ToString());
 });
+
+builder.Services.AddTransient<FinderRepo>();
 
 var app = builder.Build();
 

@@ -9,25 +9,30 @@
 
 
   <mat-menu #appMenu="matMenu">
+    <button mat-menu-item routerLink=".">Home</button>
     <button mat-menu-item routerLink="/pen-list">Pens</button>
     <button mat-menu-item routerLink="/pen">New Pen</button>
     <button mat-menu-item routerLink="/ink-list">Inks</button>
     <button mat-menu-item routerLink="/ink">New Ink</button>
     <button mat-menu-item routerLink="/inkedup-list">Inked-Ups</button>
     <button mat-menu-item routerLink="/inked-up">New Ink-Up</button>
+    <button mat-menu-item routerLink="/paper-list">Papers</button>
+    <button mat-menu-item routerLink="/paper">New Paper</button>
     <button mat-list-item routerLink="/colors">Colors</button>
   </mat-menu>
 
   <mat-sidenav-container [style.marginTop.px]="0">
     <mat-sidenav #snav [mode]="'side'" opened="false" [fixedInViewport]="true" fixedTopGap="56">
       <mat-nav-list>
-        <!-- <a mat-list-item routerLink=".">Home</a> -->
+        <a mat-list-item routerLink=".">Home</a>
         <a mat-list-item routerLink="/pen-list">Pens</a>
         <a mat-list-item routerLink="/pen">New Pen</a>
         <a mat-list-item routerLink="/ink-list">Inks</a>
         <a mat-list-item routerLink="/ink">New Ink</a>
         <a mat-list-item routerLink="/inkedup-list">Inked-Ups</a>
         <a mat-list-item routerLink="/inked-up">New Ink-Up</a>
+        <a mat-list-item routerLink="/paper-list">Papers</a>
+        <a mat-list-item routerLink="/paper">New Paper</a>
         <a mat-list-item routerLink="/colors">Colors</a>
       </mat-nav-list>
     </mat-sidenav>
