@@ -1,7 +1,7 @@
 ﻿namespace FountainPensNg.Server.Data.DTO {
     public class SearchResultDTO {
-        public enum SearhResultTypes { Pen, Ink, Paper };
-        public string SearhResultType { get; set; }
+        public enum SearchResultTypes { Pen, Ink, Paper };
+        public string SearchResultType { get; set; }
         public int Id { get; set; }
         public string Maker { get; set; } = "";
         public string Model { get; set; } = "";

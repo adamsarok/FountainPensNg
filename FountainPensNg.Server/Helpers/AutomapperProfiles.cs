@@ -10,11 +10,14 @@ public class AutoMapperProfiles : Profile
     public AutoMapperProfiles()
     {
         CreateMap<Paper, SearchResultDTO>()
-              .ForMember(dest => dest.SearhResultType, opt => opt.MapFrom(o => SearhResultTypes.Paper.ToString()));
+              .ForMember(dest => dest.SearchResultType, opt => opt.MapFrom(o => SearchResultTypes.Paper.ToString()))
+              .ForMember(dest => dest.Model, opt => opt.MapFrom(o => o.PaperName));
         CreateMap<FountainPen, SearchResultDTO>()
-              .ForMember(dest => dest.SearhResultType, opt => opt.MapFrom(o => SearhResultTypes.Pen.ToString()));
+              .ForMember(dest => dest.SearchResultType, opt => opt.MapFrom(o => SearchResultTypes.Pen.ToString()))
+              .ForMember(dest => dest.Model, opt => opt.MapFrom(o => o.ModelName));
         CreateMap<Ink, SearchResultDTO>()
-             .ForMember(dest => dest.SearhResultType, opt => opt.MapFrom(o => SearhResultTypes.Ink.ToString()));
+             .ForMember(dest => dest.SearchResultType, opt => opt.MapFrom(o => SearchResultTypes.Ink.ToString()))
+             .ForMember(dest => dest.Model, opt => opt.MapFrom(o => o.InkName));
 
         CreateMap<Paper, PaperDTO>();
         CreateMap<PaperDTO, Paper>();
