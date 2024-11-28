@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Models;
 using System.Text.Json;
-using AutoMapper;
 using FountainPensNg.Server.Data.DTO;
+using FountainPensNg.Server.Data.Repos;
+using Mapster;
 
 namespace FountainPensNg.Server.Controllers
 {
@@ -18,66 +19,44 @@ namespace FountainPensNg.Server.Controllers
     public class FountainPensController : ControllerBase
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
+        private readonly FountainPensRepo _fountainPensRepo;
 
-        public FountainPensController(DataContext context, IMapper mapper)
+        public FountainPensController(DataContext context, FountainPensRepo fountainPensRepo)
         {
             _context = context;
-            _mapper = mapper;
+            _fountainPensRepo = fountainPensRepo;
         }
 
         // GET: api/FountainPens
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FountainPenDownloadDTO>>> GetFountainPens()
         {
-            var temp = await _context
+            var r = await _context
                 .FountainPens
                 .Include(x => x.InkedUps)
                 .ThenInclude(inkup => inkup.Ink)
+                //.ProjectToType<FountainPenDownloadDTO>() //projectToType seems really finicky... this mapping works perfectly with adapt
                 .ToListAsync();
-            var res = new List<FountainPenDownloadDTO>();
-            foreach (var f in temp) {
-                var dto = _mapper.Map<FountainPenDownloadDTO>(f);
-                SetCurrentInkup(f, dto);
-                res.Add(dto);
-            }
-            return res;
+            return r.Adapt<List<FountainPenDownloadDTO>>();
         }
 
         // GET: api/FountainPens/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FountainPenDownloadDTO>> GetFountainPen(int id)
         {
-            var fountainPen = await _context.FountainPens
-                .Include(pen => pen.InkedUps)
-                .ThenInclude(inkup => inkup.Ink)
-                .Where(x => x.Id == id)
-                .FirstOrDefaultAsync();
-
+            var fountainPen = await _fountainPensRepo.GetFountainPen(id);
             if (fountainPen == null)
             {
                 return NotFound();
             }
-
-            var result = _mapper.Map<FountainPenDownloadDTO>(fountainPen);
-            SetCurrentInkup(fountainPen, result);
-            return result;
-        }
-
-        private void SetCurrentInkup(FountainPen fountainPen, FountainPenDownloadDTO fountainPenDownloadDTO) {
-            var currInkup = fountainPen.InkedUps.FirstOrDefault(x => x.IsCurrent);
-            if (currInkup != null) {
-                fountainPenDownloadDTO.CurrentInk =  _mapper.Map<InkDTO>(currInkup.Ink);
-                fountainPenDownloadDTO.CurrentInkId = currInkup.Ink.Id;
-                fountainPenDownloadDTO.CurrentInkRating = currInkup.MatchRating;
-            }
+            return fountainPen;
         }
 
         // PUT: api/FountainPens/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFountainPen(int id, FountainPenUploadDTO dto)
         {
-            var fountainPen = _mapper.Map<FountainPen>(dto);
+            var fountainPen = dto.Adapt<FountainPen>();
             if (fountainPen == null || id != fountainPen.Id)
             {
                 return BadRequest();
@@ -126,7 +105,7 @@ namespace FountainPensNg.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<FountainPen>> PostFountainPen(FountainPenUploadDTO dto)
         {
-            var fountainPen = _mapper.Map<FountainPen>(dto);
+            var fountainPen = dto.Adapt<FountainPen>();
             if (fountainPen == null)
             {
                 return BadRequest();

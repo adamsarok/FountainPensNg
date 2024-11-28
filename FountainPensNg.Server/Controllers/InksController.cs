@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Models;
 using FountainPensNg.Server.Data.DTO;
-using AutoMapper.QueryableExtensions;
-using AutoMapper;
+
 using FountainPensNg.Server.Helpers;
+using Mapster;
 
 namespace FountainPensNg.Server.Controllers {
     [Route("api/[controller]")]
@@ -13,58 +13,65 @@ namespace FountainPensNg.Server.Controllers {
     public class InksController : ControllerBase
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public InksController(DataContext context, IMapper mapper)
+        public InksController(DataContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         // GET: api/Inks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InkDTO>>> GetInks()
+        public async Task<ActionResult<IEnumerable<InkDownloadDTO>>> GetInks()
         {
+            //TODO: this hack is most likely not needed with mapster
             var query = _context
                 .Inks
-                .Select(ink => new InkDTO {
-                        Id = ink.Id,
-                        Color = ink.Color,
-                        Color_CIELAB_a = ink.Color_CIELAB_a,
-                        Color_CIELAB_b = ink.Color_CIELAB_b,
-                        Color_CIELAB_L = ink.Color_CIELAB_L,
-                        Comment = ink.Comment,
-                        InkName = ink.InkName,
-                        Maker = ink.Maker,
-                        Ml = ink.Ml,
-                        Photo = ink.Photo,
-                        Rating = ink.Rating,
-                        //OneCurrentPenMaker =
-                        // Other properties of Ink
-                        InkedUpDTOs = ink.InkedUps!
+                .Select(ink => new InkDownloadDTO(
+                        ink.Id,
+                        ink.Maker,
+                        ink.InkName,
+                        ink.Comment,
+                        ink.Photo,
+                        ink.Color,
+                        ink.Color_CIELAB_L,
+                        ink.Color_CIELAB_a,
+                        ink.Color_CIELAB_b,
+                        ink.Rating,
+                        ink.Ml,
+                        "",
+                        "",
+                        "",
+                        ink.ImageObjectKey,
+                        ink.InkedUps!
                             .Where(iu => iu.IsCurrent) // Apply filter here
-                            .Select(iu => new InkedUpDTO
-                            {
-                                Id = iu.Id,
-                                FountainPenId = iu.FountainPenId,
-                                PenMaker = iu.FountainPen.Maker,
-                                PenColor = iu.FountainPen.Color,
-                                PenName = iu.FountainPen.ModelName,
-                            })
+                            .Select(iu => new InkedUpDTO(
+                                iu.Id,
+                                iu.InkedAt,
+                                iu.MatchRating,
+                                iu.FountainPenId,
+                                iu.FountainPen.Maker,
+                                iu.FountainPen.ModelName,
+                                iu.Ink.Id,
+                                iu.Ink.Maker,
+                                iu.Ink.InkName,
+                                iu.FountainPen.Color,
+                                iu.Ink.Color)
+                            )
                             .ToList() // Ensure the collection is materialized
-                    });
+                    ));
         
             var result = await query.ToListAsync();
-            foreach (var i in result) {
-                if (i.InkedUpDTOs != null && i.InkedUpDTOs.Any()) {
-                    var pen = i.InkedUpDTOs.OrderByDescending(x => x.InkedAt).FirstOrDefault();
-                    if (pen != null) {
-                        i.OneCurrentPenMaker = pen.PenMaker;
-                        i.OneCurrentPenModelName = pen.PenName;
-                        i.OneCurrentPenColor = pen.PenColor;
-                    }
-                }
-            }
+#warning TODO OneCurrentPenMaker
+            //foreach (var i in result) {
+            //    if (i.InkedUpDTOs != null && i.InkedUpDTOs.Any()) {
+            //        var pen = i.InkedUpDTOs.OrderByDescending(x => x.InkedAt).FirstOrDefault();
+            //        if (pen != null) {
+            //            i.OneCurrentPenMaker = pen.PenMaker;
+            //            i.OneCurrentPenModelName = pen.PenName;
+            //            i.OneCurrentPenColor = pen.PenColor;
+            //        }
+            //    }
+            //}
             return result;
             // var query = _context
             //     .Inks
@@ -99,9 +106,9 @@ namespace FountainPensNg.Server.Controllers {
 
         // PUT: api/Inks/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInk(int id, InkDTO inkDto)
+        public async Task<IActionResult> PutInk(int id, InkUploadDTO inkDto)
         {
-            var ink = _mapper.Map<Ink>(inkDto);
+            var ink = inkDto.Adapt<Ink>();
             if (ink == null || id != ink.Id) {
                 return BadRequest();
             }
@@ -130,9 +137,9 @@ namespace FountainPensNg.Server.Controllers {
 
         // POST: api/Inks
         [HttpPost]
-        public async Task<ActionResult<Ink>> PostInk(InkDTO inkDto)
+        public async Task<ActionResult<Ink>> PostInk(InkUploadDTO inkDto)
         {
-            var ink = _mapper.Map<Ink>(inkDto);
+            var ink = inkDto.Adapt<Ink>();
             if (ink == null) {
                 return BadRequest();
             }

@@ -8,8 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Models;
 using FountainPensNg.Server.Data.DTO;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using Mapster;
 
 namespace FountainPensNg.Server.Controllers
 {
@@ -18,11 +17,9 @@ namespace FountainPensNg.Server.Controllers
     public class InkedUpsController : ControllerBase
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
-        public InkedUpsController(DataContext context, IMapper mapper)
+        public InkedUpsController(DataContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         // GET: api/InkedUps
@@ -34,7 +31,7 @@ namespace FountainPensNg.Server.Controllers
                 .Include(x => x.FountainPen)
                 .AsQueryable();
             return await query
-                .ProjectTo<InkedUpDTO>(_mapper.ConfigurationProvider)
+                .ProjectToType<InkedUpDTO>()
                 .ToListAsync();
         }
 
@@ -48,7 +45,7 @@ namespace FountainPensNg.Server.Controllers
                 .Where(x => x.Id == id)
                 .AsQueryable();
             var inkedUp = await query
-                .ProjectTo<InkedUpDTO>(_mapper.ConfigurationProvider)
+                .ProjectToType<InkedUpDTO>()
                 .FirstOrDefaultAsync();
 
             if (inkedUp == null)
@@ -63,7 +60,7 @@ namespace FountainPensNg.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutInkedUp(int id, InkedUpDTO dto)
         {
-            var inkedUp = _mapper.Map<InkedUp>(dto);
+            var inkedUp = dto.Adapt<InkedUp>();
             if (id != inkedUp.Id)
             {
                 return BadRequest();
@@ -99,7 +96,7 @@ namespace FountainPensNg.Server.Controllers
                 .Where(x => x.FountainPenId == dto.FountainPenId && x.IsCurrent)
                 .ExecuteUpdateAsync(s => s.SetProperty(e => e.IsCurrent, false));
 
-            var inkedUp = _mapper.Map<InkedUp>(dto); //something really cursed is happening here w automapper
+            var inkedUp = dto.Adapt<InkedUp>(); //something really cursed WAS happening here w automapper
             inkedUp.Ink = null;
             inkedUp.FountainPen = null;
             _context.InkedUps.Add(inkedUp);

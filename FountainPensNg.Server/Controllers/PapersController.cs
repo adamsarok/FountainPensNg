@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Models;
 using FountainPensNg.Server.Data.DTO;
-using AutoMapper.QueryableExtensions;
-using AutoMapper;
-using FountainPensNg.Server.Helpers;
+using Mapster;
 
 namespace FountainPensNg.Server.Controllers {
     [Route("api/[controller]")]
@@ -13,12 +11,10 @@ namespace FountainPensNg.Server.Controllers {
     public class PapersController : ControllerBase
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public PapersController(DataContext context, IMapper mapper)
+        public PapersController(DataContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -26,7 +22,7 @@ namespace FountainPensNg.Server.Controllers {
         {
             return await _context
                 .Papers
-                .ProjectTo<PaperDTO>(_mapper.ConfigurationProvider)
+                .ProjectToType<PaperDTO>()
                 .ToListAsync();
             
         }
@@ -39,13 +35,13 @@ namespace FountainPensNg.Server.Controllers {
                 return NotFound();
             }
 
-            return _mapper.Map<PaperDTO>(ink);
+            return ink.Adapt<PaperDTO>();
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPaper(int id, PaperDTO dto)
         {
-            var paper = _mapper.Map<Paper>(dto);
+            var paper = dto.Adapt<Paper>();
             if (paper == null || id != paper.Id) {
                 return BadRequest();
             }
@@ -75,7 +71,7 @@ namespace FountainPensNg.Server.Controllers {
         [HttpPost]
         public async Task<ActionResult<PaperDTO>> PostInk(PaperDTO dto)
         {
-            var paper = _mapper.Map<Paper>(dto);
+            var paper = dto.Adapt<Paper>();
             if (paper == null) {
                 return BadRequest();
             }

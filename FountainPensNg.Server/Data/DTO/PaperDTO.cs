@@ -1,16 +1,15 @@
 ﻿using NpgsqlTypes;
 
 namespace FountainPensNg.Server.Data.DTO {
-    public class PaperDTO {
-        public int Id { get; set; }
-        public string Maker { get; set; } = "";
-        public string PaperName { get; set; } = "";
-        public string Comment { get; set; } = "";
-        public string Photo { get; set; } = "";
-        public int Rating { get; set; }
-        public string ImageObjectKey { get; set; } = "";
-        public NpgsqlTsVector? FullText { get; set; } = null;
-        public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
-        public DateTime ModifiedAt { get; set; }
-    }
+    public record PaperDTO(
+         int Id,
+         string Maker,
+         string PaperName,
+         string Comment,
+         string Photo,
+         int Rating,
+         string ImageObjectKey,
+         NpgsqlTsVector? FullText,
+         DateTime InsertedAt,
+         DateTime ModifiedAt);
 }

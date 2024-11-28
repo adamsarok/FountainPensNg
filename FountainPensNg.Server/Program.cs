@@ -1,5 +1,7 @@
+using Carter;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Repos;
+using FountainPensNg.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
 //using Microsoft.AspNetCore.OpenApi;
 
@@ -11,6 +13,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCarter();
 
 string? conn;
 if (builder.Environment.IsDevelopment()) conn = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -24,16 +27,18 @@ if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is e
 builder.Services.AddDbContextFactory<DataContext>(opt =>
     opt.UseNpgsql(conn));
 
-
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.RegisterMapsterConfiguration();
 
 builder.Services.AddSwaggerGen(options => {
      options.CustomSchemaIds(type => type.ToString());
 });
 
 builder.Services.AddTransient<FinderRepo>();
+builder.Services.AddTransient<FountainPensRepo>();
 
 var app = builder.Build();
+
+app.MapCarter();
 
 #warning todo!!!
 //app.UseMiddleware<ExceptionMiddleware>();
