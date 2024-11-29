@@ -15,6 +15,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCarter();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 string? conn;
 if (builder.Environment.IsDevelopment()) conn = builder.Configuration.GetConnectionString("DefaultConnection");
 else {
@@ -38,6 +41,7 @@ builder.Services.AddTransient<FountainPensRepo>();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.MapCarter();
 
 #warning todo!!!
