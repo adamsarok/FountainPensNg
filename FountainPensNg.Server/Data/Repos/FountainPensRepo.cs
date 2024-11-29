@@ -2,6 +2,7 @@
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.Data.Repos {
     public class FountainPensRepo {
@@ -40,31 +41,20 @@ namespace FountainPensNg.Server.Data.Repos {
         public bool FountainPenExists(int id) {
             return _context.FountainPens.Any(e => e.Id == id);
         }
-        public enum ResultTypes { Ok, NotFound, BadRequest }
         public record FountainPenResult(ResultTypes ResultType, FountainPen? FountainPen = null);
         public async Task<FountainPenResult> UpdateFountainPen(int id, FountainPenUploadDTO dto) {
             var fountainPen = dto.Adapt<FountainPen>();
             if (fountainPen == null || id != fountainPen.Id) {
                 return new FountainPenResult(ResultTypes.BadRequest);
             }
-            //TODO: it is a bad idea to add HTTP result to a DB repo, however this is simplest for now
 
             var find = await _context.FountainPens.FindAsync(fountainPen.Id);
             if (find == null) return new FountainPenResult(ResultTypes.NotFound);
 
-            // Update the fountain pen properties
             _context.Entry(find).CurrentValues.SetValues(fountainPen);
             find.ModifiedAt = DateTime.UtcNow;
 
-            try {
-                await _context.SaveChangesAsync();
-            } catch (DbUpdateConcurrencyException) {
-                if (!FountainPenExists(id)) {
-                    return new FountainPenResult(ResultTypes.NotFound);
-                } else {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return new FountainPenResult(ResultTypes.Ok, fountainPen);
         }

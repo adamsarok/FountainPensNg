@@ -1,7 +1,7 @@
 ﻿namespace FountainPensNg.Server.Data.DTO {
-    public enum SearhResultTypes { Pen, Ink, Paper };
+    public enum SearchResultTypes { Pen, Ink, Paper };
     public record SearchResultDTO(
-        string SearhResultType,
+        string SearchResultType,
         int Id,
         string Maker,
         string Model,
@@ -9,6 +9,6 @@
         string Photo,
         string Color,
         int Rating,
-        int Ml,
-        string ImageObjectKey);
+        string ImageObjectKey,
+        string ImageUrl);
 }

@@ -12,7 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => {
+    options.CustomSchemaIds(type => type.ToString());
+});
 builder.Services.AddCarter();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -32,12 +34,11 @@ builder.Services.AddDbContextFactory<DataContext>(opt =>
 
 builder.Services.RegisterMapsterConfiguration();
 
-builder.Services.AddSwaggerGen(options => {
-     options.CustomSchemaIds(type => type.ToString());
-});
-
 builder.Services.AddTransient<FinderRepo>();
 builder.Services.AddTransient<FountainPensRepo>();
+builder.Services.AddTransient<InkedUpsRepo>();
+builder.Services.AddTransient<InksRepo>();
+builder.Services.AddTransient<PapersRepo>();
 
 var app = builder.Build();
 
@@ -58,7 +59,6 @@ app.UseStaticFiles();
 
 //Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
-    //app.UseOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
