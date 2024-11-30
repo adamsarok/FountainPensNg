@@ -52,19 +52,20 @@ export class InkComponent implements OnInit {
   }
 
   ink: Ink = {
-    id: 0,
-    maker: '',
-    inkName: '',
-    comment: '',
-    photo: '',
-    color: '',
-    rating: 0,
-    ml: 0,
-    inkedUps: [],
-    currentPens: [],
-    penDisplayName: null,
-    imageObjectKey: '',
-    imageUrl: '',
+      id: 0,
+      maker: '',
+      inkName: '',
+      comment: '',
+      photo: '',
+      color: '',
+      rating: 0,
+      ml: 0,
+      inkedUps: [],
+      currentPens: [],
+      penDisplayName: null,
+      imageObjectKey: '',
+      imageUrl: '',
+      cieLAB_Sort: 0
   };
 
   myControl = new FormControl('');

@@ -15,7 +15,7 @@ namespace FountainPensNg.Server.Data.Repos {
         public InksRepo(DataContext context) {
             _context = context;
         }
-
+        
         public async Task<IEnumerable<InkDownloadDTO>> GetInks() {
             var query = _context
                 .Inks
@@ -35,6 +35,7 @@ namespace FountainPensNg.Server.Data.Repos {
                         "",
                         "",
                         ink.ImageObjectKey,
+                        ColorHelper.GetEuclideanDistanceToReference(ink.Color_CIELAB_L, ink.Color_CIELAB_a, ink.Color_CIELAB_b),
                         ink.InkedUps!
                             .Where(iu => iu.IsCurrent) // Apply filter here
                             .Select(iu => new InkedUpDTO(

@@ -14,7 +14,19 @@ namespace FountainPensNg.Server.Helpers {
                 cielab1.B, cielab2.B
             );
         }
-
+        public static double GetEuclideanDistanceToReference(double? L, double? a, double? b) {
+            //TODO: this is still not good looking sort order, try https://christopherbird.co.uk/posts/sorting-colors/ 
+            //also not good, even though L is supposed to be the most significant?
+            //ink.Color_CIELAB_L * 1000000 + ink.Color_CIELAB_a * 1000 + ink.Color_CIELAB_b,
+            if (a.HasValue && b.HasValue && L.HasValue) {
+                return GetEuclideanDistance(
+                L.Value, 0,
+                a.Value, 0,
+                b.Value, 0
+                );
+            }
+            return 0;
+        }
         public static double GetEuclideanDistance(XYZ xyz1, XYZ xyz2) {
             return GetEuclideanDistance(
                 xyz1.X, xyz2.X,

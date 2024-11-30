@@ -17,5 +17,6 @@ namespace FountainPensNg.Server.Data.DTO {
          string? OneCurrentPenModelName,
          string? OneCurrentPenColor,
          string ImageObjectKey,
+         double? CieLAB_Sort,
          List<InkedUpDTO> InkedUpDTOs);
 }
