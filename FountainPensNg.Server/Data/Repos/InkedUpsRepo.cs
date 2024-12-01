@@ -14,18 +14,19 @@ namespace FountainPensNg.Server.Data.Repos {
         }
 
         public async Task<IEnumerable<InkedUpDTO>> GetInkedUps() {
-            return await _context.InkedUps
+            var r = await _context.InkedUps
                 .Include(x => x.Ink)
                 .Include(x => x.FountainPen)
-                .ProjectToType<InkedUpDTO>()
                 .ToListAsync();
+            return r.Adapt<IEnumerable<InkedUpDTO>>();
         }
         public async Task<InkedUpDTO?> GetInkedUp(int id) {
-            return await _context.InkedUps
+            var r = await _context.InkedUps
                 .Include(x => x.Ink)
                 .Include(x => x.FountainPen)
-                .ProjectToType<InkedUpDTO>()
                 .FirstOrDefaultAsync(x => x.Id == id);
+            //TODO: ProjectTo does not work here as well...
+            return r.Adapt<InkedUpDTO>();
         }
         public record InkedUpResult(ResultTypes ResultType, InkedUp? InkedUp = null);
         public async Task<InkedUpResult> UpdateInkedUp(int id, InkedUpDTO dto) {
