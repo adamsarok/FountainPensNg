@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using static FountainPensNg.Server.Helpers.ColorHelper;
 
 namespace FountainPensNg.Server.Helpers {
     public class ColorHelper {
@@ -7,6 +8,12 @@ namespace FountainPensNg.Server.Helpers {
             var xyz = ToXYZ(col);
             return ToCIELAB(xyz);
         }
+        public static CIELCH ToCieLch(CIELAB cieLab) {
+            double c = Math.Sqrt(cieLab.A * cieLab.A + cieLab.B * cieLab.B);
+            double h = Math.Atan2(cieLab.B, cieLab.A) * (180.0 / Math.PI);
+            if (h < 0) h += 360.0;
+            return new CIELCH() { L = cieLab.L, C = c, H = h };
+        }
         public static double GetEuclideanDistance(CIELAB cielab1, CIELAB cielab2) {
             return GetEuclideanDistance(
                 cielab1.L, cielab2.L,
@@ -14,18 +21,22 @@ namespace FountainPensNg.Server.Helpers {
                 cielab1.B, cielab2.B
             );
         }
-        public static double GetEuclideanDistanceToReference(double? L, double? a, double? b) {
+        public static double GetEuclideanDistanceToReference(CIELCH cieLch) {
+            return GetEuclideanDistance(
+                cieLch.L, 0,
+                cieLch.C, 0,
+                cieLch.H, 0
+            );
+        }
+        public static double GetEuclideanDistanceToReference(CIELAB cieLab) {
             //TODO: this is still not good looking sort order, try https://christopherbird.co.uk/posts/sorting-colors/ 
             //also not good, even though L is supposed to be the most significant?
             //ink.Color_CIELAB_L * 1000000 + ink.Color_CIELAB_a * 1000 + ink.Color_CIELAB_b,
-            if (a.HasValue && b.HasValue && L.HasValue) {
-                return GetEuclideanDistance(
-                L.Value, 0,
-                a.Value, 0,
-                b.Value, 0
-                );
-            }
-            return 0;
+            return GetEuclideanDistance(
+                cieLab.L, 0,
+                cieLab.A, 0,
+                cieLab.B, 0
+            );
         }
         public static double GetEuclideanDistance(XYZ xyz1, XYZ xyz2) {
             return GetEuclideanDistance(
@@ -53,6 +64,12 @@ namespace FountainPensNg.Server.Helpers {
             public double L;
             public double A;
             public double B;
+        }
+
+        public struct CIELCH {
+            public double L;
+            public double C;
+            public double H;
         }
 
         public struct XYZ {

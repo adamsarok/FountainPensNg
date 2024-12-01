@@ -14,8 +14,12 @@ import { MatSortModule, Sort } from '@angular/material/sort';
   styleUrl: './ink-list.component.css'
 })
 export class InkListComponent implements OnInit {
-  //todo!!!!!!!!!
-  displayedColumns: string[] = ['maker', 'inkName', 'color', 'comment', 'rating', 'currentPen'];
+  displayedColumns: string[] = ['maker',
+    'inkName',
+    'color',
+    'comment',
+    'rating',
+    'currentPen'];
   dataSource: InkForListDTO[] = [];
   sortedData: InkForListDTO[] = [];
 
@@ -52,7 +56,7 @@ export class InkListComponent implements OnInit {
         case 'ml':
           return this.compare(a.ml, b.ml, isAsc);
         case 'color':
-          return this.compare(a.color_CIELAB_a, b.color, isAsc); //TODO: sortable color
+          return this.compare(a.cieLch_sort, b.cieLch_sort, isAsc);
         case 'rating':
           return this.compare(a.rating, b.rating, isAsc);
         case 'currentPen':

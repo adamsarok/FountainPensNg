@@ -9,6 +9,7 @@ using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using static FountainPensNg.Server.Data.Repos.FountainPensRepo;
 using static FountainPensNg.Server.Data.Repos.ResultType;
+using static FountainPensNg.Server.Helpers.ColorHelper;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FountainPensNg.Server.Data.Repos {
@@ -22,6 +23,16 @@ namespace FountainPensNg.Server.Data.Repos {
             List<InkDownloadDTO> result = new();
             foreach (var ink in inks) {
                 var pen = ink.InkedUps.FirstOrDefault()?.FountainPen;
+                double cieLch_sort = 0;
+                if (ink.Color_CIELAB_L.HasValue && ink.Color_CIELAB_a.HasValue && ink.Color_CIELAB_b.HasValue) {
+                    var cieLab = new CIELAB() {
+                        L = ink.Color_CIELAB_L.Value,
+                        A = ink.Color_CIELAB_a.Value,
+                        B = ink.Color_CIELAB_b.Value
+                    };
+                    var cieLch = ColorHelper.ToCieLch(cieLab);
+                    cieLch_sort = ColorHelper.GetEuclideanDistanceToReference(cieLch); 
+                }
                 result.Add(new InkDownloadDTO(
                     ink.Id,
                     ink.Maker,
@@ -38,7 +49,7 @@ namespace FountainPensNg.Server.Data.Repos {
                     pen != null ? pen.ModelName : "",
                     pen != null ? pen.Color : "",
                     ink.ImageObjectKey,
-                    ColorHelper.GetEuclideanDistanceToReference(ink.Color_CIELAB_L, ink.Color_CIELAB_a, ink.Color_CIELAB_b),
+                    cieLch_sort,
                     ink.InkedUps.Adapt<List<InkedUpDTO>>()
                     ));
             }

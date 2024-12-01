@@ -13,5 +13,5 @@ export interface InkForListDTO {
   color_CIELAB_L: number;
   color_CIELAB_a: number;
   color_CIELAB_b: number;
-  cieLAB_Sort: number;
+  cieLch_sort: number;
 }
