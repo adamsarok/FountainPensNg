@@ -5,9 +5,12 @@ using FountainPensNg.Server.Migrations;
 using Humanizer;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using static FountainPensNg.Server.Data.Repos.FountainPensRepo;
 using static FountainPensNg.Server.Data.Repos.ResultType;
+using static FountainPensNg.Server.Helpers.ColorHelper;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FountainPensNg.Server.Data.Repos {
     public class InksRepo {
@@ -16,56 +19,51 @@ namespace FountainPensNg.Server.Data.Repos {
             _context = context;
         }
 
-        public async Task<IEnumerable<InkDownloadDTO>> GetInks() {
-            var query = _context
-                .Inks
-                .Select(ink => new InkDownloadDTO(
-                        ink.Id,
-                        ink.Maker,
-                        ink.InkName,
-                        ink.Comment,
-                        ink.Photo,
-                        ink.Color,
-                        ink.Color_CIELAB_L,
-                        ink.Color_CIELAB_a,
-                        ink.Color_CIELAB_b,
-                        ink.Rating,
-                        ink.Ml,
-                        "",
-                        "",
-                        "",
-                        ink.ImageObjectKey,
-                        ink.InkedUps!
-                            .Where(iu => iu.IsCurrent) // Apply filter here
-                            .Select(iu => new InkedUpDTO(
-                                iu.Id,
-                                iu.InkedAt,
-                                iu.MatchRating,
-                                iu.FountainPenId,
-                                iu.FountainPen.Maker,
-                                iu.FountainPen.ModelName,
-                                iu.Ink.Id,
-                                iu.Ink.Maker,
-                                iu.Ink.InkName,
-                                iu.FountainPen.Color,
-                                iu.Ink.Color)
-                            )
-                            .ToList() // Ensure the collection is materialized
+        private List<InkDownloadDTO> ConstructInkDownloadDTOs(List<Ink> inks) {
+            List<InkDownloadDTO> result = new();
+            foreach (var ink in inks) {
+                var pen = ink.InkedUps.FirstOrDefault()?.FountainPen;
+                double cieLch_sort = 0;
+                if (ink.Color_CIELAB_L.HasValue && ink.Color_CIELAB_a.HasValue && ink.Color_CIELAB_b.HasValue) {
+                    var cieLab = new CIELAB() {
+                        L = ink.Color_CIELAB_L.Value,
+                        A = ink.Color_CIELAB_a.Value,
+                        B = ink.Color_CIELAB_b.Value
+                    };
+                    var cieLch = ColorHelper.ToCieLch(cieLab);
+                    cieLch_sort = ColorHelper.GetEuclideanDistanceToReference(cieLch); 
+                }
+                result.Add(new InkDownloadDTO(
+                    ink.Id,
+                    ink.Maker,
+                    ink.InkName,
+                    ink.Comment,
+                    ink.Photo,
+                    ink.Color,
+                    ink.Color_CIELAB_L,
+                    ink.Color_CIELAB_a,
+                    ink.Color_CIELAB_b,
+                    ink.Rating,
+                    ink.Ml,
+                    pen != null ? pen.Maker : "",
+                    pen != null ? pen.ModelName : "",
+                    pen != null ? pen.Color : "",
+                    ink.ImageObjectKey,
+                    cieLch_sort,
+                    ink.InkedUps.Adapt<List<InkedUpDTO>>()
                     ));
-
-            var result = await query.ToListAsync();
-#warning TODO OneCurrentPenMaker
-            //foreach (var i in result) {
-            //    if (i.InkedUpDTOs != null && i.InkedUpDTOs.Any()) {
-            //        var pen = i.InkedUpDTOs.OrderByDescending(x => x.InkedAt).FirstOrDefault();
-            //        if (pen != null) {
-            //            i.OneCurrentPenMaker = pen.PenMaker;
-            //            i.OneCurrentPenModelName = pen.PenName;
-            //            i.OneCurrentPenColor = pen.PenColor;
-            //        }
-            //    }
-            //}
+            }
             return result;
+
+        }
+
+        public async Task<IEnumerable<InkDownloadDTO>> GetInks() {
+            var inks = await _context
+                .Inks
+                .Include(iu => iu.InkedUps.Where(iu => iu.IsCurrent))
+                .ThenInclude(p => p.FountainPen)
+                .ToListAsync();
+            return ConstructInkDownloadDTOs(inks);
         }
         public async Task<InkDownloadDTO?> GetInk(int id) {
             var r = await _context

@@ -1,32 +1,32 @@
-<table mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="maker">
-      <th mat-header-cell *matHeaderCellDef> Maker </th>
-      <td mat-cell *matCellDef="let element"> {{element.maker}} </td>
-    </ng-container>
-    <ng-container matColumnDef="inkName">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.inkName}} </td>
-    </ng-container>
-    <ng-container matColumnDef="color">
-      <th mat-header-cell *matHeaderCellDef> Color </th>
-      <td mat-cell *matCellDef="let element"> <input type="color" value="{{element.color}}" disabled> </td>
-    </ng-container>
-    <ng-container matColumnDef="comment">
-        <th mat-header-cell *matHeaderCellDef> Comment </th>
-        <td mat-cell *matCellDef="let element"> {{element.comment}} </td>
-    </ng-container>
-    <ng-container matColumnDef="rating">
-        <th mat-header-cell *matHeaderCellDef> Rating </th>
-        <td mat-cell *matCellDef="let element"> {{element.rating}} </td>
-    </ng-container>
-    <ng-container matColumnDef="currentPen">
-        <th mat-header-cell *matHeaderCellDef> Pen </th>
-        <td mat-cell *matCellDef="let element"> 
-          {{element.oneCurrentPenMaker}} {{element.oneCurrentPenModelName}} 
-          <input *ngIf="element.oneCurrentPenColor" type="color" value="{{element.oneCurrentPenColor}}" disabled>
-        </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr (click)="openInk(row.id)" 
+<table mat-table [dataSource]="sortedData" matSort (matSortChange)="sortData($event)">
+  <ng-container matColumnDef="maker">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Maker </th>
+    <td mat-cell *matCellDef="let element"> {{element.maker}} </td>
+  </ng-container>
+  <ng-container matColumnDef="inkName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.inkName}} </td>
+  </ng-container>
+  <ng-container matColumnDef="color">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Color </th>
+    <td mat-cell *matCellDef="let element"> <input type="color" value="{{element.color}}" disabled> </td>
+  </ng-container>
+  <ng-container matColumnDef="comment">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Comment </th>
+    <td mat-cell *matCellDef="let element"> {{element.comment}} </td>
+  </ng-container>
+  <ng-container matColumnDef="rating">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rating </th>
+    <td mat-cell *matCellDef="let element"> {{element.rating}} </td>
+  </ng-container>
+  <ng-container matColumnDef="currentPen">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Pen </th>
+    <td mat-cell *matCellDef="let element">
+      {{element.oneCurrentPenMaker}} {{element.oneCurrentPenModelName}}
+      <input *ngIf="element.oneCurrentPenColor" type="color" value="{{element.oneCurrentPenColor}}" disabled>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr (click)="openInk(row.id)"
       mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+</table>

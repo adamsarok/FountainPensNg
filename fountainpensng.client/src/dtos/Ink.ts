@@ -15,4 +15,5 @@ export interface Ink {
   penDisplayName: string | null;
   imageObjectKey: string;
   imageUrl: string;
+  cieLAB_Sort: number;
 }

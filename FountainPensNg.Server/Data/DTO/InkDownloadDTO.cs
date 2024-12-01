@@ -1,4 +1,5 @@
 using FountainPensNg.Server.Data.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FountainPensNg.Server.Data.DTO {
     public record InkDownloadDTO(
@@ -17,5 +18,6 @@ namespace FountainPensNg.Server.Data.DTO {
          string? OneCurrentPenModelName,
          string? OneCurrentPenColor,
          string ImageObjectKey,
+         double? CieLch_sort,
          List<InkedUpDTO> InkedUpDTOs);
 }
