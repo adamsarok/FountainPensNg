@@ -47,7 +47,7 @@ jobs:
          context: ./fountainpensng.client
          file: ./fountainpensng.client/Dockerfile
          push: true
-         tags: fuzzydice555/fountainpens-ng-cl:latest
+         tags: adamsarok/fountainpens-ng-cl:latest
 
      - name: Setup .NET SDK
        uses: actions/setup-dotnet@v3
@@ -68,4 +68,4 @@ jobs:
          context: ./FountainPensNg.Server
          file: ./FountainPensNg.Server/Dockerfile
          push: true
-         tags: fuzzydice555/fountainpens-api:latest
+         tags: adamsarok/fountainpens-api:latest
