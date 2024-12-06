@@ -15,7 +15,7 @@ CDN:
 [![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/r2-api-go.svg)](https://hub.docker.com/r/adamsarok/r2-api-go)
 
 Sample docker compose connecting to a separate Postgres server:
-
+```
 services:
     fountainpens-ng-cl:
         image: adamsarok/fountainpens-ng-cl
@@ -48,3 +48,4 @@ services:
         volumes:
           - /srv/YOUR_VOLUME/r2-api-go/cache:/config
         restart: unless-stopped
+```
