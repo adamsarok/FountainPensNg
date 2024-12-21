@@ -137,7 +137,7 @@ export class PenComponent implements OnInit {
           if (inks) ink = inks[0];
         }
         p.imageUrl = this.r2.getImageUrl(p.imageObjectKey);
-        this.inkedUps = p.inkedUps;
+        this.inkedUps = p.inkedUps.sort((a, b) => new Date(b.inkedAt).getTime() - new Date(a.inkedAt).getTime());
         this.penForm.patchValue({
           maker: p.maker,
           modelName: p.modelName,

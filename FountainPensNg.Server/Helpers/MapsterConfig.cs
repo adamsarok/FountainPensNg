@@ -42,7 +42,7 @@ namespace FountainPensNg.Server.Helpers {
                 .Map(dest => dest.PenColor,
                         src => src.FountainPen.Color);
 
-
+   
             config.NewConfig<Ink, InkDownloadDTO>() //TODO: this is handled also in one of the controller as projection this is duplicate but needed - refactor
                 .Map(dest => dest.OneCurrentPenMaker,
                     src =>

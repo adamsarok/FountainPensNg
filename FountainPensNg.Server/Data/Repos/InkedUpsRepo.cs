@@ -45,16 +45,23 @@ namespace FountainPensNg.Server.Data.Repos {
 
             return new InkedUpResult(ResultTypes.Ok, find);
         }
+
         public async Task<InkedUpResult> AddInkedUp(InkedUpDTO dto) {
             var inkedUp = dto.Adapt<InkedUp>();
             if (inkedUp == null) return new InkedUpResult(ResultTypes.BadRequest);
-            _context.InkedUps.Add(inkedUp);
-            await _context.SaveChangesAsync();
+            //it seems mapster does not map the FountainPenId and InkId fields for some reason, also if mapped EF tries to add pen & ink
+            inkedUp.FountainPen = await _context.FountainPens.FindAsync(dto.FountainPenId);
+            inkedUp.Ink = await _context.Inks.FindAsync(dto.InkId);
+            inkedUp.IsCurrent = true;
 
             await _context
                 .InkedUps
                 .Where(x => x.FountainPenId == dto.FountainPenId && x.IsCurrent)
                 .ExecuteUpdateAsync(s => s.SetProperty(e => e.IsCurrent, false));
+
+            _context.InkedUps.Add(inkedUp);
+            
+            await _context.SaveChangesAsync();
 
             return new InkedUpResult(ResultTypes.Ok, inkedUp);
         }

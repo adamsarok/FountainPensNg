@@ -3,12 +3,12 @@ namespace FountainPensNg.Server.Data.DTO {
          int Id,
          DateTime InkedAt,
          int MatchRating,
-         int? FountainPenId,
-         string? PenMaker,
-         string? PenName,
-         int? InkId,
-         string? InkMaker,
-         string? InkName,
-         string? PenColor,
-         string? InkColor);
+         int FountainPenId,
+         string PenMaker,
+         string PenName,
+         int InkId,
+         string InkMaker,
+         string InkName,
+         string PenColor,
+         string InkColor);
 }
