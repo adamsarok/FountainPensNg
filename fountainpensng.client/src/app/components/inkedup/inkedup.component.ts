@@ -19,26 +19,25 @@ import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
-  selector: 'app-inkedup',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatSelect,
-    MatOption,
-    MatIcon,
-    CommonModule,
-    MatInputModule,
-    MatButtonModule,
-    MatAutocompleteModule,
-    MatTableModule,
-    MatDatepickerModule,
-    MatNativeDateModule 
-  ],
-  templateUrl: './inkedup.component.html',
-  styleUrl: './inkedup.component.css'
+    selector: 'app-inkedup',
+    imports: [
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatSelect,
+        MatOption,
+        MatIcon,
+        CommonModule,
+        MatInputModule,
+        MatButtonModule,
+        MatAutocompleteModule,
+        MatTableModule,
+        MatDatepickerModule,
+        MatNativeDateModule
+    ],
+    templateUrl: './inkedup.component.html',
+    styleUrl: './inkedup.component.css'
 })
 export class InkedupComponent implements OnInit {
   @Input()

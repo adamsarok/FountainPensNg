@@ -11,17 +11,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-finder',
-  standalone: true,
-  imports: [MatTableModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatInputModule,
-    MatButtonModule,],
-  templateUrl: './finder.component.html',
-  styleUrl: './finder.component.css'
+    selector: 'app-finder',
+    imports: [MatTableModule,
+        CommonModule,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInputModule,
+        MatButtonModule,],
+    templateUrl: './finder.component.html',
+    styleUrl: './finder.component.css'
 })
 export class FinderComponent implements OnInit {
   displayedColumns: string[] = ['searchResultType', 'maker', 'model', 'color', 'comment', 'rating'];

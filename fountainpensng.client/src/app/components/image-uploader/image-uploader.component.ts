@@ -6,11 +6,10 @@ import { MatButtonModule } from '@angular/material/button';
 //TODO: fix ugly styling by hiding original button
 
 @Component({
-  selector: 'app-image-uploader',
-  standalone: true,
-  imports: [MatButtonModule],
-  templateUrl: './image-uploader.component.html',
-  styleUrl: './image-uploader.component.css'
+    selector: 'app-image-uploader',
+    imports: [MatButtonModule],
+    templateUrl: './image-uploader.component.html',
+    styleUrl: './image-uploader.component.css'
 })
 export class ImageUploaderComponent {
   r2ApiUrl = environment.r2ApiUrl;

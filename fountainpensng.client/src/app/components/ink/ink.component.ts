@@ -24,24 +24,23 @@ import { MatDialog } from '@angular/material/dialog';
 import { MessageBoxComponent } from '../message-box/message-box.component';
 
 @Component({
-  selector: 'app-ink',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatSelect,
-    MatOption,
-    MatIcon,
-    CommonModule,
-    MatInputModule,
-    MatButtonModule,
-    MatAutocompleteModule,
-    ImageUploaderComponent,
-  ],
-  templateUrl: './ink.component.html',
-  styleUrl: './ink.component.css',
+    selector: 'app-ink',
+    imports: [
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatSelect,
+        MatOption,
+        MatIcon,
+        CommonModule,
+        MatInputModule,
+        MatButtonModule,
+        MatAutocompleteModule,
+        ImageUploaderComponent,
+    ],
+    templateUrl: './ink.component.html',
+    styleUrl: './ink.component.css'
 })
 export class InkComponent implements OnInit {
   toUploadFile: File | null = null;

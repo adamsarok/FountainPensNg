@@ -28,25 +28,24 @@ import { MatDialog } from '@angular/material/dialog';
 import { InkedupService } from '../../services/inkedup.service';
 
 @Component({
-  selector: 'app-pen',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatSelect,
-    MatOption,
-    MatIcon,
-    CommonModule,
-    MatInputModule,
-    MatButtonModule,
-    MatAutocompleteModule,
-    MatTableModule,
-    ImageUploaderComponent,
-  ],
-  templateUrl: './pen.component.html',
-  styleUrl: './pen.component.css',
+    selector: 'app-pen',
+    imports: [
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatSelect,
+        MatOption,
+        MatIcon,
+        CommonModule,
+        MatInputModule,
+        MatButtonModule,
+        MatAutocompleteModule,
+        MatTableModule,
+        ImageUploaderComponent,
+    ],
+    templateUrl: './pen.component.html',
+    styleUrl: './pen.component.css'
 })
 export class PenComponent implements OnInit {
   toUploadFile: File | null = null;

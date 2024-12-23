@@ -7,11 +7,10 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-message-box',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
-  templateUrl: './message-box.component.html',
-  styleUrl: './message-box.component.css',
+    selector: 'app-message-box',
+    imports: [MatDialogModule, MatButtonModule],
+    templateUrl: './message-box.component.html',
+    styleUrl: './message-box.component.css'
 })
 export class MessageBoxComponent {
   constructor(
