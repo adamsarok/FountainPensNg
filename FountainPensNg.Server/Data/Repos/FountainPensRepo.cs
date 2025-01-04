@@ -41,7 +41,7 @@ namespace FountainPensNg.Server.Data.Repos {
         public bool FountainPenExists(int id) {
             return _context.FountainPens.Any(e => e.Id == id);
         }
-        public record FountainPenResult(ResultTypes ResultType, FountainPen? FountainPen = null);
+        public record FountainPenResult(ResultTypes ResultType, FountainPenDownloadDTO? FountainPen = null);
         public async Task<FountainPenResult> UpdateFountainPen(int id, FountainPenUploadDTO dto) {
             var fountainPen = dto.Adapt<FountainPen>();
             if (fountainPen == null || id != fountainPen.Id) {
@@ -56,7 +56,7 @@ namespace FountainPensNg.Server.Data.Repos {
 
             await _context.SaveChangesAsync();
 
-            return new FountainPenResult(ResultTypes.Ok, fountainPen);
+            return new FountainPenResult(ResultTypes.Ok, fountainPen.Adapt<FountainPenDownloadDTO>());
         }
         public async Task<FountainPenResult> AddFountainPen(FountainPenUploadDTO dto) {
             var fountainPen = dto.Adapt<FountainPen>();
@@ -71,7 +71,7 @@ namespace FountainPensNg.Server.Data.Repos {
             //     });
             // }
             await _context.SaveChangesAsync();
-            return new FountainPenResult(ResultTypes.Ok, fountainPen);
+            return new FountainPenResult(ResultTypes.Ok, fountainPen.Adapt<FountainPenDownloadDTO>());
         }
         public async Task<FountainPenResult> DeleteFountainPen(int id) {
             var fountainPen = await _context.FountainPens.FindAsync(id);

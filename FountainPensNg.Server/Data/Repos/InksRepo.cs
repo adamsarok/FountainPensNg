@@ -71,7 +71,7 @@ namespace FountainPensNg.Server.Data.Repos {
                 .FindAsync(id);
             return r.Adapt<InkDownloadDTO>();
         }
-        public record InkResult(ResultTypes ResultType, Ink? Ink = null);
+        public record InkResult(ResultTypes ResultType, InkDownloadDTO? Ink = null);
         public async Task<InkResult> UpdateInk(int id, InkUploadDTO dto) {
             var ink = dto.Adapt<Ink>();
             if (ink == null || id != ink.Id) {
@@ -80,7 +80,7 @@ namespace FountainPensNg.Server.Data.Repos {
             FillCIELab(ink);
             _context.Entry(ink).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return new InkResult(ResultTypes.Ok, ink);
+            return new InkResult(ResultTypes.Ok, ink.Adapt<InkDownloadDTO>());
         }
         public async Task<InkResult> AddInk(InkUploadDTO dto) {
             var ink = dto.Adapt<Ink>();
@@ -88,7 +88,7 @@ namespace FountainPensNg.Server.Data.Repos {
             FillCIELab(ink);
             _context.Inks.Add(ink);
             await _context.SaveChangesAsync();
-            return new InkResult(ResultTypes.Ok, ink);
+            return new InkResult(ResultTypes.Ok, ink.Adapt<InkDownloadDTO>());
         }
         public async Task<InkResult> DeleteInk(int id) {
             //TODO: what if I delete the active inkedup?
