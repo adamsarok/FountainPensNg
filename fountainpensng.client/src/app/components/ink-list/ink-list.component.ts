@@ -5,6 +5,7 @@ import { InkService } from '../../services/ink.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSortModule, Sort } from '@angular/material/sort';
+import { ComparerService } from '../../services/comparer.service';
 
 @Component({
     selector: 'app-ink-list',
@@ -22,7 +23,7 @@ export class InkListComponent implements OnInit {
   dataSource: InkForListDTO[] = [];
   sortedData: InkForListDTO[] = [];
 
-  constructor(private inkService: InkService, private router: Router) {
+  constructor(private inkService: InkService, private router: Router, private comparer: ComparerService) {
 
   }
 
@@ -49,24 +50,21 @@ export class InkListComponent implements OnInit {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'maker':
-          return this.compare(a.maker, b.maker, isAsc);
+          return this.comparer.compare(a.maker, b.maker, isAsc);
         case 'inkName':
-          return this.compare(a.inkName, b.inkName, isAsc);
+          return this.comparer.compare(a.inkName, b.inkName, isAsc);
         case 'ml':
-          return this.compare(a.ml, b.ml, isAsc);
+          return this.comparer.compare(a.ml, b.ml, isAsc);
         case 'color':
-          return this.compare(a.cieLch_sort, b.cieLch_sort, isAsc);
+          return this.comparer.compare(a.cieLch_sort, b.cieLch_sort, isAsc);
         case 'rating':
-          return this.compare(a.rating, b.rating, isAsc);
+          return this.comparer.compare(a.rating, b.rating, isAsc);
         case 'currentPen':
-          return this.compare(a.oneCurrentPenMaker + a.oneCurrentPenModelName, 
+          return this.comparer.compare(a.oneCurrentPenMaker + a.oneCurrentPenModelName, 
             b.oneCurrentPenMaker + b.oneCurrentPenModelName, isAsc);
         default:
           return 0;
       }
     });
-  }
-  compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }

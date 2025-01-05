@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { PenService } from '../../services/pen.service';
 import { FountainPen } from '../../../dtos/FountainPen';
 import { CommonModule } from '@angular/common';
+import { ComparerService } from '../../services/comparer.service';
 
 @Component({
     selector: 'app-pen-list',
@@ -32,7 +33,7 @@ export class PenListComponent implements OnInit {
       },
     });
   }
-  constructor(private penService: PenService, private router: Router) {}
+  constructor(private penService: PenService, private router: Router, private comparer: ComparerService) { }
   openPen(id: number) {
     this.router.navigate(['/pen/' + id]);
   }
@@ -47,23 +48,20 @@ export class PenListComponent implements OnInit {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'maker':
-          return this.compare(a.maker, b.maker, isAsc);
+          return this.comparer.compare(a.maker, b.maker, isAsc);
         case 'modelName':
-          return this.compare(a.modelName, b.modelName, isAsc);
+          return this.comparer.compare(a.modelName, b.modelName, isAsc);
         case 'nib':
-          return this.compare(a.nib, b.nib, isAsc);
+          return this.comparer.compare(a.nib, b.nib, isAsc);
         case 'color':
-          return this.compare(a.color, b.color, isAsc); //TODO: sortable color
+          return this.comparer.compare(a.color, b.color, isAsc); //TODO: sortable color
         case 'rating':
-          return this.compare(a.rating, b.rating, isAsc);
+          return this.comparer.compare(a.rating, b.rating, isAsc);
         // case 'currentInk': TODO ???
         //   return compare(a.c, b.currentInk, isAsc);
         default:
           return 0;
       }
     });
-  }
-  compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 }
