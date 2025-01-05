@@ -9,7 +9,6 @@ namespace FountainPensNg.Server.Data.DTO {
          string Photo,
          int Rating,
          string ImageObjectKey,
-         NpgsqlTsVector? FullText,
          DateTime InsertedAt,
          DateTime ModifiedAt);
 }

@@ -28,7 +28,7 @@ namespace FountainPensNg.Server.Data.Repos {
             //TODO: ProjectTo does not work here as well...
             return r.Adapt<InkedUpDTO>();
         }
-        public record InkedUpResult(ResultTypes ResultType, InkedUp? InkedUp = null);
+        public record InkedUpResult(ResultTypes ResultType, InkedUpDTO? InkedUp = null);
         public async Task<InkedUpResult> UpdateInkedUp(int id, InkedUpDTO dto) {
             var inkedUp = dto.Adapt<InkedUpDTO>();
             if (inkedUp == null || id != inkedUp.Id) {
@@ -43,7 +43,7 @@ namespace FountainPensNg.Server.Data.Repos {
 
             await _context.SaveChangesAsync();
 
-            return new InkedUpResult(ResultTypes.Ok, find);
+            return new InkedUpResult(ResultTypes.Ok, find.Adapt<InkedUpDTO>());
         }
 
         public async Task<InkedUpResult> AddInkedUp(InkedUpDTO dto) {
@@ -63,7 +63,7 @@ namespace FountainPensNg.Server.Data.Repos {
             
             await _context.SaveChangesAsync();
 
-            return new InkedUpResult(ResultTypes.Ok, inkedUp);
+            return new InkedUpResult(ResultTypes.Ok, inkedUp.Adapt<InkedUpDTO>());
         }
         public async Task<InkedUpResult> DeleteInkedUp(int id) {
             //TODO: what if I delete the active inkedup?

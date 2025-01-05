@@ -7,11 +7,10 @@ import { FountainPen } from '../../../dtos/FountainPen';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-pen-list',
-  standalone: true,
-  imports: [MatTableModule, MatSortModule, CommonModule],
-  templateUrl: './pen-list.component.html',
-  styleUrl: './pen-list.component.css',
+    selector: 'app-pen-list',
+    imports: [MatTableModule, MatSortModule, CommonModule],
+    templateUrl: './pen-list.component.html',
+    styleUrl: './pen-list.component.css'
 })
 export class PenListComponent implements OnInit {
   displayedColumns: string[] = [

@@ -7,11 +7,10 @@ import { CommonModule } from '@angular/common';
 import { MatSortModule, Sort } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-ink-list',
-  standalone: true,
-  imports: [MatTableModule, MatSortModule, CommonModule],
-  templateUrl: './ink-list.component.html',
-  styleUrl: './ink-list.component.css'
+    selector: 'app-ink-list',
+    imports: [MatTableModule, MatSortModule, CommonModule],
+    templateUrl: './ink-list.component.html',
+    styleUrl: './ink-list.component.css'
 })
 export class InkListComponent implements OnInit {
   displayedColumns: string[] = ['maker',

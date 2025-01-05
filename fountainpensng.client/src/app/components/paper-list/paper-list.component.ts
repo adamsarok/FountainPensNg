@@ -6,11 +6,10 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-paper-list',
-  standalone: true,
-  imports: [MatTableModule, CommonModule],
-  templateUrl: './paper-list.component.html',
-  styleUrl: './paper-list.component.css'
+    selector: 'app-paper-list',
+    imports: [MatTableModule, CommonModule],
+    templateUrl: './paper-list.component.html',
+    styleUrl: './paper-list.component.css'
 })
 export class PaperListComponent implements OnInit {
   displayedColumns: string[] = ['maker', 'paperName', 'comment', 'rating'];

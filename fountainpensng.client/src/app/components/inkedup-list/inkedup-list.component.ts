@@ -6,11 +6,10 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-inkedup-list',
-  standalone: true,
-  imports: [MatTableModule, CommonModule],
-  templateUrl: './inkedup-list.component.html',
-  styleUrl: './inkedup-list.component.css'
+    selector: 'app-inkedup-list',
+    imports: [MatTableModule, CommonModule],
+    templateUrl: './inkedup-list.component.html',
+    styleUrl: './inkedup-list.component.css'
 })
 export class InkedupListComponent implements OnInit {
 
