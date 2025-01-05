@@ -24,5 +24,8 @@ export class InkedupService {
   updateInkedUp(inkup: InkedUpUploadDTO) {
     return this.http.put<InkedUpUploadDTO>(this.baseUrl + 'InkedUps/' + inkup.id, inkup);
   }
+  deleteInkedUp(id: number) {
+    return this.http.delete<InkedUpUploadDTO>(this.baseUrl + 'InkedUps/' + id);
+  }
 
 }

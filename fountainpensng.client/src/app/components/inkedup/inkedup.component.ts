@@ -1,6 +1,6 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
@@ -74,7 +74,8 @@ export class InkedupComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private zone: NgZone,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
 
   }
@@ -159,6 +160,21 @@ export class InkedupComponent implements OnInit {
   }
   onSubmit() {
     this.upsertInkUp();
+  }
+
+  delete() {
+    if (this.inkedUp && this.inkedUp.id != 0) {
+      this.inkedUpService.deleteInkedUp(this.inkedUp.id).subscribe({
+        next: () => {
+          this.showSnack("Ink-up deleted!");
+          this.router.navigate(['/inked-up']);
+        },
+        error: e => {
+          console.log(e);
+          this.showSnack(e);
+        }
+      });
+    }
   }
 
   upsertInkUp() {
