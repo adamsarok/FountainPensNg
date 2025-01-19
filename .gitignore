@@ -246,7 +246,6 @@ sysinfo.txt
 *.apk
 *.unitypackage
 /.metadata/
-DatingApp/DatingApp.API/appsettings.json
 
 # coverage
 coverage.json
@@ -261,4 +260,5 @@ datingapp.db
 #*.png
 appsettings.json
 appsettings.Development.json
-#wwwroot/ this was a mistake???
+
+docker-compose.override.yml

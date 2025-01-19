@@ -1,0 +1,22 @@
+services:
+  fountainpens-api:
+    image: adamsarok/fountainpens-api
+    build:
+      context: .
+      dockerfile: FountainPensNg.Server/Dockerfile
+    ports:
+      - 4080:8080
+    restart: unless-stopped
+    environment:
+      - CONNECTION_STRING=${CONNECTION_STRING}
+  fountainpens-ng-cl:
+    image: adamsarok/fountainpens-ng-cl
+    build:
+      context: .
+      dockerfile: fountainpensng.client/Dockerfile
+    ports:
+      - 4200:80
+    restart: unless-stopped
+    environment:
+      - apiUrl=${apiUrl}
+      - r2ApiUrl=${r2ApiUrl}

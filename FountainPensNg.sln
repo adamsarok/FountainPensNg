@@ -9,6 +9,8 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "fountainpensng.client", "fo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FountainPensNg.xTests", "FountainPensNg.xTests\FountainPensNg.xTests.csproj", "{C0396EF1-8C67-495B-8A36-3916DA8F882F}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{98C65C68-07E0-403B-AD2F-1EF81D7382E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{C0396EF1-8C67-495B-8A36-3916DA8F882F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0396EF1-8C67-495B-8A36-3916DA8F882F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0396EF1-8C67-495B-8A36-3916DA8F882F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98C65C68-07E0-403B-AD2F-1EF81D7382E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98C65C68-07E0-403B-AD2F-1EF81D7382E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98C65C68-07E0-403B-AD2F-1EF81D7382E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98C65C68-07E0-403B-AD2F-1EF81D7382E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
