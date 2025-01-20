@@ -10,19 +10,14 @@ using static FountainPensNg.Server.Data.Repos.FountainPensRepo;
 using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.Data.Repos {
-    public class PapersRepo {
-        private readonly DataContext _context;
-        public PapersRepo(DataContext context) {
-            _context = context;
-        }
-
+    public class PapersRepo(DataContext context) {
         public async Task<IEnumerable<PaperDTO>> GetPapers() {
-            return await _context.Papers
+            return await context.Papers
                 .ProjectToType<PaperDTO>()
                 .ToListAsync();
         }
         public async Task<PaperDTO?> GetPaper(int id) {
-            var r = await _context.Papers
+            var r = await context.Papers
                 .FirstOrDefaultAsync(x => x.Id == id);
             return r.Adapt<PaperDTO>();
         }
@@ -32,23 +27,23 @@ namespace FountainPensNg.Server.Data.Repos {
             if (paper == null || id != paper.Id) {
                 return new PaperResult(ResultTypes.BadRequest);
             }
-            _context.Entry(paper).State = EntityState.Modified;
+                context.Entry(paper).State = EntityState.Modified;
             paper.ModifiedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return new PaperResult(ResultTypes.Ok, paper.Adapt<PaperDTO>());
         }
         public async Task<PaperResult> AddPaper(PaperDTO dto) {
             var Paper = dto.Adapt<Paper>();
             if (Paper == null) return new PaperResult(ResultTypes.BadRequest);
-            _context.Papers.Add(Paper);
-            await _context.SaveChangesAsync();
+            context.Papers.Add(Paper);
+            await context.SaveChangesAsync();
             return new PaperResult(ResultTypes.Ok, Paper.Adapt<PaperDTO>());
         }
         public async Task<PaperResult> DeletePaper(int id) {
-            var Paper = await _context.Papers.FindAsync(id);
+            var Paper = await context.Papers.FindAsync(id);
             if (Paper == null) return new PaperResult(ResultTypes.NotFound);
-            _context.Papers.Remove(Paper);
-            await _context.SaveChangesAsync();
+            context.Papers.Remove(Paper);
+            await context.SaveChangesAsync();
             return new PaperResult(ResultTypes.Ok);
         }
     }

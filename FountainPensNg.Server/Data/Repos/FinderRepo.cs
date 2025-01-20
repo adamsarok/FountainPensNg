@@ -4,27 +4,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FountainPensNg.Server.Data.Repos {
-    public class FinderRepo {
-        private readonly DataContext _context;
-
-        public FinderRepo(DataContext context) {
-            _context = context;
-        }
-
+    public class FinderRepo(DataContext context) {
         public async Task<ActionResult<IEnumerable<SearchResultDTO>>> FindAll(string fulltext) {
-            var pens = await _context
+            var pens = await context
                 .FountainPens
                 .Where(p => string.IsNullOrWhiteSpace(fulltext)
                     || p.FullText.Matches(EF.Functions.ToTsQuery($"{fulltext}:*")))
                 .ProjectToType<SearchResultDTO>()
                 .ToListAsync();
-            var inks = await _context
+            var inks = await context
                 .Inks
                 .Where(p => string.IsNullOrWhiteSpace(fulltext)
                     || p.FullText.Matches(EF.Functions.ToTsQuery($"{fulltext}:*")))
                 .ProjectToType<SearchResultDTO>()
                 .ToListAsync();
-            var papers = await _context
+            var papers = await context
                 .Papers
                 .Where(p => string.IsNullOrWhiteSpace(fulltext)
                     || p.FullText.Matches(EF.Functions.ToTsQuery($"{fulltext}:*")))

@@ -13,12 +13,7 @@ using static FountainPensNg.Server.Helpers.ColorHelper;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FountainPensNg.Server.Data.Repos {
-    public class InksRepo {
-        private readonly DataContext _context;
-        public InksRepo(DataContext context) {
-            _context = context;
-        }
-
+    public class InksRepo(DataContext context) {
         private List<InkDownloadDTO> ConstructInkDownloadDTOs(List<Ink> inks) {
             List<InkDownloadDTO> result = new();
             foreach (var ink in inks) {
@@ -58,7 +53,7 @@ namespace FountainPensNg.Server.Data.Repos {
         }
 
         public async Task<IEnumerable<InkDownloadDTO>> GetInks() {
-            var inks = await _context
+            var inks = await context
                 .Inks
                 .Include(iu => iu.InkedUps.Where(iu => iu.IsCurrent))
                 .ThenInclude(p => p.FountainPen)
@@ -66,7 +61,7 @@ namespace FountainPensNg.Server.Data.Repos {
             return ConstructInkDownloadDTOs(inks);
         }
         public async Task<InkDownloadDTO?> GetInk(int id) {
-            var r = await _context
+            var r = await context
                 .Inks
                 .FindAsync(id);
             return r.Adapt<InkDownloadDTO>();
@@ -78,24 +73,24 @@ namespace FountainPensNg.Server.Data.Repos {
                 return new InkResult(ResultTypes.BadRequest);
             }
             FillCIELab(ink);
-            _context.Entry(ink).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            context.Entry(ink).State = EntityState.Modified;
+            await context.SaveChangesAsync();
             return new InkResult(ResultTypes.Ok, ink.Adapt<InkDownloadDTO>());
         }
         public async Task<InkResult> AddInk(InkUploadDTO dto) {
             var ink = dto.Adapt<Ink>();
             if (ink == null) return new InkResult(ResultTypes.BadRequest);
             FillCIELab(ink);
-            _context.Inks.Add(ink);
-            await _context.SaveChangesAsync();
+            context.Inks.Add(ink);
+            await context.SaveChangesAsync();
             return new InkResult(ResultTypes.Ok, ink.Adapt<InkDownloadDTO>());
         }
         public async Task<InkResult> DeleteInk(int id) {
             //TODO: what if I delete the active inkedup?
-            var inkedUp = await _context.Inks.FindAsync(id);
+            var inkedUp = await context.Inks.FindAsync(id);
             if (inkedUp == null) return new InkResult(ResultTypes.NotFound);
-            _context.Inks.Remove(inkedUp);
-            await _context.SaveChangesAsync();
+            context.Inks.Remove(inkedUp);
+            await context.SaveChangesAsync();
             return new InkResult(ResultTypes.Ok);
         }
         private void FillCIELab(Ink ink) {

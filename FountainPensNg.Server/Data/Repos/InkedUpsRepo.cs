@@ -7,21 +7,16 @@ using static FountainPensNg.Server.Data.Repos.FountainPensRepo;
 using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.Data.Repos {
-    public class InkedUpsRepo {
-        private readonly DataContext _context;
-        public InkedUpsRepo(DataContext context) {
-            _context = context;
-        }
-
+    public class InkedUpsRepo(DataContext context) {
         public async Task<IEnumerable<InkedUpDTO>> GetInkedUps() {
-            var r = await _context.InkedUps
+            var r = await context.InkedUps
                 .Include(x => x.Ink)
                 .Include(x => x.FountainPen)
                 .ToListAsync();
             return r.Adapt<IEnumerable<InkedUpDTO>>();
         }
         public async Task<InkedUpDTO?> GetInkedUp(int id) {
-            var r = await _context.InkedUps
+            var r = await context.InkedUps
                 .Include(x => x.Ink)
                 .Include(x => x.FountainPen)
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -35,13 +30,13 @@ namespace FountainPensNg.Server.Data.Repos {
                 return new InkedUpResult(ResultTypes.BadRequest);
             }
 
-            var find = await _context.InkedUps.FindAsync(inkedUp.Id);
+            var find = await context.InkedUps.FindAsync(inkedUp.Id);
             if (find == null) return new InkedUpResult(ResultTypes.NotFound);
 
-            _context.Entry(find).CurrentValues.SetValues(inkedUp);
+            context.Entry(find).CurrentValues.SetValues(inkedUp);
             find.InkedAt = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return new InkedUpResult(ResultTypes.Ok, find.Adapt<InkedUpDTO>());
         }
@@ -50,27 +45,27 @@ namespace FountainPensNg.Server.Data.Repos {
             var inkedUp = dto.Adapt<InkedUp>();
             if (inkedUp == null) return new InkedUpResult(ResultTypes.BadRequest);
             //it seems mapster does not map the FountainPenId and InkId fields for some reason, also if mapped EF tries to add pen & ink
-            inkedUp.FountainPen = await _context.FountainPens.FindAsync(dto.FountainPenId);
-            inkedUp.Ink = await _context.Inks.FindAsync(dto.InkId);
+            inkedUp.FountainPen = await context.FountainPens.FindAsync(dto.FountainPenId);
+            inkedUp.Ink = await context.Inks.FindAsync(dto.InkId);
             inkedUp.IsCurrent = true;
 
-            await _context
+            await context
                 .InkedUps
                 .Where(x => x.FountainPenId == dto.FountainPenId && x.IsCurrent)
                 .ExecuteUpdateAsync(s => s.SetProperty(e => e.IsCurrent, false));
 
-            _context.InkedUps.Add(inkedUp);
+            context.InkedUps.Add(inkedUp);
             
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return new InkedUpResult(ResultTypes.Ok, inkedUp.Adapt<InkedUpDTO>());
         }
         public async Task<InkedUpResult> DeleteInkedUp(int id) {
             //TODO: what if I delete the active inkedup?
-            var inkedUp = await _context.InkedUps.FindAsync(id);
+            var inkedUp = await context.InkedUps.FindAsync(id);
             if (inkedUp == null) return new InkedUpResult(ResultTypes.NotFound);
-            _context.InkedUps.Remove(inkedUp);
-            await _context.SaveChangesAsync();
+            context.InkedUps.Remove(inkedUp);
+            await context.SaveChangesAsync();
             return new InkedUpResult(ResultTypes.Ok);
         }
     }

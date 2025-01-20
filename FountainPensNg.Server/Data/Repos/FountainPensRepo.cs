@@ -5,12 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.Data.Repos {
-    public class FountainPensRepo {
-        private readonly DataContext _context;
-
-        public FountainPensRepo(DataContext context) {
-            _context = context;
-        }
+    public class FountainPensRepo(DataContext context) {
 
         //public async Task<FountainPen> GetFountainPen(int id) {
         //    return await _context.FountainPens
@@ -21,7 +16,7 @@ namespace FountainPensNg.Server.Data.Repos {
         //}
 
         public async Task<FountainPenDownloadDTO> GetFountainPen(int id) {
-            var pen = await _context.FountainPens
+            var pen = await context.FountainPens
                 .Include(fp => fp.InkedUps)
                 .ThenInclude(iu => iu.Ink)
                 //.ProjectToType<FountainPenDownloadDTO>() //TODO: projectto generates insanely complex query
@@ -30,7 +25,7 @@ namespace FountainPensNg.Server.Data.Repos {
         }
 
         public async Task<IEnumerable<FountainPenDownloadDTO>> GetFountainPens() {
-            var r = await _context
+            var r = await context
                 .FountainPens
                 .Include(x => x.InkedUps)
                 .ThenInclude(inkup => inkup.Ink)
@@ -39,7 +34,7 @@ namespace FountainPensNg.Server.Data.Repos {
             return r.Adapt<List<FountainPenDownloadDTO>>();
         }
         public bool FountainPenExists(int id) {
-            return _context.FountainPens.Any(e => e.Id == id);
+            return context.FountainPens.Any(e => e.Id == id);
         }
         public record FountainPenResult(ResultTypes ResultType, FountainPenDownloadDTO? FountainPen = null);
         public async Task<FountainPenResult> UpdateFountainPen(int id, FountainPenUploadDTO dto) {
@@ -48,20 +43,20 @@ namespace FountainPensNg.Server.Data.Repos {
                 return new FountainPenResult(ResultTypes.BadRequest);
             }
 
-            var find = await _context.FountainPens.FindAsync(fountainPen.Id);
+            var find = await context.FountainPens.FindAsync(fountainPen.Id);
             if (find == null) return new FountainPenResult(ResultTypes.NotFound);
 
-            _context.Entry(find).CurrentValues.SetValues(fountainPen);
+            context.Entry(find).CurrentValues.SetValues(fountainPen);
             find.ModifiedAt = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return new FountainPenResult(ResultTypes.Ok, fountainPen.Adapt<FountainPenDownloadDTO>());
         }
         public async Task<FountainPenResult> AddFountainPen(FountainPenUploadDTO dto) {
             var fountainPen = dto.Adapt<FountainPen>();
             if (fountainPen == null) return new FountainPenResult(ResultTypes.BadRequest);
-            _context.FountainPens.Add(fountainPen);
+            context.FountainPens.Add(fountainPen);
             //TODO: auto add inkedup 
             // if (fountainPen.CurrentInkId.HasValue && fountainPen.CurrentInkId > 0) {
             //     _context.InkedUps.Add(new InkedUp() {
@@ -70,14 +65,14 @@ namespace FountainPensNg.Server.Data.Repos {
             //         MatchRating = fountainPen.CurrentInkRating ?? 0
             //     });
             // }
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return new FountainPenResult(ResultTypes.Ok, fountainPen.Adapt<FountainPenDownloadDTO>());
         }
         public async Task<FountainPenResult> DeleteFountainPen(int id) {
-            var fountainPen = await _context.FountainPens.FindAsync(id);
+            var fountainPen = await context.FountainPens.FindAsync(id);
             if (fountainPen == null) return new FountainPenResult(ResultTypes.NotFound);
-            _context.FountainPens.Remove(fountainPen);
-            await _context.SaveChangesAsync();
+            context.FountainPens.Remove(fountainPen);
+            await context.SaveChangesAsync();
             return new FountainPenResult(ResultTypes.Ok);
         }
     }
