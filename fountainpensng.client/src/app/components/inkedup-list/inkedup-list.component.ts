@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { InkedupService } from '../../services/inkedup.service';
 import { MatTableModule } from '@angular/material/table';
 import { InkedUpForListDTO } from '../../../dtos/InkedUpDTO';
@@ -16,8 +16,7 @@ import { ComparerService } from '../../services/comparer.service';
 export class InkedupListComponent implements OnInit {
 
   displayedColumns: string[] = ['inkedAt', 'matchRating', 'ink', 'pen'];
-  dataSource: InkedUpForListDTO[] = [];
-  sortedData: InkedUpForListDTO[] = [];
+  dataSource = signal<InkedUpForListDTO[]>([]);
 
   constructor(private inkedUpService: InkedupService, private router: Router,
     private comparer: ComparerService) {
@@ -27,8 +26,7 @@ export class InkedupListComponent implements OnInit {
   ngOnInit(): void {
     this.inkedUpService.getInkedUps().subscribe({
       next: r => {
-        this.dataSource = r;
-        this.sortedData = this.dataSource.slice();
+        this.dataSource.set(r);
       }
     });
   }
@@ -36,13 +34,9 @@ export class InkedupListComponent implements OnInit {
     this.router.navigate(['/inked-up/' + id]);
   }
   sortData(sort: Sort) {
-    const data = this.dataSource.slice();
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
-      return;
-    }
-
-    this.sortedData = data.sort((a, b) => {
+    if (!sort.active || sort.direction === '') return;
+    const data = this.dataSource().slice();
+    this.dataSource.set(data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'inkedAt':
@@ -56,6 +50,6 @@ export class InkedupListComponent implements OnInit {
         default:
           return 0;
       }
-    });
+    }));
   }
 }

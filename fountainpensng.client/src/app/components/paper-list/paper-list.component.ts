@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { Paper } from '../../../dtos/Paper';
 import { PaperService } from '../../services/paper.service';
@@ -15,8 +15,7 @@ import { ComparerService } from '../../services/comparer.service';
 })
 export class PaperListComponent implements OnInit {
   displayedColumns: string[] = ['maker', 'paperName', 'comment', 'rating'];
-  dataSource: Paper[] = [];
-  sortedData: Paper[] = [];
+  dataSource = signal<Paper[]>([]);
 
   constructor(private paperService: PaperService, private router: Router, private comparer: ComparerService) {
 
@@ -25,8 +24,7 @@ export class PaperListComponent implements OnInit {
   ngOnInit(): void {
     this.paperService.getPapers().subscribe({
       next: r => {
-        this.dataSource = r;
-        this.sortedData = this.dataSource.slice();
+        this.dataSource.set(r);
       }
     });
   }
@@ -35,13 +33,11 @@ export class PaperListComponent implements OnInit {
     this.router.navigate(['/paper/' + id]);
   }
   sortData(sort: Sort) {
-    const data = this.dataSource.slice();
     if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
       return;
     }
-
-    this.sortedData = data.sort((a, b) => {
+    const data = this.dataSource().slice();
+    this.dataSource.set(data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'maker':
@@ -55,6 +51,6 @@ export class PaperListComponent implements OnInit {
         default:
           return 0;
       }
-    });
+    }));
   }
 }

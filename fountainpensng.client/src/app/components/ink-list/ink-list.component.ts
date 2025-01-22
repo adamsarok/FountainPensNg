@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { InkForListDTO } from '../../../dtos/InkForListDTO';
 import { InkService } from '../../services/ink.service';
@@ -20,8 +20,8 @@ export class InkListComponent implements OnInit {
     'comment',
     'rating',
     'currentPen'];
-  dataSource: InkForListDTO[] = [];
-  sortedData: InkForListDTO[] = [];
+    
+  dataSource = signal<InkForListDTO[]>([]);
 
   constructor(private inkService: InkService, private router: Router, private comparer: ComparerService) {
 
@@ -30,8 +30,7 @@ export class InkListComponent implements OnInit {
   ngOnInit(): void {
     this.inkService.getInks().subscribe({
       next: r => {
-        this.dataSource = r;
-        this.sortedData = this.dataSource.slice();
+        this.dataSource.set(r);
       }
     });
   }
@@ -39,17 +38,15 @@ export class InkListComponent implements OnInit {
   openInk(id: number) {
     this.router.navigate(['/ink/' + id]);
   }
+  
   sortData(sort: Sort) {
-    const data = this.dataSource.slice();
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
-      return;
-    }
-
-    this.sortedData = data.sort((a, b) => {
+    if (!sort.active || sort.direction === '') return;
+    const data = this.dataSource().slice();
+    this.dataSource.set(data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'maker':
+          console.log('trying to sort');
           return this.comparer.compare(a.maker, b.maker, isAsc);
         case 'inkName':
           return this.comparer.compare(a.inkName, b.inkName, isAsc);
@@ -59,12 +56,14 @@ export class InkListComponent implements OnInit {
           return this.comparer.compare(a.cieLch_sort, b.cieLch_sort, isAsc);
         case 'rating':
           return this.comparer.compare(a.rating, b.rating, isAsc);
+        case 'comment':
+            return this.comparer.compare(a.comment, b.comment, isAsc);
         case 'currentPen':
           return this.comparer.compare(a.oneCurrentPenMaker + a.oneCurrentPenModelName, 
             b.oneCurrentPenMaker + b.oneCurrentPenModelName, isAsc);
         default:
           return 0;
       }
-    });
+    }));
   }
 }

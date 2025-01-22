@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatOption, MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -34,7 +34,6 @@ import { InkedupService } from '../../services/inkedup.service';
         MatFormField,
         MatLabel,
         MatError,
-        MatSelect,
         MatOption,
         MatIcon,
         CommonModule,

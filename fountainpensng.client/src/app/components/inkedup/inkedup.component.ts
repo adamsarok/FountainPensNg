@@ -1,9 +1,8 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatOption, MatSelect } from '@angular/material/select';
-import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatOption } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,10 +23,7 @@ import { MatNativeDateModule } from '@angular/material/core';
         ReactiveFormsModule,
         MatFormField,
         MatLabel,
-        MatError,
-        MatSelect,
         MatOption,
-        MatIcon,
         CommonModule,
         MatInputModule,
         MatButtonModule,

@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="sortedData" matSort (matSortChange)="sortData($event)">
+<table mat-table [dataSource]="dataSource()" matSort (matSortChange)="sortData($event)">
   <ng-container matColumnDef="inkedAt">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Inked At </th>
     <td mat-cell *matCellDef="let element"> {{element.inkedAt | date}} </td>

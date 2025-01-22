@@ -61,6 +61,7 @@ export class FinderComponent implements OnInit {
   }
 
   openResult(id: number, searchResultType: string) {
+    console.log(id, searchResultType);
     //TODO!!!
     //this.router.navigate(['/ink/' + id]);
   }
