@@ -1,61 +1,83 @@
 <div class="root-div">
   <div class="image-container">
-    <img alt="image of a paper" src={{paper.imageUrl}} *ngIf="paper.imageUrl">
-    <mat-icon style="width: 100%; height: 100%; opacity: 0.25;" svgIcon="pen-nib" *ngIf="!paper.imageUrl">menu</mat-icon>
+    @if (paper.imageUrl) {
+    <img alt="image of a paper" src="{{ paper.imageUrl }}" />
+    } @else {
+    <mat-icon style="width: 100%; height: 100%; opacity: 0.25" svgIcon="pen-nib"
+      >menu</mat-icon
+    >
+    }
   </div>
-  <app-image-uploader (selectedFile)="onFileSelected($event)"></app-image-uploader>
-  <form style="margin-top: 16px;" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <app-image-uploader
+    (selectedFile)="onFileSelected($event)"
+  ></app-image-uploader>
+  <form style="margin-top: 16px" [formGroup]="form" (ngSubmit)="onSubmit()">
     <div fxLayout="column" fxLayoutAlign="center center">
       <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Maker</mat-label>
-          <input matInput formControlName="maker" name="maker">
-          <mat-error *ngIf="form.get('maker')?.hasError('required')">This field is required</mat-error>
+          <input matInput formControlName="maker" name="maker" />
+          <mat-error *ngIf="form.get('maker')?.hasError('required')"
+            >This field is required</mat-error
+          >
         </mat-form-field>
       </div>
 
       <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Name</mat-label>
-          <input matInput formControlName="paperName" name="paperName">
-          <mat-error *ngIf="form.get('paperName')?.hasError('required')">This field is required</mat-error>
+          <input matInput formControlName="paperName" name="paperName" />
+          <mat-error *ngIf="form.get('paperName')?.hasError('required')"
+            >This field is required</mat-error
+          >
         </mat-form-field>
       </div>
 
       <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Comment</mat-label>
-          <input matInput formControlName="comment" name="comment">
-          <mat-error *ngIf="form.get('comment')?.hasError('required')">This field is required</mat-error>
+          <input matInput formControlName="comment" name="comment" />
+          <mat-error *ngIf="form.get('comment')?.hasError('required')"
+            >This field is required</mat-error
+          >
         </mat-form-field>
       </div>
 
       <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Rating</mat-label>
-          <input matInput formControlName="rating" name="rating">
-          <mat-error *ngIf="form.get('rating')?.hasError('required')">This field is required</mat-error>
+          <input matInput formControlName="rating" name="rating" />
+          <mat-error *ngIf="form.get('rating')?.hasError('required')"
+            >This field is required</mat-error
+          >
         </mat-form-field>
       </div>
 
       <div fxFlex="100%">
         <div class="row" *ngIf="validationErrors">
           <ul class="text-danger">
-            <li *ngFor="let error of validationErrors">
-              {{error}}
+            @for (error of validationErrors; track error) {
+            <li>
+              {{ error }}
             </li>
+            }
           </ul>
         </div>
         <div class="btn-container">
           <button mat-flat-button color="primary" type="submit">
-            {{paper.id ? "Update" : "Create"}}
+            {{ paper.id ? "Update" : "Create" }}
           </button>
-          <button *ngIf="paper.id" mat-flat-button color="warn" type="button" (click)="deletePaper()">
+          <button
+            *ngIf="paper.id"
+            mat-flat-button
+            color="warn"
+            type="button"
+            (click)="deletePaper()"
+          >
             Delete
           </button>
         </div>
       </div>
     </div>
-
   </form>
 </div>

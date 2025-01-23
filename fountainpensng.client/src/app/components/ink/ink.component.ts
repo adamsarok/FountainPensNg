@@ -9,7 +9,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { InkService } from '../../services/ink.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatOption, MatSelect } from '@angular/material/select';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -30,8 +29,6 @@ import { MessageBoxComponent } from '../message-box/message-box.component';
         MatFormField,
         MatLabel,
         MatError,
-        MatSelect,
-        MatOption,
         MatIcon,
         CommonModule,
         MatInputModule,
