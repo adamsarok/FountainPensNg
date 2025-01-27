@@ -1,6 +1,5 @@
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Models;
-using FountainPensNg.Server.Helpers;
 using Mapster;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -8,36 +7,30 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FountainPensNg.xTests {
 
-    public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>> {
-        private readonly WebApplicationFactory<Program> _factory;
-
-        public IntegrationTests(WebApplicationFactory<Program> factory) {
-            _factory = factory;
-        }
+    public class IntegrationTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
 
         [Fact]
         public async Task Test1() {
-            var client = _factory.CreateClient();
+            var client = factory.CreateClient();
 
-            using (var scope = _factory.Services.CreateScope()) {
-                using (var context = scope.ServiceProvider.GetRequiredService<DataContext>()) {
-                    var inkedups = await context
-                        .InkedUps
-                        .Include(x => x.FountainPen)
-                        .Include(x => x.Ink)
-                        .ToListAsync();
-                }
-            }
+            using var scope = factory.Services.CreateScope();
+            using var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+            var inkedups = await context
+                .InkedUps
+                .Include(x => x.FountainPen)
+                .Include(x => x.Ink)
+                .ToListAsync();
+
         }
+
 
         [Fact]
         public void Mapster() {
             var fountainPen = new FountainPen {
-                InkedUps = new List<InkedUp>
-    {
-        new InkedUp { IsCurrent = true, Ink = new Ink { Id = 1, InkName = "Blue Ink" }, MatchRating = 5 },
-        new InkedUp { IsCurrent = false, Ink = new Ink { Id = 2, InkName = "Red Ink" }, MatchRating = 3 }
-    }
+                InkedUps =  {
+                    new() { IsCurrent = true, Ink = new Ink { Id = 1, InkName = "Blue Ink" }, MatchRating = 5 },
+                    new() { IsCurrent = false, Ink = new Ink { Id = 2, InkName = "Red Ink" }, MatchRating = 3 }
+                }
             };
 
             //var config = MapsterConfig.RegisterMappings();
