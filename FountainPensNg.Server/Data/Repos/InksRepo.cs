@@ -14,8 +14,8 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FountainPensNg.Server.Data.Repos {
     public class InksRepo(DataContext context) {
-        private List<InkDownloadDTO> ConstructInkDownloadDTOs(List<Ink> inks) {
-            List<InkDownloadDTO> result = new();
+        private static List<InkDownloadDTO> ConstructInkDownloadDTOs(List<Ink> inks) {
+            List<InkDownloadDTO> result = [];
             foreach (var ink in inks) {
                 var pen = ink.InkedUps.FirstOrDefault()?.FountainPen;
                 double cieLch_sort = 0;
@@ -72,7 +72,7 @@ namespace FountainPensNg.Server.Data.Repos {
             if (ink == null || id != ink.Id) {
                 return new InkResult(ResultTypes.BadRequest);
             }
-            FillCIELab(ink);
+			FillCIELab(ink);
             context.Entry(ink).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return new InkResult(ResultTypes.Ok, ink.Adapt<InkDownloadDTO>());
@@ -80,7 +80,7 @@ namespace FountainPensNg.Server.Data.Repos {
         public async Task<InkResult> AddInk(InkUploadDTO dto) {
             var ink = dto.Adapt<Ink>();
             if (ink == null) return new InkResult(ResultTypes.BadRequest);
-            FillCIELab(ink);
+			FillCIELab(ink);
             context.Inks.Add(ink);
             await context.SaveChangesAsync();
             return new InkResult(ResultTypes.Ok, ink.Adapt<InkDownloadDTO>());
@@ -93,7 +93,7 @@ namespace FountainPensNg.Server.Data.Repos {
             await context.SaveChangesAsync();
             return new InkResult(ResultTypes.Ok);
         }
-        private void FillCIELab(Ink ink) {
+        private static void FillCIELab(Ink ink) {
             if (!string.IsNullOrWhiteSpace(ink.Color)) {
                 var cielab = ColorHelper.ToCIELAB(ink.Color);
                 ink.Color_CIELAB_L = cielab.L;

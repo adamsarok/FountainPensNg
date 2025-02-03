@@ -14,11 +14,11 @@ namespace FountainPensNg.Server.Helpers {
             if (h < 0) h += 360.0;
             return new CIELCH() { L = cieLab.L, C = c, H = h };
         }
-        public static double GetEuclideanDistance(CIELAB cielab1, CIELAB cielab2) {
+        public static double GetEuclideanDistance(CIELAB cieLab1, CIELAB cieLab2) {
             return GetEuclideanDistance(
-                cielab1.L, cielab2.L,
-                cielab1.A, cielab2.A,
-                cielab1.B, cielab2.B
+                cieLab1.L, cieLab2.L,
+                cieLab1.A, cieLab2.A,
+                cieLab1.B, cieLab2.B
             );
         }
         public static double GetEuclideanDistanceToReference(CIELCH cieLch) {
@@ -112,15 +112,15 @@ namespace FountainPensNg.Server.Helpers {
             var var_B = ((double)rgb.B / 255);
 
             if (var_R > 0.04045) var_R = Math.Pow((var_R + 0.055) / 1.055, 2.4);
-            else var_R = var_R / 12.92;
+            else var_R /= 12.92;
             if (var_G > 0.04045) var_G = Math.Pow((var_G + 0.055) / 1.055, 2.4);
-            else var_G = var_G / 12.92;
+            else var_G /= 12.92;
             if (var_B > 0.04045) var_B = Math.Pow((var_B + 0.055) / 1.055, 2.4);
-            else var_B = var_B / 12.92;
+            else var_B /= 12.92;
 
-            var_R = var_R * 100;
-            var_G = var_G * 100;
-            var_B = var_B * 100;
+            var_R *= 100;
+            var_G *= 100;
+            var_B *= 100;
 
             return new XYZ() {
                 X = var_R * 0.4124 + var_G * 0.3576 + var_B * 0.1805,

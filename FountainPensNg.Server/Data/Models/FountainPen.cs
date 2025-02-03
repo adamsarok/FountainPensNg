@@ -1,4 +1,5 @@
-﻿using NpgsqlTypes;
+﻿using Microsoft.EntityFrameworkCore;
+using NpgsqlTypes;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FountainPensNg.Server.Data.Models {
@@ -11,10 +12,10 @@ namespace FountainPensNg.Server.Data.Models {
         public string Color { get; set; } = "";
         public int Rating { get; set; }
         public string Nib { get; set; } = "";
-        public virtual List<InkedUp> InkedUps { get; set; } = new List<InkedUp>();
+        public virtual List<InkedUp> InkedUps { get; set; } = [];
         public string ImageObjectKey { get; set; } = "";
-        public NpgsqlTsVector? FullText { get; set; } = null;
-        public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
+        public required NpgsqlTsVector FullText { get; set; }
+		public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
         public DateTime ModifiedAt { get; set; }
     }
 }

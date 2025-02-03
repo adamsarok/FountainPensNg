@@ -1,6 +1,3 @@
-using FountainPensNg.Server.Data.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace FountainPensNg.Server.Data.DTO {
     public record InkDownloadDTO(
          int Id,

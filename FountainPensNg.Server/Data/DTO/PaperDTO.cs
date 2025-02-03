@@ -1,6 +1,4 @@
-﻿using NpgsqlTypes;
-
-namespace FountainPensNg.Server.Data.DTO {
+﻿namespace FountainPensNg.Server.Data.DTO {
     public record PaperDTO(
          int Id,
          string Maker,

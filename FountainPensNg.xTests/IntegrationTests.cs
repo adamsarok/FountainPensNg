@@ -1,4 +1,5 @@
 using FountainPensNg.Server.Data;
+using FountainPensNg.Server.Data.DTO;
 using FountainPensNg.Server.Data.Models;
 using Mapster;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FountainPensNg.xTests {
 
-    public class IntegrationTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
+	public class IntegrationTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
 
         [Fact]
         public async Task Test1() {

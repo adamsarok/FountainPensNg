@@ -1,11 +1,12 @@
-﻿using FountainPensNg.Server.Data.Models;
+﻿using FountainPensNg.Server.Data.DTO;
+using FountainPensNg.Server.Data.Models;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.Data.Repos {
-    public class FountainPensRepo(DataContext context) {
+	public class FountainPensRepo(DataContext context) {
 
         //public async Task<FountainPen> GetFountainPen(int id) {
         //    return await _context.FountainPens

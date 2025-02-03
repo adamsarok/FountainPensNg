@@ -1,11 +1,11 @@
 ﻿using Carter;
-using FountainPensNg.Server.Data.Models;
+using FountainPensNg.Server.Data.DTO;
 using FountainPensNg.Server.Data.Repos;
 using static FountainPensNg.Server.Data.Repos.FountainPensRepo;
 using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.API {
-    public class FountainPenModule : ICarterModule {
+	public class FountainPenModule : ICarterModule {
         public void AddRoutes(IEndpointRouteBuilder app) {
             app.MapGet("/api/FountainPens", async (FountainPensRepo repo) =>
                 await repo.GetFountainPens())
