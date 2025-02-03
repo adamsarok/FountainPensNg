@@ -9,7 +9,7 @@ namespace FountainPensNg.Server.Data.Models {
         public string Photo { get; set; } = "";
         public int Rating { get; set; }
         public string ImageObjectKey { get; set; } = "";
-        public NpgsqlTsVector? FullText { get; set; } = null;
+        public required NpgsqlTsVector FullText { get; set; }
         public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
         public DateTime ModifiedAt { get; set; }
     }

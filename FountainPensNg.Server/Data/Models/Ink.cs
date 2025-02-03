@@ -16,10 +16,8 @@ namespace FountainPensNg.Server.Data.Models {
         public int Rating { get; set; }
         public int Ml { get; set; }
         public string ImageObjectKey { get; set; } = "";
-        public NpgsqlTsVector? FullText { get; set; } = null;
+        public required NpgsqlTsVector FullText { get; set; }
         public virtual List<InkedUp>? InkedUps { get; set; }
-        //[JsonIgnore]
-        //public virtual List<FountainPen>? CurrentPens { get; set; } = new List<FountainPen>();
         public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
         public DateTime ModifiedAt { get; set; }
     }

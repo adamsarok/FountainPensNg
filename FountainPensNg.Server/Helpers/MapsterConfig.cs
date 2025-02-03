@@ -4,7 +4,7 @@ using Mapster;
 using static FountainPensNg.Server.Data.DTO.SearchResultDTO;
 
 namespace FountainPensNg.Server.Helpers {
-    public static class MapsterConfig {
+	public static class MapsterConfig {
         public static void RegisterMapsterConfiguration(this IServiceCollection services) {
 
             var config = TypeAdapterConfig.GlobalSettings;
