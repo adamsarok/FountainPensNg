@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 
 //TODO: fix ugly styling by hiding original button
@@ -16,8 +15,6 @@ export class ImageUploaderComponent {
 
   @Output() selectedFile = new EventEmitter<File | null>();
   
-  constructor(private httpClient: HttpClient
-  ) { }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
