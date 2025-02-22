@@ -1,10 +1,12 @@
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.DTO;
 using FountainPensNg.Server.Data.Models;
+using FountainPensNg.Server.Helpers;
 using Mapster;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using static FountainPensNg.Server.Helpers.ColorHelper;
 
 namespace FountainPensNg.xTests {
 
@@ -24,25 +26,12 @@ namespace FountainPensNg.xTests {
 
         }
 
-
         [Fact]
-        public void Mapster() {
-            var fountainPen = new FountainPen {
-                InkedUps =  {
-                    new() { IsCurrent = true, Ink = new Ink { Id = 1, InkName = "Blue Ink" }, MatchRating = 5 },
-                    new() { IsCurrent = false, Ink = new Ink { Id = 2, InkName = "Red Ink" }, MatchRating = 3 }
-                }
-            };
-
-            //var config = MapsterConfig.RegisterMappings();
-            //TypeAdapterConfig.GlobalSettings.Apply(config);
-
-            // Manual mapping
-            var dto = fountainPen.Adapt<FountainPenDownloadDTO>();
-
-            Console.WriteLine(dto.CurrentInk?.InkName); // Should print "Blue Ink"
-            Console.WriteLine(dto.CurrentInkId);     // Should print 1
-            Console.WriteLine(dto.CurrentInkRating); // Should print 5
-        }
+        public void Colors() {
+            var cielab = ColorHelper.ToCIELAB("#73D13E");
+            Assert.Equal(-52, Math.Truncate(cielab.A));
+			Assert.Equal(60, Math.Truncate(cielab.B));
+			Assert.Equal(75, Math.Truncate(cielab.L));
+		}
     }
 }

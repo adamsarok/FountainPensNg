@@ -60,6 +60,10 @@ jobs:
         DATABASE_URL: "postgresql://localhost:9999/placeholder"
        run: dotnet build
 
+     - name: Run tests with coverage
+       working-directory: ./FountainPensNg.xTests
+       run: dotnet test --configuration Release --collect:"XPlat Code Coverage"
+
      - name: Build and push API Docker image
        uses: docker/build-push-action@v6
        env:
