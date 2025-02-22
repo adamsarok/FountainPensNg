@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FountainPensNg.Server.Data {
     public class DataContext(DbContextOptions options) : DbContext(options) {
-		public DbSet<Ink> Inks { get; set; }
-        public DbSet<FountainPen> FountainPens { get; set; }
-        public DbSet<InkedUp> InkedUps { get; set; }
-        public DbSet<Paper> Papers { get; set; }
+		public virtual DbSet<Ink> Inks { get; set; }
+        public virtual DbSet<FountainPen> FountainPens { get; set; }
+        public virtual DbSet<InkedUp> InkedUps { get; set; }
+        public virtual DbSet<Paper> Papers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 

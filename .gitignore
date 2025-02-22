@@ -251,6 +251,7 @@ sysinfo.txt
 coverage.json
 coverage.opencover.xml
 coveragereport/
+coverage/
 coverage-report/
 datingapp.db
 
