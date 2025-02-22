@@ -11,7 +11,7 @@ namespace FountainPensNg.xTests {
 
 	public class IntegrationTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
 
-        [Fact (Skip = "Placeholder/example on DI")]
+        [Fact]
         public async Task DBContext() {
             var client = factory.CreateClient();
 
