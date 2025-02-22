@@ -1,18 +1,14 @@
 FountainPensNG: a web app for tracking fountain pens & inks
 
 ![Docker Image CI](https://github.com/adamsarok/FountainPensNg/actions/workflows/docker-image.yml/badge.svg)
+[![codecov](https://codecov.io/github/adamsarok/FountainPensNg/graph/badge.svg?token=4HATTWKM9V)](https://codecov.io/github/adamsarok/FountainPensNg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adamsarok_FountainPensNg&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=adamsarok_FountainPensNg)
 
-Client:
+Client: [![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/fountainpens-ng-cl.svg)](https://hub.docker.com/r/adamsarok/fountainpens-ng-cl)
 
-[![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/fountainpens-ng-cl.svg)](https://hub.docker.com/r/adamsarok/fountainpens-ng-cl)
+API: [![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/fountainpens-api.svg)](https://hub.docker.com/r/adamsarok/fountainpens-api)
 
-API:
-
-[![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/fountainpens-api.svg)](https://hub.docker.com/r/adamsarok/fountainpens-api)
-
-CDN:
-
-[![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/r2-api-go.svg)](https://hub.docker.com/r/adamsarok/r2-api-go)
+CDN: [![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/r2-api-go.svg)](https://hub.docker.com/r/adamsarok/r2-api-go)
 
 Sample docker compose connecting to a separate Postgres server:
 ```
