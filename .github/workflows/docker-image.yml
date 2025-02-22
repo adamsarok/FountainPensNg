@@ -64,6 +64,11 @@ jobs:
        working-directory: ./FountainPensNg.xTests
        run: dotnet test --configuration Release --collect:"XPlat Code Coverage"
 
+     - name: Upload coverage reports to Codecov
+       uses: codecov/codecov-action@v5
+       with:
+         token: ${{ secrets.CODECOV_TOKEN }}
+
      - name: Build and push API Docker image
        uses: docker/build-push-action@v6
        env:
