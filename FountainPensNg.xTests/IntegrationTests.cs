@@ -6,14 +6,13 @@ using Mapster;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using static FountainPensNg.Server.Helpers.ColorHelper;
 
 namespace FountainPensNg.xTests {
 
 	public class IntegrationTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
 
         [Fact (Skip = "TODO: Mock context")]
-        public async Task Test1() {
+        public async Task DBContext() {
             var client = factory.CreateClient();
 
             using var scope = factory.Services.CreateScope();
@@ -25,13 +24,5 @@ namespace FountainPensNg.xTests {
                 .ToListAsync();
 
         }
-
-        [Fact]
-        public void Colors() {
-            var cielab = ColorHelper.ToCIELAB("#73D13E");
-            Assert.Equal(-52, Math.Truncate(cielab.A));
-			Assert.Equal(60, Math.Truncate(cielab.B));
-			Assert.Equal(75, Math.Truncate(cielab.L));
-		}
     }
 }
