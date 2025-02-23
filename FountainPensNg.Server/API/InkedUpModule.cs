@@ -14,40 +14,26 @@ namespace FountainPensNg.Server.API {
 
             app.MapGet("/api/InkedUps/{id}", async (int id, InkedUpsRepo repo) => {
                 var inkedUp = await repo.GetInkedUp(id);
-                if (inkedUp == null) return Results.NotFound();
                 return Results.Ok(inkedUp);
             }).WithTags("InkedUps")
                 .WithName("GetInkedUp");
 
-            app.MapPut("/api/InkedUps/{id}", async (int id, InkedUpDTO dto, InkedUpsRepo repo) => {
-                var result = await repo.UpdateInkedUp(id, dto);
-                return result.ResultType switch {
-                    ResultTypes.Ok => Results.Ok(result.InkedUp),
-                    ResultTypes.NotFound => Results.NotFound(),
-                    ResultTypes.BadRequest => Results.BadRequest(),
-                    _ => Results.InternalServerError()
-                };
+            //TODO: remove id from params where id is in DTO
+            app.MapPut("/api/InkedUps/{id}", async (int id, InkedUpUploadDto dto, InkedUpsRepo repo) => {
+                var result = await repo.UpdateInkedUp(dto);
+                return Results.Ok(result);
             }).WithTags("InkedUps")
                 .WithName("PutInkedUp");
 
-            app.MapPost("/api/InkedUps/", async (InkedUpDTO dto, InkedUpsRepo repo) => {
+            app.MapPost("/api/InkedUps/", async (InkedUpUploadDto dto, InkedUpsRepo repo) => {
                 var result = await repo.AddInkedUp(dto);
-                return result.ResultType switch {
-                    ResultTypes.Ok => Results.CreatedAtRoute("GetInkedUp", new { id = result?.InkedUp?.Id }, result?.InkedUp),
-                    ResultTypes.NotFound => Results.NotFound(),
-                    ResultTypes.BadRequest => Results.BadRequest(),
-                    _ => Results.InternalServerError()
-                };
+                return Results.CreatedAtRoute("GetInkedUp", new { id = result?.Id }, result);
             }).WithTags("InkedUps")
                 .WithName("PostInkedUp");
 
             app.MapDelete("/api/InkedUps/{id}", async (int id, InkedUpsRepo repo) => {
-                var result = await repo.DeleteInkedUp(id);
-                return result.ResultType switch {
-                    ResultTypes.Ok => Results.NoContent(),
-                    ResultTypes.NotFound => Results.NotFound(),
-                    _ => Results.InternalServerError()
-                };
+                await repo.DeleteInkedUp(id);
+                return Results.NoContent();
             }).WithTags("InkedUps")
                 .WithName("DeleteInkedUp");
         }

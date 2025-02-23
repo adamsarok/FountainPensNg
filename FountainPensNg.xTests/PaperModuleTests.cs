@@ -9,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Drawing;
 using System.Net.Http.Json;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)] //runs 3 times faster? also prevents race condition in DB
 namespace FountainPensNg.xTests {
-
 	public class PaperModuleTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
 		static bool dbUp = false;
 		private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);

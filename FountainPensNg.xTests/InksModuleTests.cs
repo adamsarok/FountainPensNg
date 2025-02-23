@@ -22,7 +22,7 @@ namespace FountainPensNg.xTests {
 					using var context = scope.ServiceProvider.GetRequiredService<DataContext>();
 					var sql = "truncate table \"public\".\"Inks\" cascade";
 					await context.Database.ExecuteSqlRawAsync(sql);
-					context.Inks.AddRange(TestSeed.Inks);
+					context.Inks.AddRange(inksSeed);
 					await context.SaveChangesAsync();
 					dbUp = true;
 				}
@@ -30,6 +30,16 @@ namespace FountainPensNg.xTests {
 				semaphore.Release();
 			}
 		}
+		static readonly List<Ink> inksSeed = new List<Ink> {
+			new Ink { Id = 0, Maker = "Maker1", InkName = "InkForInkup1", Color = "#085172", Rating = 10
+				,FullText = NpgsqlTypes.NpgsqlTsVector.Parse("InkForInkup1")
+				,Comment = "InkedUpModuleTests"
+			},
+			new Ink { Id = 0, Maker = "Maker2", InkName = "InkForInkup2", Color = "#d00606", Rating = 5
+				,FullText = NpgsqlTypes.NpgsqlTsVector.Parse("InkForInkup2")
+				,Comment = "InkedUpModuleTests"
+			}
+		};
 		private async Task<Ink> GetFirst() {
 			using var scope = factory.Services.CreateScope();
 			using var context = scope.ServiceProvider.GetRequiredService<DataContext>();
