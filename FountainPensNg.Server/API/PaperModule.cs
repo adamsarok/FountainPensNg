@@ -22,33 +22,19 @@ namespace FountainPensNg.Server.API {
 
             app.MapPut("/api/Papers/{id}", async (int id, PaperDTO dto, PapersRepo repo) => {
                 var result = await repo.UpdatePaper(id, dto);
-                return result.ResultType switch {
-                    ResultTypes.Ok => Results.Ok(result.Paper),
-                    ResultTypes.NotFound => Results.NotFound(),
-                    ResultTypes.BadRequest => Results.BadRequest(),
-                    _ => Results.InternalServerError()
-                };
+                return Results.Ok(result);
             }).WithTags("Papers")
                 .WithName("PutPaper");
 
             app.MapPost("/api/Papers/", async (PaperDTO dto, PapersRepo repo) => {
                 var result = await repo.AddPaper(dto);
-                return result.ResultType switch {
-                    ResultTypes.Ok => Results.CreatedAtRoute("GetInk", new { id = result?.Paper?.Id }, result?.Paper),
-                    ResultTypes.NotFound => Results.NotFound(),
-                    ResultTypes.BadRequest => Results.BadRequest(),
-                    _ => Results.InternalServerError()
-                };
+                return Results.CreatedAtRoute("GetPaper", new { id = result?.Id }, result);
             }).WithTags("Papers")
                 .WithName("PostPaper");
 
             app.MapDelete("/api/Papers/{id}", async (int id, PapersRepo repo) => {
-                var result = await repo.DeletePaper(id);
-                return result.ResultType switch {
-                    ResultTypes.Ok => Results.NoContent(),
-                    ResultTypes.NotFound => Results.NotFound(),
-                    _ => Results.InternalServerError()
-                };
+                await repo.DeletePaper(id);
+                return Results.NoContent();
             }).WithTags("Papers")
                 .WithName("DeletePaper");
         }

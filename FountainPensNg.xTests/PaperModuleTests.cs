@@ -11,7 +11,7 @@ using System.Net.Http.Json;
 
 namespace FountainPensNg.xTests {
 
-	public class FountainPenModuleTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
+	public class PaperModuleTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
 		static bool dbUp = false;
 		private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
 		private async Task PrepareData() {          //fixtures don't have DI
@@ -20,9 +20,9 @@ namespace FountainPensNg.xTests {
 				if (!dbUp) {
 					using var scope = factory.Services.CreateScope();
 					using var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-					var sql = "truncate table \"public\".\"FountainPens\" cascade";
+					var sql = "truncate table \"public\".\"Papers\" cascade";
 					await context.Database.ExecuteSqlRawAsync(sql);
-					context.FountainPens.AddRange(TestSeed.FountainPens);
+					context.Papers.AddRange(TestSeed.Papers);
 					await context.SaveChangesAsync();
 					dbUp = true;
 				}
@@ -30,74 +30,74 @@ namespace FountainPensNg.xTests {
 				semaphore.Release();
 			}
 		}
-		private async Task<FountainPen> GetFirst() {
+		private async Task<Paper> GetFirst() {
 			using var scope = factory.Services.CreateScope();
 			using var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-		 	return await context.FountainPens.FirstAsync();
+		 	return await context.Papers.FirstAsync();
 		}
 
 		[Fact]
-		public async Task GetFountainPen() {
+		public async Task GetPaper() {
 			await PrepareData();
 			var pen = await GetFirst();
 			var client = factory.CreateClient();
-			var response = await client.GetAsync($"/api/fountainpens/{pen.Id}");
+			var response = await client.GetAsync($"/api/Papers/{pen.Id}");
 			response.EnsureSuccessStatusCode();
 
-			var fountainPens = await response.Content.ReadFromJsonAsync<FountainPenDownloadDTO>();
-			Assert.NotNull(fountainPens);
+			var inks = await response.Content.ReadFromJsonAsync<FountainPenDownloadDTO>();
+			Assert.NotNull(inks);
 		}
 
 		[Fact]
-		public async Task GetFountainPens() {
+		public async Task GetPapers() {
 			await PrepareData();
 			var client = factory.CreateClient();
 
-			var response = await client.GetAsync("/api/fountainpens");
+			var response = await client.GetAsync("/api/Papers");
 			response.EnsureSuccessStatusCode();
 
-			var fountainPens = await response.Content.ReadFromJsonAsync<IEnumerable<FountainPenDownloadDTO>>();
-			Assert.NotNull(fountainPens);
-			Assert.NotEmpty(fountainPens);
+			var inks = await response.Content.ReadFromJsonAsync<IEnumerable<PaperDTO>>();
+			Assert.NotNull(inks);
+			Assert.NotEmpty(inks);
 		}
 
 		[Fact]
-		public async Task UpdateFountainPen() {
+		public async Task UpdatePaper() {
 			await PrepareData();
 			var client = factory.CreateClient();
-			var pen = await GetFirst();
-			var dto = pen.Adapt<FountainPenUploadDTO>();
+			var ink = await GetFirst();
+			var dto = ink.Adapt<PaperDTO>();
 			var content = JsonContent.Create(dto);
-			var response = await client.PutAsync($"/api/fountainpens/{dto.Id}", content);
+			var response = await client.PutAsync($"/api/Papers/{dto.Id}", content);
 			response.EnsureSuccessStatusCode();
 
-			var fountainPens = await response.Content.ReadFromJsonAsync<FountainPenDownloadDTO>();
-			Assert.NotNull(fountainPens);
+			var inks = await response.Content.ReadFromJsonAsync<PaperDTO>();
+			Assert.NotNull(inks);
 		}
 
 		[Fact]
-		public async Task DeleteFountainPen() {
+		public async Task DeletePaper() {
 			await PrepareData();
 			var pen = await GetFirst();
 			var client = factory.CreateClient();
-			var response = await client.DeleteAsync($"/api/fountainpens/{pen.Id}");
+			var response = await client.DeleteAsync($"/api/Papers/{pen.Id}");
 			response.EnsureSuccessStatusCode();
 			Assert.True(true);
 		}
 
 		[Fact]
-		public async Task AddFountainPen() {
+		public async Task AddPaper() {
 			await PrepareData();
 			var client = factory.CreateClient();
-			var dto = new FountainPenUploadDTO(
-				Id: 0, Maker: "Maker3", ModelName: "Model3", Comment: "test", Photo: "", Color: "#085172",
-				Rating: 1, Nib: "F", CurrentInkId: null, CurrentInkRating: null, ImageObjectKey: "");
+			var dto = new PaperDTO(
+				Id: 0, Maker: "Maker3", PaperName: Guid.NewGuid().ToString(), Comment: "test", Photo: "",
+				Rating: 1, ImageObjectKey: "", InsertedAt: DateTime.UtcNow, ModifiedAt: DateTime.UtcNow);
 			var content = JsonContent.Create(dto);
-			var response = await client.PostAsync($"/api/fountainpens", content);
+			var response = await client.PostAsync($"/api/Papers", content);
 			response.EnsureSuccessStatusCode();
 
-			var fountainPens = await response.Content.ReadFromJsonAsync<FountainPenDownloadDTO>();
-			Assert.NotNull(fountainPens);
+			var inks = await response.Content.ReadFromJsonAsync<PaperDTO>();
+			Assert.NotNull(inks);
 		}
 	}
 }

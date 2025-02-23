@@ -1,5 +1,6 @@
 ﻿using FountainPensNg.Server.Data.DTO;
 using FountainPensNg.Server.Data.Models;
+using FountainPensNg.Server.Exceptions;
 using FountainPensNg.Server.Helpers;
 using FountainPensNg.Server.Migrations;
 using Humanizer;
@@ -66,32 +67,28 @@ namespace FountainPensNg.Server.Data.Repos {
                 .FindAsync(id);
             return r.Adapt<InkDownloadDTO>();
         }
-        public record InkResult(ResultTypes ResultType, InkDownloadDTO? Ink = null);
-        public async Task<InkResult> UpdateInk(int id, InkUploadDTO dto) {
+        public async Task<InkDownloadDTO> UpdateInk(int id, InkUploadDTO dto) {
             var ink = dto.Adapt<Ink>();
-            if (ink == null || id != ink.Id) {
-                return new InkResult(ResultTypes.BadRequest);
-            }
+            if (ink == null || id != ink.Id) throw new NotFoundException();
 			FillCIELab(ink);
             context.Entry(ink).State = EntityState.Modified;
             await context.SaveChangesAsync();
-            return new InkResult(ResultTypes.Ok, ink.Adapt<InkDownloadDTO>());
+            return ink.Adapt<InkDownloadDTO>();
         }
-        public async Task<InkResult> AddInk(InkUploadDTO dto) {
+        public async Task<InkDownloadDTO> AddInk(InkUploadDTO dto) {
             var ink = dto.Adapt<Ink>();
-            if (ink == null) return new InkResult(ResultTypes.BadRequest);
+            if (ink == null) throw new MappingException();
 			FillCIELab(ink);
             context.Inks.Add(ink);
             await context.SaveChangesAsync();
-            return new InkResult(ResultTypes.Ok, ink.Adapt<InkDownloadDTO>());
+            return ink.Adapt<InkDownloadDTO>();
         }
-        public async Task<InkResult> DeleteInk(int id) {
+        public async Task DeleteInk(int id) {
             //TODO: what if I delete the active inkedup?
             var inkedUp = await context.Inks.FindAsync(id);
-            if (inkedUp == null) return new InkResult(ResultTypes.NotFound);
+            if (inkedUp == null) throw new NotFoundException();
             context.Inks.Remove(inkedUp);
             await context.SaveChangesAsync();
-            return new InkResult(ResultTypes.Ok);
         }
         private static void FillCIELab(Ink ink) {
             if (!string.IsNullOrWhiteSpace(ink.Color)) {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FountainPensNg.Server.Data.Repos {
     public class FinderRepo(DataContext context) {
-        public async Task<ActionResult<IEnumerable<SearchResultDTO>>> FindAll(string fulltext) {
+        public async Task<IEnumerable<SearchResultDTO>> FindAll(string fulltext) {
             var pens = await context
                 .FountainPens
                 .Where(p => string.IsNullOrWhiteSpace(fulltext)

@@ -14,40 +14,25 @@ namespace FountainPensNg.Server.API {
 
             app.MapGet("/api/Inks/{id}", async (int id, InksRepo repo) => {
                 var ink = await repo.GetInk(id);
-                if (ink == null) return Results.NotFound();
                 return Results.Ok(ink);
             }).WithTags("Inks")
                 .WithName("GetInk");
 
             app.MapPut("/api/Inks/{id}", async (int id, InkUploadDTO dto, InksRepo repo) => {
                 var result = await repo.UpdateInk(id, dto);
-                return result.ResultType switch {
-                    ResultTypes.Ok => Results.Ok(result.Ink),
-                    ResultTypes.NotFound => Results.NotFound(),
-                    ResultTypes.BadRequest => Results.BadRequest(),
-                    _ => Results.InternalServerError()
-                };
+                return Results.Ok(result);
             }).WithTags("Inks")
                 .WithName("PutInk");
 
             app.MapPost("/api/Inks/", async (InkUploadDTO dto, InksRepo repo) => {
                 var result = await repo.AddInk(dto);
-                return result.ResultType switch {
-                    ResultTypes.Ok => Results.CreatedAtRoute("GetInk", new { id = result?.Ink?.Id }, result?.Ink),
-                    ResultTypes.NotFound => Results.NotFound(),
-                    ResultTypes.BadRequest => Results.BadRequest(),
-                    _ => Results.InternalServerError()
-                };
+                return Results.CreatedAtRoute("GetInk", new { id = result?.Id }, result);
             }).WithTags("Inks")
                 .WithName("PostInk");
 
             app.MapDelete("/api/Inks/{id}", async (int id, InksRepo repo) => {
-                var result = await repo.DeleteInk(id);
-                return result.ResultType switch {
-                    ResultTypes.Ok => Results.NoContent(),
-                    ResultTypes.NotFound => Results.NotFound(),
-                    _ => Results.InternalServerError()
-                };
+                await repo.DeleteInk(id);
+                return Results.NoContent();
             }).WithTags("Inks")
                 .WithName("DeleteInk");
         }

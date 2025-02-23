@@ -1,5 +1,6 @@
 ﻿using FountainPensNg.Server.Data.DTO;
 using FountainPensNg.Server.Data.Models;
+using FountainPensNg.Server.Exceptions;
 using FountainPensNg.Server.Helpers;
 using FountainPensNg.Server.Migrations;
 using Humanizer;
@@ -21,30 +22,27 @@ namespace FountainPensNg.Server.Data.Repos {
                 .FirstOrDefaultAsync(x => x.Id == id);
             return r.Adapt<PaperDTO>();
         }
-        public record PaperResult(ResultTypes ResultType, PaperDTO Paper = null);
-        public async Task<PaperResult> UpdatePaper(int id, PaperDTO dto) {
+        public async Task<PaperDTO> UpdatePaper(int id, PaperDTO dto) {
             var paper = dto.Adapt<Paper>();
-            if (paper == null || id != paper.Id) {
-                return new PaperResult(ResultTypes.BadRequest);
-            }
+            if (paper == null || id != paper.Id) throw new NotFoundException();
+
                 context.Entry(paper).State = EntityState.Modified;
             paper.ModifiedAt = DateTime.UtcNow;
             await context.SaveChangesAsync();
-            return new PaperResult(ResultTypes.Ok, paper.Adapt<PaperDTO>());
+            return paper.Adapt<PaperDTO>();
         }
-        public async Task<PaperResult> AddPaper(PaperDTO dto) {
-            var Paper = dto.Adapt<Paper>();
-            if (Paper == null) return new PaperResult(ResultTypes.BadRequest);
-            context.Papers.Add(Paper);
+        public async Task<PaperDTO> AddPaper(PaperDTO dto) {
+            var paper = dto.Adapt<Paper>();
+            if (paper == null) throw new MappingException();
+            context.Papers.Add(paper);
             await context.SaveChangesAsync();
-            return new PaperResult(ResultTypes.Ok, Paper.Adapt<PaperDTO>());
+            return paper.Adapt<PaperDTO>();
         }
-        public async Task<PaperResult> DeletePaper(int id) {
+        public async Task DeletePaper(int id) {
             var Paper = await context.Papers.FindAsync(id);
-            if (Paper == null) return new PaperResult(ResultTypes.NotFound);
-            context.Papers.Remove(Paper);
+            if (Paper == null) throw new NotFoundException();
+			context.Papers.Remove(Paper);
             await context.SaveChangesAsync();
-            return new PaperResult(ResultTypes.Ok);
         }
     }
 }
