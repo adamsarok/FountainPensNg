@@ -69,6 +69,15 @@ jobs:
         CONNECTION_STRING: ${{ secrets.POSTGRES_CONNSTR }}
        run: dotnet build
 
+     - name: Install EF Core CLI tools
+       run: dotnet tool install --global dotnet-ef
+
+     - name: Update database
+       working-directory: ./FountainPensNg.Server
+       env:
+        CONNECTION_STRING: ${{ secrets.POSTGRES_CONNSTR }}
+       run: dotnet ef database update
+
      - name: Run tests with coverage
        working-directory: ./FountainPensNg.xTests
        env:
