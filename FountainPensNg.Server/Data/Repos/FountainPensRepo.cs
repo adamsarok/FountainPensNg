@@ -13,7 +13,8 @@ namespace FountainPensNg.Server.Data.Repos {
                 .Include(fp => fp.InkedUps)
                 .ThenInclude(iu => iu.Ink)
                 .FirstOrDefaultAsync(f => f.Id == id);
-            return pen.Adapt<FountainPenDownloadDTO>(); //projectToType generates insanely complex query
+			if (pen == null) throw new NotFoundException();
+			return pen.Adapt<FountainPenDownloadDTO>(); //projectToType generates insanely complex query
 		}
 
         public async Task<IEnumerable<FountainPenDownloadDTO>> GetFountainPens() {

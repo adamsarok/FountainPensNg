@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using FountainPensNg.Server.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FountainPensNg.Server.Helpers {
@@ -11,7 +12,7 @@ namespace FountainPensNg.Server.Helpers {
                 exception, "Exception occurred: {Message}", exception.Message);
 
             var problemDetails = new ProblemDetails {
-                Status = StatusCodes.Status500InternalServerError,
+                Status = exception is NotFoundException ? StatusCodes.Status404NotFound : StatusCodes.Status500InternalServerError,
                 Title = "Server error",
                 Detail = exception.Message
             };
