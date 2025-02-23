@@ -21,12 +21,8 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 string? conn;
-if (builder.Environment.IsDevelopment()) conn = builder.Configuration.GetConnectionString("DefaultConnection");
-else {
-    conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-    if (string.IsNullOrWhiteSpace(conn)) conn = builder.Configuration.GetConnectionString("DefaultConnection");
-}
-
+conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+if (string.IsNullOrWhiteSpace(conn)) conn = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty"); //bad ide to throw here?
 
 builder.Services.AddDbContextFactory<DataContext>(opt =>
@@ -45,10 +41,6 @@ var app = builder.Build();
 app.UseExceptionHandler();
 app.MapCarter();
 
-#warning todo!!!
-//app.UseMiddleware<ExceptionMiddleware>();
-//app.UseHttpsRedirection();
-
 app.UseCors(x => x.AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials()
@@ -63,7 +55,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+//app.UseHttpsRedirection(); //TODO
 
 app.UseAuthorization();
 
