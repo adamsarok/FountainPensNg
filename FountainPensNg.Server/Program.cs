@@ -3,14 +3,11 @@ using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Repos;
 using FountainPensNg.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.AspNetCore.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {
     options.CustomSchemaIds(type => type.ToString());
@@ -23,7 +20,7 @@ builder.Services.AddProblemDetails();
 string? conn;
 conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 if (string.IsNullOrWhiteSpace(conn)) conn = builder.Configuration.GetConnectionString("DefaultConnection");
-if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty"); //bad ide to throw here?
+if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty");
 
 builder.Services.AddDbContextFactory<DataContext>(opt =>
     opt.UseNpgsql(conn));
