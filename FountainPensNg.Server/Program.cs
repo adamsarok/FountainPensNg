@@ -2,6 +2,7 @@ using Carter;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Repos;
 using FountainPensNg.Server.Helpers;
+using HealthChecks.UI.Client;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,8 @@ if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is e
 
 builder.Services.AddDbContextFactory<DataContext>(opt =>
     opt.UseNpgsql(conn));
+builder.Services.AddHealthChecks()
+	.AddNpgSql(conn);
 
 builder.Services.RegisterMapsterConfiguration();
 
@@ -59,7 +62,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
-//app.MapFallbackToController("Index", "Fallback"); //???
+
+app.UseHealthChecks("/api/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions {
+	ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();
 
