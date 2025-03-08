@@ -18,11 +18,9 @@ builder.Services.AddCarter();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-string? conn;
-conn = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-if (string.IsNullOrWhiteSpace(conn)) conn = builder.Configuration.GetConnectionString("DefaultConnection");
+string? conn = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty");
-
+ 
 builder.Services.AddDbContextFactory<DataContext>(opt =>
     opt.UseNpgsql(conn));
 builder.Services.AddHealthChecks()
