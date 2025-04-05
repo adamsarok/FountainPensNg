@@ -1,3 +1,9 @@
+<div class="filter-container">
+  <input type="color" [(ngModel)]="selectedColor" />
+  <button mat-raised-button color="primary" (click)="applyFilter()">Filter</button>
+  <button mat-raised-button (click)="clearFilter()">Clear</button>
+</div>
+
 <table mat-table [dataSource]="dataSource()" matSort (matSortChange)="sortData($event)">
   <ng-container matColumnDef="maker">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Maker </th>
