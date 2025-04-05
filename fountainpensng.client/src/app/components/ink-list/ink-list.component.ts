@@ -10,10 +10,17 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ColorService } from '../../services/color.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { MatSliderModule } from '@angular/material/slider';
+import {MatCardModule} from '@angular/material/card';
 @Component({
   selector: 'app-ink-list',
-  imports: [MatTableModule, MatSortModule, CommonModule, FormsModule, MatButtonModule],
+  imports: [MatTableModule,
+    MatSortModule,
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatSliderModule,
+    MatCardModule],
   templateUrl: './ink-list.component.html',
   styleUrl: './ink-list.component.css'
 })
@@ -100,9 +107,11 @@ export class InkListComponent implements OnInit {
         this.showSnack('Error filtering by color: ' + err);
       }
     });
-   }
+  }
 
   clearFilter() {
+    this.selectedColor = '#000000';
+    this.distanceThreshold = 50;
     this.dataSource.set(this.originalData);
   }
 }
