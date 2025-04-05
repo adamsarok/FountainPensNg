@@ -10,8 +10,5 @@ export interface InkForListDTO {
   oneCurrentPenMaker: string;
   oneCurrentPenModelName: string;
   oneCurrentPenModelColor: string;
-  color_CIELAB_L: number;
-  color_CIELAB_a: number;
-  color_CIELAB_b: number;
   cieLch_sort: number;
 }

@@ -77,7 +77,7 @@ export class InkComponent implements OnInit {
     private zone: NgZone,
     private route: ActivatedRoute,
     private r2: R2UploadService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   showSnack(msg: string): void {
