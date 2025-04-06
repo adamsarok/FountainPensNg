@@ -12,6 +12,7 @@ import { ColorService } from '../../services/color.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatCardModule} from '@angular/material/card';
+import { ColorFilterComponent, ColorFilterEvent } from '../color-filter/color-filter.component';
 @Component({
   selector: 'app-ink-list',
   imports: [MatTableModule,
@@ -20,7 +21,9 @@ import {MatCardModule} from '@angular/material/card';
     FormsModule,
     MatButtonModule,
     MatSliderModule,
-    MatCardModule],
+    MatCardModule,
+    ColorFilterComponent
+  ],
   templateUrl: './ink-list.component.html',
   styleUrl: './ink-list.component.css'
 })
@@ -34,8 +37,6 @@ export class InkListComponent implements OnInit {
 
   dataSource = signal<InkForListDTO[]>([]);
   originalData: InkForListDTO[] = [];
-  selectedColor: string = '#000000';
-  distanceThreshold: number = 50;
 
   constructor(private inkService: InkService,
     private router: Router,
@@ -91,27 +92,14 @@ export class InkListComponent implements OnInit {
     });
   }
 
-  applyFilter() {
-    if (!this.selectedColor) {
-      this.dataSource.set(this.originalData);
-      return;
-    }
-    this.colorService.getCieLchDistance(this.selectedColor).subscribe({
-      next: result => {
-        const filteredData = this.originalData.filter(ink => {
-          return Math.abs(ink.cieLch_sort - result) < this.distanceThreshold;
-        });
-        this.dataSource.set(filteredData);
-      },
-      error: (err) => {
-        this.showSnack('Error filtering by color: ' + err);
-      }
+  handleApplyFilter(event: ColorFilterEvent) {
+    const filteredData = this.originalData.filter(ink => {
+      return Math.abs(ink.cieLch_sort - event.cieLchDistance) < event.threshold;
     });
+    this.dataSource.set(filteredData);
   }
 
-  clearFilter() {
-    this.selectedColor = '#000000';
-    this.distanceThreshold = 50;
+  handleClearFilter() {
     this.dataSource.set(this.originalData);
   }
 }

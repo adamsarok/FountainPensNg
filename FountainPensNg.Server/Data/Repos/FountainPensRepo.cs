@@ -1,6 +1,7 @@
 ﻿using FountainPensNg.Server.Data.DTO;
 using FountainPensNg.Server.Data.Models;
 using FountainPensNg.Server.Exceptions;
+using FountainPensNg.Server.Helpers;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,14 +35,13 @@ namespace FountainPensNg.Server.Data.Repos {
 
             var find = await context.FountainPens.FindAsync(fountainPen.Id);
             if (find == null) throw new NotFoundException();
-
 			context.Entry(find).CurrentValues.SetValues(fountainPen);
             find.ModifiedAt = DateTime.UtcNow;
-
             await context.SaveChangesAsync();
 
             return fountainPen.Adapt<FountainPenDownloadDTO>();
         }
+
         public async Task<FountainPenDownloadDTO> AddFountainPen(FountainPenUploadDTO dto) {
             var fountainPen = dto.Adapt<FountainPen>();
             if (fountainPen == null) throw new NotFoundException();

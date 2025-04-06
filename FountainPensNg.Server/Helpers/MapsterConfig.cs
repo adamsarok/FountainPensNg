@@ -25,8 +25,8 @@ namespace FountainPensNg.Server.Helpers {
                      src => src.InkedUps
                                .Where(x => x.IsCurrent)
                                .Select(x => x.MatchRating)
-                               .FirstOrDefault());
-
+                               .FirstOrDefault())
+                .Map(dest => dest.CieLch_sort, src => ColorHelper.GetEuclideanDistanceToReference(src.Color));
 
             config.NewConfig<InkedUp, InkedUpDTO>()
                 .Map(dest => dest.PenMaker,

@@ -36,12 +36,6 @@ namespace FountainPensNg.xTests {
 			var cielab = new ColorHelper.CIELAB() { A = 1, B = 15, L = 50 };
 			Assert.Equal(0, ColorHelper.GetEuclideanDistance(cielab, cielab));
 		}
-
-		[Fact]
-		public void GetEuclideanDistanceToReferenceCieLab() {
-			var cielab = new ColorHelper.CIELAB() { A = 0, B = 0, L = 0 };
-			Assert.Equal(0, ColorHelper.GetEuclideanDistanceToReference(cielab));
-		}
 		[Fact]
 		public void GetEuclideanDistanceToReferenceCieLch() {
 			var cielch = new ColorHelper.CIELCH() { C = 0, H = 0, L = 0 };

@@ -19,16 +19,7 @@ namespace FountainPensNg.Server.Data.Repos {
             List<InkDownloadDTO> result = [];
             foreach (var ink in inks) {
                 var pen = ink.InkedUps.FirstOrDefault()?.FountainPen;
-                double cieLch_sort = 0;
-                if (ink.Color_CIELAB_L.HasValue && ink.Color_CIELAB_a.HasValue && ink.Color_CIELAB_b.HasValue) {
-                    var cieLab = new CIELAB() {
-                        L = ink.Color_CIELAB_L.Value,
-                        A = ink.Color_CIELAB_a.Value,
-                        B = ink.Color_CIELAB_b.Value
-                    };
-                    var cieLch = ColorHelper.ToCieLch(cieLab);
-                    cieLch_sort = ColorHelper.GetEuclideanDistanceToReference(cieLch); 
-                }
+                double cieLch_sort = ColorHelper.GetEuclideanDistanceToReference(ink.Color_CIELAB_L, ink.Color_CIELAB_a, ink.Color_CIELAB_b);
                 result.Add(new InkDownloadDTO(
                     ink.Id,
                     ink.Maker,

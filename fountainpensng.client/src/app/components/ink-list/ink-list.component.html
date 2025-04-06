@@ -1,18 +1,7 @@
-<mat-card>
-  <mat-card-content>
-    <div class="filter-container">
-      <input type="color" [(ngModel)]="selectedColor" />
-      <div class="threshold-slider">
-        <mat-slider [min]="5" [max]="100" [step]="5" thumbLabel>
-          <input matSliderThumb [(ngModel)]="distanceThreshold" #slider>
-        </mat-slider>
-        <p>Threshold: {{ distanceThreshold }}</p>
-      </div>
-      <button mat-raised-button color="primary" (click)="applyFilter()">Filter</button>
-      <button mat-raised-button (click)="clearFilter()">Clear</button>
-    </div>
-  </mat-card-content>
-</mat-card>
+<app-color-filter
+  (applyFilterEvent)="handleApplyFilter($event)"
+  (clearFilterEvent)="handleClearFilter()"
+></app-color-filter>
 
 <table mat-table [dataSource]="dataSource()" matSort (matSortChange)="sortData($event)">
   <ng-container matColumnDef="maker">

@@ -6,10 +6,16 @@ import { PenService } from '../../services/pen.service';
 import { FountainPen } from '../../../dtos/FountainPen';
 import { CommonModule } from '@angular/common';
 import { ComparerService } from '../../services/comparer.service';
+import { ColorFilterComponent, ColorFilterEvent } from '../color-filter/color-filter.component';
 
 @Component({
     selector: 'app-pen-list',
-    imports: [MatTableModule, MatSortModule, CommonModule],
+    imports: [
+      MatTableModule, 
+      MatSortModule, 
+      CommonModule,
+      ColorFilterComponent
+    ],
     templateUrl: './pen-list.component.html',
     styleUrl: './pen-list.component.css'
 })
@@ -23,11 +29,13 @@ export class PenListComponent implements OnInit {
     'currentInk',
   ];
   dataSource = signal<FountainPen[]>([]);
+  originalData: FountainPen[] = [];
 
   ngOnInit(): void {
     this.penService.getPens().subscribe({
       next: (r) => {
         this.dataSource.set(r);
+        this.originalData = r;
       },
     });
   }
@@ -59,5 +67,17 @@ export class PenListComponent implements OnInit {
           return 0;
       }
     }));
+  }
+  handleApplyFilter(event: ColorFilterEvent) {
+    console.log(event);
+    console.log(this.originalData);
+    const filteredData = this.originalData.filter(pen => {
+      return Math.abs(pen.cieLch_sort - event.cieLchDistance) < event.threshold;
+    });
+    this.dataSource.set(filteredData);
+  }
+
+  handleClearFilter() {
+    this.dataSource.set(this.originalData);
   }
 }

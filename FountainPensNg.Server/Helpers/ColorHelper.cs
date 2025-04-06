@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using FountainPensNg.Server.Data.Models;
+using System.Drawing;
 using static FountainPensNg.Server.Helpers.ColorHelper;
 
 namespace FountainPensNg.Server.Helpers {
@@ -21,23 +22,31 @@ namespace FountainPensNg.Server.Helpers {
                 cieLab1.B, cieLab2.B
             );
         }
-        public static double GetEuclideanDistanceToReference(CIELCH cieLch) {
+        public static double GetEuclideanDistanceToReference(string hex) {
+			var cielab = ToCIELAB(hex);
+			var cielch = ToCieLch(cielab);
+			return ColorHelper.GetEuclideanDistanceToReference(cielch);
+		}
+		public static double GetEuclideanDistanceToReference(CIELCH cieLch) {
             return GetEuclideanDistance(
                 cieLch.L, 0,
                 cieLch.C, 0,
                 cieLch.H, 0
             );
         }
-        public static double GetEuclideanDistanceToReference(CIELAB cieLab) {
-            //TODO: this is still not good looking sort order, try https://christopherbird.co.uk/posts/sorting-colors/ 
-            //also not good, even though L is supposed to be the most significant?
-            //ink.Color_CIELAB_L * 1000000 + ink.Color_CIELAB_a * 1000 + ink.Color_CIELAB_b,
-            return GetEuclideanDistance(
-                cieLab.L, 0,
-                cieLab.A, 0,
-                cieLab.B, 0
-            );
-        }
+        public static double GetEuclideanDistanceToReference(double? L, double? a, double? b) {
+			double cieLch_sort = 0;
+			if (L.HasValue && a.HasValue && b.HasValue) {
+				var cieLab = new CIELAB() {
+					L = L.Value,
+					A = a.Value,
+					B = b.Value
+				};
+				var cieLch = ColorHelper.ToCieLch(cieLab);
+				cieLch_sort = ColorHelper.GetEuclideanDistanceToReference(cieLch);
+			}
+            return cieLch_sort;
+		}
         public static double GetEuclideanDistance(XYZ xyz1, XYZ xyz2) {
             return GetEuclideanDistance(
                 xyz1.X, xyz2.X,

@@ -81,7 +81,7 @@ namespace FountainPensNg.Server.Migrations
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("FullText"), "GIN");
 
-                    b.ToTable("FountainPens");
+                    b.ToTable("FountainPens", (string)null);
                 });
 
             modelBuilder.Entity("FountainPensNg.Server.Data.Models.Ink", b =>
@@ -153,7 +153,7 @@ namespace FountainPensNg.Server.Migrations
                     b.HasIndex("Maker", "InkName")
                         .IsUnique();
 
-                    b.ToTable("Inks");
+                    b.ToTable("Inks", (string)null);
                 });
 
             modelBuilder.Entity("FountainPensNg.Server.Data.Models.InkedUp", b =>
@@ -189,7 +189,7 @@ namespace FountainPensNg.Server.Migrations
 
                     b.HasIndex("InkId");
 
-                    b.ToTable("InkedUps");
+                    b.ToTable("InkedUps", (string)null);
                 });
 
             modelBuilder.Entity("FountainPensNg.Server.Data.Models.Paper", b =>
@@ -242,7 +242,7 @@ namespace FountainPensNg.Server.Migrations
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("FullText"), "GIN");
 
-                    b.ToTable("Papers");
+                    b.ToTable("Papers", (string)null);
                 });
 
             modelBuilder.Entity("FountainPensNg.Server.Data.Models.InkedUp", b =>
