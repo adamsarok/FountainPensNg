@@ -27,7 +27,7 @@ namespace FountainPensNg.Server.Data.Repos {
 				currentInk?.Rating,
 				pen.ImageObjectKey,
 				pen.InkedUps.Adapt<List<InkedUpDTO>>(),
-				currentInk.Adapt<InkDownloadDTO>(),
+				currentInk?.Adapt<InkDownloadDTO>(),
 				ColorHelper.GetEuclideanDistanceToReference(pen.Color),
 				pen.InsertedAt,
 				pen.ModifiedAt
@@ -69,7 +69,7 @@ namespace FountainPensNg.Server.Data.Repos {
 
 		public async Task<FountainPenDownloadDTO> AddFountainPen(FountainPenUploadDTO dto) {
 			var fountainPen = dto.Adapt<FountainPen>();
-			if (fountainPen == null) throw new NotFoundException();
+			if (fountainPen == null) throw new MappingException();
 			context.FountainPens.Add(fountainPen);
 			//TODO: auto add inkedup 
 			// if (fountainPen.CurrentInkId.HasValue && fountainPen.CurrentInkId > 0) {

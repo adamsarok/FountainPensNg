@@ -52,6 +52,7 @@ namespace FountainPensNg.Server.Data.Repos {
 			var ink = await context
 				.Inks
 				.FindAsync(id);
+			if (ink == null) throw new NotFoundException();
 			return ConstructInkDownloadDTO(ink);
 		}
 		public async Task<InkDownloadDTO> UpdateInk(int id, InkUploadDTO dto) {
