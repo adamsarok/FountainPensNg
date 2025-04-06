@@ -14,4 +14,5 @@ export interface FountainPen {
   currentInkRating: number | null;
   imageObjectKey: string;
   imageUrl: string;
+  cieLch_sort: number;
 }

@@ -13,6 +13,7 @@
 		string ImageObjectKey,
 		List<InkedUpDTO>? InkedUps,
 		InkDownloadDTO? CurrentInk,
+		double CieLch_sort,
 		DateTime InsertedAt,
 		DateTime ModifiedAt);
 }

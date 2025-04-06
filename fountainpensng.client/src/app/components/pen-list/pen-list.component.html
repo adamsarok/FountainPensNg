@@ -1,3 +1,8 @@
+<app-color-filter
+  (applyFilterEvent)="handleApplyFilter($event)"
+  (clearFilterEvent)="handleClearFilter()"
+></app-color-filter>
+
 <table mat-table [dataSource]="dataSource()" matSort (matSortChange)="sortData($event)">
   <ng-container matColumnDef="maker">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Maker </th>

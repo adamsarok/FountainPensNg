@@ -9,24 +9,7 @@ namespace FountainPensNg.Server.Helpers {
 
             var config = TypeAdapterConfig.GlobalSettings;
 
-            //TODO: this works but if used with ProjectTo generates an absolutely bonkers query with 40+ joins/subqueries
-            config.NewConfig<FountainPen, FountainPenDownloadDTO>()
-                .Map(dest => dest.CurrentInk,
-                     src => src.InkedUps
-                               .Where(x => x.IsCurrent)
-                               .Select(x => x.Ink)
-                               .FirstOrDefault())
-                .Map(dest => dest.CurrentInkId,
-                     src => src.InkedUps
-                               .Where(x => x.IsCurrent)
-                               .Select(x => x.Ink.Id)
-                               .FirstOrDefault())
-                .Map(dest => dest.CurrentInkRating,
-                     src => src.InkedUps
-                               .Where(x => x.IsCurrent)
-                               .Select(x => x.MatchRating)
-                               .FirstOrDefault());
-
+            //TODO: fountainPen mapping already broke silently. check if other mappings still work, if not remove ALL custom configs and map manually
 
             config.NewConfig<InkedUp, InkedUpDTO>()
                 .Map(dest => dest.PenMaker,
