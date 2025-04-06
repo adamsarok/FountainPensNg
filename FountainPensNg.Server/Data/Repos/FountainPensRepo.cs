@@ -9,7 +9,7 @@ using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.Data.Repos {
 	public class FountainPensRepo(DataContext context) {
-		private static FountainPenDownloadDTO ConstructInkDownloadDTO(FountainPen pen) {
+		private static FountainPenDownloadDTO ConstructPenDownloadDTO(FountainPen pen) {
 			var currentInk = pen.InkedUps
 				.Where(x => x.IsCurrent)
 				.Select(x => x.Ink)
@@ -39,7 +39,7 @@ namespace FountainPensNg.Server.Data.Repos {
 				.ThenInclude(iu => iu.Ink)
 				.FirstOrDefaultAsync(f => f.Id == id);
 			if (pen == null) throw new NotFoundException();
-			return ConstructInkDownloadDTO(pen);
+			return ConstructPenDownloadDTO(pen);
 		}
 		public async Task<IEnumerable<FountainPenDownloadDTO>> GetFountainPens() {
 			var pens = await context
@@ -48,7 +48,7 @@ namespace FountainPensNg.Server.Data.Repos {
 				.ThenInclude(inkup => inkup.Ink)
 				.ToListAsync();
 			var result = new List<FountainPenDownloadDTO>();
-			foreach ( var pen in pens) result.Add(ConstructInkDownloadDTO(pen));
+			foreach ( var pen in pens) result.Add(ConstructPenDownloadDTO(pen));
 			return result;
 		}
 		public bool FountainPenExists(int id) {

@@ -34,7 +34,7 @@ namespace FountainPensNg.Server.Data.Repos {
 				pen?.Color,
 				ink.ImageObjectKey,
 				ColorHelper.GetEuclideanDistanceToReference(ink.Color_CIELAB_L, ink.Color_CIELAB_a, ink.Color_CIELAB_b),
-				ink.InkedUps.Adapt<List<InkedUpDTO>>()
+				ink.InkedUps?.Adapt<List<InkedUpDTO>>()
 				);
 		}
 
@@ -51,7 +51,9 @@ namespace FountainPensNg.Server.Data.Repos {
 		public async Task<InkDownloadDTO?> GetInk(int id) {
 			var ink = await context
 				.Inks
-				.FindAsync(id);
+				.Include(iu => iu.InkedUps.Where(iu => iu.IsCurrent))
+				.ThenInclude(p => p.FountainPen)
+				.FirstOrDefaultAsync(x => x.Id == id);
 			if (ink == null) throw new NotFoundException();
 			return ConstructInkDownloadDTO(ink);
 		}
