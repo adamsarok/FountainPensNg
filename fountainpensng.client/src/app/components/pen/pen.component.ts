@@ -66,6 +66,7 @@ export class PenComponent implements OnInit {
     inkedUps: [],
     currentInkId: 0,
     currentInkRating: 0,
+    currentInkComment: '',
     imageObjectKey: '',
     imageUrl: '',
     cieLch_sort: 0,
@@ -124,6 +125,7 @@ export class PenComponent implements OnInit {
     this.inkupForm = this.fb.group({
       currentInk: this.currentInk,
       currentInkRating: [''],
+      currentInkComment: ['']
     });
 
     if (this.pen$) {
@@ -148,6 +150,7 @@ export class PenComponent implements OnInit {
         this.inkupForm.patchValue({
           currentInk: ink,
           currentInkRating: p.currentInkRating,
+          currentInkComment: p.currentInkComment
         });
       });
     }
@@ -214,8 +217,10 @@ export class PenComponent implements OnInit {
     }
   }
   onInkUp() {
+    const inkComment = this.inkupForm.get('currentInkComment')?.value ?? '';
     const inkRating = this.inkupForm.get('currentInkRating')?.value;
     const ink = this.inkupForm.get('currentInk')?.value;
+    console.log(inkComment);
     if (!inkRating || !ink || !ink.id)
       this.showSnack('Select an ink and a match rating');
     else {
@@ -227,6 +232,7 @@ export class PenComponent implements OnInit {
           fountainPenId: this.pen.id,
           inkId: ink.id,
           isCurrent: true,
+          comment: inkComment
         })
         .subscribe({
           next: () => {

@@ -47,6 +47,7 @@ namespace FountainPensNg.Server.Data.Repos {
 			inkedUp.FountainPen = await context.FountainPens.FindAsync(dto.FountainPenId);
 			inkedUp.Ink = await context.Inks.FindAsync(dto.InkId);
 			inkedUp.IsCurrent = true;
+			inkedUp.Comment = dto.Comment ?? "";
 
 			await context
 				.InkedUps

@@ -114,19 +114,15 @@
       <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Ink</mat-label>
-          <input
-            type="text"
-            placeholder="Pick one"
-            aria-label="Number"
-            matInput
-            [formControl]="currentInk"
-            [matAutocomplete]="auto"
-          />
+          <input type="text"
+                 placeholder="Pick one"
+                 aria-label="Number"
+                 matInput
+                 [formControl]="currentInk"
+                 [matAutocomplete]="auto" />
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             @for (option of filteredOptions | async; track option) {
-            <mat-option [value]="option"
-              >{{ option.maker }} - {{ option.inkName }}</mat-option
-            >
+            <mat-option [value]="option">{{ option.maker }} - {{ option.inkName }}</mat-option>
             }
           </mat-autocomplete>
         </mat-form-field>
@@ -135,11 +131,19 @@
       <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Ink match rating</mat-label>
-          <input
-            matInput
-            formControlName="currentInkRating"
-            name="currentInkRating"
-          />
+          <input matInput
+                 formControlName="currentInkRating"
+                 name="currentInkRating" />
+        </mat-form-field>
+      </div>
+
+
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Ink match comment</mat-label>
+          <input matInput
+                 formControlName="currentInkComment"
+                 name="currentInkComment" />
         </mat-form-field>
       </div>
 

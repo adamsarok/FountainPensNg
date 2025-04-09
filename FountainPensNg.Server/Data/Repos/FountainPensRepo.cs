@@ -10,9 +10,9 @@ using static FountainPensNg.Server.Data.Repos.ResultType;
 namespace FountainPensNg.Server.Data.Repos {
 	public class FountainPensRepo(DataContext context) {
 		private static FountainPenDownloadDTO ConstructPenDownloadDTO(FountainPen pen) {
-			var currentInk = pen.InkedUps
+			var currentInkedUp = pen.InkedUps
 				.Where(x => x.IsCurrent)
-				.Select(x => x.Ink)
+				//.Select(x => x.Ink)
 				.FirstOrDefault();
 			return new FountainPenDownloadDTO(
 				pen.Id,
@@ -23,11 +23,12 @@ namespace FountainPensNg.Server.Data.Repos {
 				pen.Color,
 				pen.Rating,
 				pen.Nib,
-				currentInk?.Id,
-				currentInk?.Rating,
+				currentInkedUp?.Ink.Id,
+				currentInkedUp?.MatchRating,
+				currentInkedUp?.Comment,
 				pen.ImageObjectKey,
 				pen.InkedUps.Adapt<List<InkedUpDTO>>(),
-				currentInk?.Adapt<InkDownloadDTO>(),
+				currentInkedUp?.Ink.Adapt<InkDownloadDTO>(),
 				ColorHelper.GetEuclideanDistanceToReference(pen.Color),
 				pen.InsertedAt,
 				pen.ModifiedAt

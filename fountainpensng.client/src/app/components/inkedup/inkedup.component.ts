@@ -62,7 +62,8 @@ export class InkedupComponent implements OnInit {
     inkColor: '',
     fountainPenId: 0,
     inkId: 0,
-    isCurrent: false
+    isCurrent: false,
+    comment: '',
   };
 
   constructor(private inkedUpService: InkedupService,
@@ -109,7 +110,8 @@ export class InkedupComponent implements OnInit {
             ink: ink[0],
             pen: pen[0],
             matchRating: p.matchRating,
-            inkedAt: p.inkedAt
+            inkedAt: p.inkedAt,
+            comment: p.comment
           });
         }
       );
@@ -174,6 +176,7 @@ export class InkedupComponent implements OnInit {
 
   upsertInkUp() {
     this.inkedUp.matchRating = this.form.get('matchRating')?.value;
+    this.inkedUp.comment = this.form.get('comment')?.value;
     const ink = this.form.get('ink')?.value;
     if (ink) {
       this.inkedUp.inkId = ink.id;

@@ -4,19 +4,15 @@
       <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Pen</mat-label>
-          <input
-            type="text"
-            placeholder="Pick one"
-            aria-label="Number"
-            matInput
-            [formControl]="pen"
-            name="pen"
-            [matAutocomplete]="penAuto"
-          />
-          <mat-autocomplete
-            #penAuto="matAutocomplete"
-            [displayWith]="displayPen"
-          >
+          <input type="text"
+                 placeholder="Pick one"
+                 aria-label="Number"
+                 matInput
+                 [formControl]="pen"
+                 name="pen"
+                 [matAutocomplete]="penAuto" />
+          <mat-autocomplete #penAuto="matAutocomplete"
+                            [displayWith]="displayPen">
             @for (option of penFilteredOptions$ | async; track option) {
             <mat-option [value]="option">
               {{ option.maker }} - {{ option.modelName }}
@@ -30,19 +26,15 @@
       <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Ink</mat-label>
-          <input
-            type="text"
-            placeholder="Pick one"
-            aria-label="Number"
-            matInput
-            [formControl]="ink"
-            name="ink"
-            [matAutocomplete]="inkAuto"
-          />
-          <mat-autocomplete
-            #inkAuto="matAutocomplete"
-            [displayWith]="displayInk"
-          >
+          <input type="text"
+                 placeholder="Pick one"
+                 aria-label="Number"
+                 matInput
+                 [formControl]="ink"
+                 name="ink"
+                 [matAutocomplete]="inkAuto" />
+          <mat-autocomplete #inkAuto="matAutocomplete"
+                            [displayWith]="displayInk">
             @for (option of inkFilteredOptions$ | async; track option) {
             <mat-option [value]="option">
               {{ option.maker }} - {{ option.inkName }}
@@ -60,27 +52,23 @@
         </mat-form-field>
       </div>
 
-      <!-- <div fxFlex="100%">
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Inked at</mat-label>
-      <input matInput formControlName="inkedAt" name="inkedAt" >
-    </mat-form-field>
-  </div> -->
+      <div fxFlex="100%">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Ink match comment</mat-label>
+          <input matInput formControlName="comment" name="comment" />
+        </mat-form-field>
+      </div>
 
       <div fxFlex="100%">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Inked at</mat-label>
-          <input
-            matInput
-            [matDatepicker]="picker"
-            formControlName="inkedAt"
-            name="inkedAt"
-          />
+          <input matInput
+                 [matDatepicker]="picker"
+                 formControlName="inkedAt"
+                 name="inkedAt" />
           <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
+          <mat-datepicker-toggle matIconSuffix
+                                 [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
@@ -98,13 +86,11 @@
         <button mat-flat-button color="primary" type="submit">
           {{ inkedUp.id ? "Update" : "Create" }}
         </button>
-        <button
-          style="margin-left: 5%"
-          mat-flat-button
-          color="warn"
-          type="button"
-          (click)="delete()"
-        >
+        <button style="margin-left: 5%"
+                mat-flat-button
+                color="warn"
+                type="button"
+                (click)="delete()">
           Delete
         </button>
       </div>

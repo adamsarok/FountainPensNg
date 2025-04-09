@@ -10,5 +10,6 @@ namespace FountainPensNg.Server.Data.DTO {
          string InkMaker,
          string InkName,
          string PenColor,
-         string InkColor);
+         string InkColor,
+         string Comment);
 }

@@ -12,6 +12,7 @@ export interface FountainPen {
   inkedUps: InkedUpForListDTO[];
   currentInkId: number | null;
   currentInkRating: number | null;
+  currentInkComment: string | null;
   imageObjectKey: string;
   imageUrl: string;
   cieLch_sort: number;

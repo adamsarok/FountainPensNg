@@ -10,6 +10,7 @@
 		string Nib,
 		int? CurrentInkId,
 		int? CurrentInkRating,
+		string? CurrentInkComment,
 		string ImageObjectKey,
 		List<InkedUpDTO>? InkedUps,
 		InkDownloadDTO? CurrentInk,

@@ -5,6 +5,7 @@ export interface InkedUpUploadDTO {
   fountainPenId: number;
   inkId: number;
   isCurrent: boolean;
+  comment: string;
 }
 
 export interface InkedUpForListDTO extends InkedUpUploadDTO {
@@ -14,4 +15,5 @@ export interface InkedUpForListDTO extends InkedUpUploadDTO {
   inkMaker: string;
   inkName: string;
   inkColor: string;
+  comment: string;
 }
