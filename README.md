@@ -51,7 +51,7 @@ services:
       environment:
         POSTGRES_PASSWORD: postgres
         PGDATA: /var/lib/postgresql/data/pgdata
-        POSTGRES_DB: metabaseappdb 
+        POSTGRES_DB: fountainpens 
       ports:
         - 5432:5432
 
