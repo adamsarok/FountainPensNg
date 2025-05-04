@@ -13,7 +13,7 @@ export class FinderService {
   constructor(private http: HttpClient) { }
 
   getSearchResults(fulltext: string): Observable<SearchResult[]> {
-    return this.http.get<{ result: unknown; value: SearchResult[] }>(this.baseUrl + 'Finder/' + fulltext)
+    return this.http.get<{ result: unknown; value: SearchResult[] }>(this.baseUrl + 'finder/' + fulltext)
     .pipe(
       map(response => response.value || []) // Transform the response to return only the value array
     );

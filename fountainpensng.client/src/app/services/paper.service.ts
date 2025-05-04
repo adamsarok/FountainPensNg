@@ -13,18 +13,18 @@ export class PaperService {
   constructor(private http: HttpClient) { }
 
   getPapers(): Observable<Paper[]> {
-    return this.http.get<Paper[]>(this.baseUrl + 'Papers/');
+    return this.http.get<Paper[]>(this.baseUrl + 'papers/');
   }
   createPaper(model: Paper) {
-    return this.http.post<Paper>(this.baseUrl + 'Papers/', model);
+    return this.http.post<Paper>(this.baseUrl + 'papers/', model);
   }
   getPaper(id: number) {
-    return this.http.get<Paper>(this.baseUrl + 'Papers/' + id);
+    return this.http.get<Paper>(this.baseUrl + 'papers/' + id);
   }
   updatePaper(paper: Paper) {
-    return this.http.put<Paper>(this.baseUrl + 'Papers/' + paper.id, paper);
+    return this.http.put<Paper>(this.baseUrl + 'papers/' + paper.id, paper);
   }
   deletePaper(id: number) {
-    return this.http.delete(this.baseUrl + 'Papers/' + id);
+    return this.http.delete(this.baseUrl + 'papers/' + id);
   }
 }

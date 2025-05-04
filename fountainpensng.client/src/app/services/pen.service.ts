@@ -11,18 +11,18 @@ export class PenService {
   constructor(private http: HttpClient) { }
 
   getPens() {
-    return this.http.get<FountainPen[]>(this.baseUrl + 'FountainPens/');
+    return this.http.get<FountainPen[]>(this.baseUrl + 'fountain-pens/');
   }
   getPen(id: number) {
-    return this.http.get<FountainPen>(this.baseUrl + 'FountainPens/' + id);
+    return this.http.get<FountainPen>(this.baseUrl + 'fountain-pens/' + id);
   }
   createPen(pen: FountainPen) {
-    return this.http.post<FountainPen>(this.baseUrl + 'FountainPens/', pen);
+    return this.http.post<FountainPen>(this.baseUrl + 'fountain-pens/', pen);
   }
   updatePen(pen: FountainPen) {
-    return this.http.put<FountainPen>(this.baseUrl + 'FountainPens/' + pen.id, pen);
+    return this.http.put<FountainPen>(this.baseUrl + 'fountain-pens/' + pen.id, pen);
   }
   deletePen(id: number) {
-    return this.http.delete(this.baseUrl + 'FountainPens/' + id);
+    return this.http.delete(this.baseUrl + 'fountain-pens/' + id);
   }
 }

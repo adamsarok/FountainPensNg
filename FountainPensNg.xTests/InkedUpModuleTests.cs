@@ -50,7 +50,7 @@ namespace FountainPensNg.xTests {
 			await PrepareData();
 			var inkedUp = await GetFirst();
 			var client = factory.CreateClient();
-			var response = await client.GetAsync($"/api/InkedUps/{inkedUp.Id}");
+			var response = await client.GetAsync($"/api/inked-ups/{inkedUp.Id}");
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<InkedUpDTO>();
@@ -62,7 +62,7 @@ namespace FountainPensNg.xTests {
 			await PrepareData();
 			var client = factory.CreateClient();
 
-			var response = await client.GetAsync("/api/InkedUps");
+			var response = await client.GetAsync("/api/inked-ups");
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<IEnumerable<InkedUpDTO>>();
@@ -77,7 +77,7 @@ namespace FountainPensNg.xTests {
 			var ink = await GetFirst();
 			var dto = ink.Adapt<InkedUpUploadDto>();
 			var content = JsonContent.Create(dto);
-			var response = await client.PutAsync($"/api/InkedUps/{dto.Id}", content);
+			var response = await client.PutAsync($"/api/inked-ups/{dto.Id}", content);
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<InkedUpDTO>();
@@ -89,7 +89,7 @@ namespace FountainPensNg.xTests {
 			await PrepareData();
 			var inkedup = await GetFirst();
 			var client = factory.CreateClient();
-			var response = await client.DeleteAsync($"/api/InkedUps/{inkedup.Id}");
+			var response = await client.DeleteAsync($"/api/inked-ups/{inkedup.Id}");
 			response.EnsureSuccessStatusCode();
 			Assert.True(true);
 		}
@@ -101,7 +101,7 @@ namespace FountainPensNg.xTests {
 			var example = await GetFirst();
 			var dto = new InkedUpUploadDto(0, DateTime.UtcNow, 5, example.FountainPenId, example.InkId, "test");
 			var content = JsonContent.Create(dto);
-			var response = await client.PostAsync($"/api/InkedUps", content);
+			var response = await client.PostAsync($"/api/inked-ups", content);
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<InkedUpDTO>();

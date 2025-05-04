@@ -10,7 +10,7 @@ public class ColorModule : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-         app.MapGet("/api/Color/CieLchDistance", async ([FromQuery] string color) => {
+         app.MapGet("/api/colors/cie-lch-distance", async ([FromQuery] string color) => {
             var cielab = ColorHelper.ToCIELAB(color);
 			   var cieLch = ColorHelper.ToCieLch(cielab);
 			   return Results.Ok(ColorHelper.GetEuclideanDistanceToReference(cieLch));

@@ -51,7 +51,7 @@ namespace FountainPensNg.xTests {
 			await PrepareData();
 			var pen = await GetFirst();
 			var client = factory.CreateClient();
-			var response = await client.GetAsync($"/api/Inks/{pen.Id}");
+			var response = await client.GetAsync($"/api/inks/{pen.Id}");
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<FountainPenDownloadDTO>();
@@ -63,7 +63,7 @@ namespace FountainPensNg.xTests {
 			await PrepareData();
 			var client = factory.CreateClient();
 
-			var response = await client.GetAsync("/api/Inks");
+			var response = await client.GetAsync("/api/inks");
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<IEnumerable<InkDownloadDTO>>();
@@ -78,7 +78,7 @@ namespace FountainPensNg.xTests {
 			var ink = await GetFirst();
 			var dto = ink.Adapt<InkUploadDTO>();
 			var content = JsonContent.Create(dto);
-			var response = await client.PutAsync($"/api/Inks/{dto.Id}", content);
+			var response = await client.PutAsync($"/api/inks/{dto.Id}", content);
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<InkDownloadDTO>();
@@ -90,7 +90,7 @@ namespace FountainPensNg.xTests {
 			await PrepareData();
 			var pen = await GetFirst();
 			var client = factory.CreateClient();
-			var response = await client.DeleteAsync($"/api/Inks/{pen.Id}");
+			var response = await client.DeleteAsync($"/api/inks/{pen.Id}");
 			response.EnsureSuccessStatusCode();
 			Assert.True(true);
 		}
@@ -103,7 +103,7 @@ namespace FountainPensNg.xTests {
 				Id: 0, Maker: "Maker3", InkName: "Model3", Comment: "test", Photo: "", Color: "#085172",
 				Rating: 1, Ml: 50, ImageObjectKey: "");
 			var content = JsonContent.Create(dto);
-			var response = await client.PostAsync($"/api/Inks", content);
+			var response = await client.PostAsync($"/api/inks", content);
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<InkDownloadDTO>();

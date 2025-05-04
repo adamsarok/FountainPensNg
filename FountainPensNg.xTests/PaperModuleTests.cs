@@ -41,7 +41,7 @@ namespace FountainPensNg.xTests {
 			await PrepareData();
 			var pen = await GetFirst();
 			var client = factory.CreateClient();
-			var response = await client.GetAsync($"/api/Papers/{pen.Id}");
+			var response = await client.GetAsync($"/api/papers/{pen.Id}");
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<FountainPenDownloadDTO>();
@@ -53,7 +53,7 @@ namespace FountainPensNg.xTests {
 			await PrepareData();
 			var client = factory.CreateClient();
 
-			var response = await client.GetAsync("/api/Papers");
+			var response = await client.GetAsync("/api/papers");
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<IEnumerable<PaperDTO>>();
@@ -68,7 +68,7 @@ namespace FountainPensNg.xTests {
 			var ink = await GetFirst();
 			var dto = ink.Adapt<PaperDTO>();
 			var content = JsonContent.Create(dto);
-			var response = await client.PutAsync($"/api/Papers/{dto.Id}", content);
+			var response = await client.PutAsync($"/api/papers/{dto.Id}", content);
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<PaperDTO>();
@@ -80,7 +80,7 @@ namespace FountainPensNg.xTests {
 			await PrepareData();
 			var pen = await GetFirst();
 			var client = factory.CreateClient();
-			var response = await client.DeleteAsync($"/api/Papers/{pen.Id}");
+			var response = await client.DeleteAsync($"/api/papers/{pen.Id}");
 			response.EnsureSuccessStatusCode();
 			Assert.True(true);
 		}
@@ -93,7 +93,7 @@ namespace FountainPensNg.xTests {
 				Id: 0, Maker: "Maker3", PaperName: Guid.NewGuid().ToString(), Comment: "test", Photo: "",
 				Rating: 1, ImageObjectKey: "", InsertedAt: DateTime.UtcNow, ModifiedAt: DateTime.UtcNow);
 			var content = JsonContent.Create(dto);
-			var response = await client.PostAsync($"/api/Papers", content);
+			var response = await client.PostAsync($"/api/papers", content);
 			response.EnsureSuccessStatusCode();
 
 			var inks = await response.Content.ReadFromJsonAsync<PaperDTO>();

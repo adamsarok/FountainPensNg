@@ -15,6 +15,6 @@ export class ColorService {
     const params = new HttpParams()
       .set('color', colorHex);
     
-    return this.http.get<number>(`${this.baseUrl}Color/CieLchDistance`, { params });
+    return this.http.get<number>(`${this.baseUrl}colors/cie-lch-distance`, { params });
   }
 }

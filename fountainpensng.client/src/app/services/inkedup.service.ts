@@ -13,19 +13,19 @@ export class InkedupService {
   constructor(private http: HttpClient) { }
 
   getInkedUps(): Observable<InkedUpForListDTO[]> {
-    return this.http.get<InkedUpForListDTO[]>(this.baseUrl + 'InkedUps/');
+    return this.http.get<InkedUpForListDTO[]>(this.baseUrl + 'inked-ups/');
   }
   getInkedUp(id: number): Observable<InkedUpForListDTO> {
-    return this.http.get<InkedUpForListDTO>(this.baseUrl + 'InkedUps/' + id);
+    return this.http.get<InkedUpForListDTO>(this.baseUrl + 'inked-ups/' + id);
   }
   createInkedUp(inkup: InkedUpUploadDTO) {
-    return this.http.post<InkedUpUploadDTO>(this.baseUrl + 'InkedUps/', inkup);
+    return this.http.post<InkedUpUploadDTO>(this.baseUrl + 'inked-ups/', inkup);
   }
   updateInkedUp(inkup: InkedUpUploadDTO) {
-    return this.http.put<InkedUpUploadDTO>(this.baseUrl + 'InkedUps/' + inkup.id, inkup);
+    return this.http.put<InkedUpUploadDTO>(this.baseUrl + 'inked-ups/' + inkup.id, inkup);
   }
   deleteInkedUp(id: number) {
-    return this.http.delete<InkedUpUploadDTO>(this.baseUrl + 'InkedUps/' + id);
+    return this.http.delete<InkedUpUploadDTO>(this.baseUrl + 'inked-ups/' + id);
   }
 
 }
