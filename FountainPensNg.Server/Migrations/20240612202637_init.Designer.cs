@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FountainPensNg.Server.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(FountainPensContext))]
     [Migration("20240612202637_init")]
     partial class init
     {

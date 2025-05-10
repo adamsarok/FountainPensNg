@@ -1,0 +1,11 @@
+﻿global using FountainPensNg.Server.Data;
+global using FountainPensNg.Server.Data.DTO;
+global using FountainPensNg.Server.Data.Models;
+global using FountainPensNg.Server.Helpers;
+global using Mapster;
+global using Microsoft.AspNetCore.Mvc.Testing;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using System.Drawing;
+global using System.Net;
+global using System.Net.Http.Json;

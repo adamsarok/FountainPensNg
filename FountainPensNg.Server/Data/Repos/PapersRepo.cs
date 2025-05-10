@@ -11,7 +11,7 @@ using static FountainPensNg.Server.Data.Repos.FountainPensRepo;
 using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.Data.Repos {
-    public class PapersRepo(DataContext context) {
+    public class PapersRepo(FountainPensContext context) {
         public async Task<IEnumerable<PaperDTO>> GetPapers() {
             return await context.Papers
                 .ProjectToType<PaperDTO>()

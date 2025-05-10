@@ -70,6 +70,7 @@ export class PenComponent implements OnInit {
     imageObjectKey: '',
     imageUrl: '',
     cieLch_sort: 0,
+    lastInkedAt: new Date(),
   };
 
   currentInk = new FormControl('');

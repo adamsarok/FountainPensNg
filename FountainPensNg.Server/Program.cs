@@ -21,7 +21,7 @@ builder.Services.AddProblemDetails();
 string? conn = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty");
  
-builder.Services.AddDbContextFactory<DataContext>(opt =>
+builder.Services.AddDbContextFactory<FountainPensContext>(opt =>
     opt.UseNpgsql(conn));
 builder.Services.AddHealthChecks()
 	.AddNpgSql(conn);
@@ -39,6 +39,11 @@ var app = builder.Build();
 app.UseExceptionHandler();
 app.MapCarter();
 
+using (var scope = app.Services.CreateScope()) {
+	var dbContext = scope.ServiceProvider.GetRequiredService<FountainPensContext>();
+	await dbContext.Database.MigrateAsync();
+}
+
 app.UseCors(x => x.AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials()
@@ -47,13 +52,10 @@ app.UseCors(x => x.AllowAnyHeader()
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-//Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-//app.UseHttpsRedirection(); //TODO
 
 app.UseAuthorization();
 

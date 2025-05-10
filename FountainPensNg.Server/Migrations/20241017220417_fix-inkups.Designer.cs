@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FountainPensNg.Server.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(FountainPensContext))]
     [Migration("20241017220417_fix-inkups")]
     partial class fixinkups
     {

@@ -8,7 +8,7 @@ using static FountainPensNg.Server.Data.Repos.FountainPensRepo;
 using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.Data.Repos {
-	public class InkedUpsRepo(DataContext context) {
+	public class InkedUpsRepo(FountainPensContext context) {
 		public async Task<IEnumerable<InkedUpDTO>> GetInkedUps() {
 			var r = await context.InkedUps
 				.Include(x => x.Ink)

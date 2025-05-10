@@ -1,3 +1,2 @@
-﻿namespace FountainPensNg.Server.Exceptions {
-	public class NotFoundException : Exception;
-}
+﻿namespace FountainPensNg.Server.Exceptions;
+public class NotFoundException : Exception;

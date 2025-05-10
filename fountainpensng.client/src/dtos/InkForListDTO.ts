@@ -11,4 +11,5 @@ export interface InkForListDTO {
   oneCurrentPenModelName: string;
   oneCurrentPenModelColor: string;
   cieLch_sort: number;
+  lastInkedAt: Date;
 }

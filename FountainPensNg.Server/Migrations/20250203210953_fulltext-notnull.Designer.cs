@@ -12,7 +12,7 @@ using NpgsqlTypes;
 
 namespace FountainPensNg.Server.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(FountainPensContext))]
     [Migration("20250203210953_fulltext-notnull")]
     partial class fulltextnotnull
     {

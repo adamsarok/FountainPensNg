@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ColorService } from '../../services/color.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { ColorFilterComponent, ColorFilterEvent } from '../color-filter/color-filter.component';
 @Component({
   selector: 'app-ink-list',
@@ -33,6 +33,7 @@ export class InkListComponent implements OnInit {
     'color',
     'comment',
     'rating',
+    'lastInkedAt',
     'currentPen'];
 
   dataSource = signal<InkForListDTO[]>([]);
@@ -77,6 +78,8 @@ export class InkListComponent implements OnInit {
           return this.comparer.compare(a.rating, b.rating, isAsc);
         case 'comment':
           return this.comparer.compare(a.comment, b.comment, isAsc);
+        case 'lastInkedAt':
+          return this.comparer.compare(a.lastInkedAt, b.lastInkedAt, isAsc);
         case 'currentPen':
           return this.comparer.compare(a.oneCurrentPenMaker + a.oneCurrentPenModelName,
             b.oneCurrentPenMaker + b.oneCurrentPenModelName, isAsc);

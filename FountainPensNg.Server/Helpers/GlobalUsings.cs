@@ -1,0 +1,11 @@
+﻿global using FountainPensNg.Server.Exceptions;
+global using Microsoft.AspNetCore.Diagnostics;
+global using Microsoft.AspNetCore.Mvc;
+global using FountainPensNg.Server.Data.DTO;
+global using FountainPensNg.Server.Data.Models;
+global using Mapster;
+global using Microsoft.EntityFrameworkCore;
+global using FountainPensNg.Server.Helpers;
+global using NpgsqlTypes;
+global using Carter;
+global using FountainPensNg.Server.Data.Repos;
