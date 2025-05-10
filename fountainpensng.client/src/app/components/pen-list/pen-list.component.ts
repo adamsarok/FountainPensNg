@@ -26,6 +26,7 @@ export class PenListComponent implements OnInit {
     'color',
     'nib',
     'rating',
+    'lastInkedAt',
     'currentInk',
   ];
   dataSource = signal<FountainPen[]>([]);
@@ -58,9 +59,11 @@ export class PenListComponent implements OnInit {
         case 'nib':
           return this.comparer.compare(a.nib, b.nib, isAsc);
         case 'color':
-          return this.comparer.compare(a.color, b.color, isAsc); //TODO: sortable color
+          return this.comparer.compare(a.cieLch_sort, b.cieLch_sort, isAsc);
         case 'rating':
           return this.comparer.compare(a.rating, b.rating, isAsc);
+        case 'lastInkedAt':
+          return this.comparer.compare(a.lastInkedAt, b.lastInkedAt, isAsc);
         // case 'currentInk': TODO ???
         //   return compare(a.c, b.currentInk, isAsc);
         default:
@@ -69,8 +72,6 @@ export class PenListComponent implements OnInit {
     }));
   }
   handleApplyFilter(event: ColorFilterEvent) {
-    console.log(event);
-    console.log(this.originalData);
     const filteredData = this.originalData.filter(pen => {
       return Math.abs(pen.cieLch_sort - event.cieLchDistance) < event.threshold;
     });

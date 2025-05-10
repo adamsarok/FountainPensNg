@@ -24,15 +24,19 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Rating </th>
     <td mat-cell *matCellDef="let element"> {{element.rating}} </td>
   </ng-container>
+  <ng-container matColumnDef="lastInkedAt">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Inked At </th>
+    <td mat-cell *matCellDef="let element"> {{element.lastInkedAt | date:"yyyy.MM.dd"}} </td>
+  </ng-container>
   <ng-container matColumnDef="currentInk">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Ink </th>
-    <td mat-cell *matCellDef="let element"> 
-      {{element.currentInk?.maker}} {{element.currentInk?.inkName}}  
-      <input type="color" *ngIf="element.currentInk?.color" value="{{element.currentInk?.color}}" disabled></td>
+    <td mat-cell *matCellDef="let element">
+      {{element.currentInk?.maker}} {{element.currentInk?.inkName}}
+      <input type="color" *ngIf="element.currentInk?.color" value="{{element.currentInk?.color}}" disabled>
+    </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row 
-    *matRowDef="let row; columns: displayedColumns;"
-    (click)="openPen(row.id)"
-    ></tr>
+  <tr mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      (click)="openPen(row.id)"></tr>
 </table>

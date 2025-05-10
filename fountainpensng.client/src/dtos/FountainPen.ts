@@ -16,4 +16,5 @@ export interface FountainPen {
   imageObjectKey: string;
   imageUrl: string;
   cieLch_sort: number;
+  lastInkedAt: Date;
 }

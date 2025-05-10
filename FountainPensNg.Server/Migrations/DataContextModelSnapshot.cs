@@ -11,7 +11,7 @@ using NpgsqlTypes;
 
 namespace FountainPensNg.Server.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(FountainPensContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

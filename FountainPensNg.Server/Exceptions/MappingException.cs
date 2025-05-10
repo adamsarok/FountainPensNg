@@ -1,3 +1,2 @@
-﻿namespace FountainPensNg.Server.Exceptions {
-	public class MappingException : Exception;
-}
+﻿namespace FountainPensNg.Server.Exceptions;
+public class MappingException : Exception;

@@ -14,9 +14,9 @@ using static FountainPensNg.Server.Helpers.ColorHelper;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FountainPensNg.Server.Data.Repos {
-	public class InksRepo(DataContext context) {
-		private static InkDownloadDTO ConstructInkDownloadDTO(Ink ink) {
-			var pen = ink.InkedUps?.FirstOrDefault()?.FountainPen;
+	public class InksRepo(FountainPensContext context) {
+		private static InkDownloadDTO GetInkDownloadDTO(Ink ink) {
+			var pen = ink.InkedUps?.FirstOrDefault(x => x.IsCurrent)?.FountainPen;
 			return new InkDownloadDTO(
 				ink.Id,
 				ink.Maker,
@@ -34,28 +34,29 @@ namespace FountainPensNg.Server.Data.Repos {
 				pen?.Color,
 				ink.ImageObjectKey,
 				ColorHelper.GetEuclideanDistanceToReference(ink.Color_CIELAB_L, ink.Color_CIELAB_a, ink.Color_CIELAB_b),
-				ink.InkedUps?.Adapt<List<InkedUpDTO>>()
+				ink.InkedUps?.Adapt<List<InkedUpDTO>>(),
+				ink.InkedUps != null && ink.InkedUps.Any() ? ink.InkedUps.Max(x => x.InkedAt) : null
 				);
 		}
 
 		public async Task<IEnumerable<InkDownloadDTO>> GetInks() {
 			var inks = await context
 				.Inks
-				.Include(iu => iu.InkedUps.Where(iu => iu.IsCurrent))
+				.Include(iu => iu.InkedUps)
 				.ThenInclude(p => p.FountainPen)
 				.ToListAsync();
 			var result = new List<InkDownloadDTO>();
-			foreach (var ink in inks) result.Add(ConstructInkDownloadDTO(ink));
+			foreach (var ink in inks) result.Add(GetInkDownloadDTO(ink));
 			return result;
 		}
 		public async Task<InkDownloadDTO?> GetInk(int id) {
 			var ink = await context
 				.Inks
-				.Include(iu => iu.InkedUps.Where(iu => iu.IsCurrent))
+				.Include(iu => iu.InkedUps)
 				.ThenInclude(p => p.FountainPen)
 				.FirstOrDefaultAsync(x => x.Id == id);
 			if (ink == null) throw new NotFoundException();
-			return ConstructInkDownloadDTO(ink);
+			return GetInkDownloadDTO(ink);
 		}
 		public async Task<InkDownloadDTO> UpdateInk(int id, InkUploadDTO dto) {
 			var ink = dto.Adapt<Ink>();
