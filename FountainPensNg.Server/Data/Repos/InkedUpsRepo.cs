@@ -1,6 +1,7 @@
 ﻿using FountainPensNg.Server.Data.DTO;
 using FountainPensNg.Server.Data.Models;
 using FountainPensNg.Server.Exceptions;
+using Humanizer;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -49,10 +50,7 @@ namespace FountainPensNg.Server.Data.Repos {
 			inkedUp.IsCurrent = true;
 			inkedUp.Comment = dto.Comment ?? "";
 
-			await context
-				.InkedUps
-				.Where(x => x.FountainPenId == dto.FountainPenId && x.IsCurrent)
-				.ExecuteUpdateAsync(s => s.SetProperty(e => e.IsCurrent, false));
+			await DeactivateInkedUps(dto.FountainPenId);
 
 			context.InkedUps.Add(inkedUp);
 
@@ -60,11 +58,16 @@ namespace FountainPensNg.Server.Data.Repos {
 
 			return inkedUp.Adapt<InkedUpDTO>();
 		}
+		public async Task DeactivateInkedUps(int penId) {
+			await context
+				.InkedUps
+				.Where(x => x.FountainPenId == penId && x.IsCurrent)
+				.ExecuteUpdateAsync(s => s.SetProperty(e => e.IsCurrent, false));
+		}
 		public async Task DeleteInkedUp(int id) {
-			//TODO: what if I delete the active inkedup?
 			var inkedUp = await context.InkedUps.FindAsync(id);
 			if (inkedUp == null) throw new NotFoundException();
-			context.InkedUps.Remove(inkedUp);
+			inkedUp.IsDeleted = true;
 			await context.SaveChangesAsync();
 		}
 	}

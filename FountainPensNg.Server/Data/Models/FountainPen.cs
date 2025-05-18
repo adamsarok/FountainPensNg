@@ -1,5 +1,5 @@
 ﻿namespace FountainPensNg.Server.Data.Models;
-public class FountainPen {
+public class FountainPen : Entity {
     public int Id { get; set; }
     public string Maker { get; set; } = "";
     public string ModelName { get; set; } = "";
@@ -11,6 +11,4 @@ public class FountainPen {
     public virtual List<InkedUp> InkedUps { get; set; } = [];
     public string ImageObjectKey { get; set; } = "";
     public required NpgsqlTsVector FullText { get; set; }
-    public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
-    public DateTime ModifiedAt { get; set; }
 }

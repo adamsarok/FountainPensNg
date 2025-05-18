@@ -75,10 +75,13 @@ namespace FountainPensNg.Server.Data.Repos {
 			return ink.Adapt<InkDownloadDTO>();
 		}
 		public async Task DeleteInk(int id) {
-			//TODO: what if I delete the active inkedup?
-			var inkedUp = await context.Inks.FindAsync(id);
-			if (inkedUp == null) throw new NotFoundException();
-			context.Inks.Remove(inkedUp);
+			var inUse = await context.InkedUps.AnyAsync(iu => iu.InkId == id && iu.IsCurrent);
+			if (inUse) {
+				throw new InvalidOperationException($"Cannot delete ink {id}, it is used in a pen.");
+			}
+			var ink = await context.Inks.FindAsync(id);
+			if (ink == null) throw new NotFoundException();
+			ink.IsDeleted = true;
 			await context.SaveChangesAsync();
 		}
 		private static void FillCIELab(Ink ink) {

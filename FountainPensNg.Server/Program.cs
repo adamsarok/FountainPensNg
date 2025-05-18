@@ -21,8 +21,10 @@ builder.Services.AddProblemDetails();
 string? conn = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty");
  
-builder.Services.AddDbContextFactory<FountainPensContext>(opt =>
-    opt.UseNpgsql(conn));
+builder.Services.AddDbContextFactory<FountainPensContext>(opt => {
+    opt.UseNpgsql(conn);
+    opt.AddInterceptors(new EntityInterceptor());
+});
 builder.Services.AddHealthChecks()
 	.AddNpgSql(conn);
 
