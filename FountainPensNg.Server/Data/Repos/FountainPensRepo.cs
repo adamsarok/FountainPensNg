@@ -21,8 +21,8 @@ public class FountainPensRepo(FountainPensContext context) {
 			pen.InkedUps.Adapt<List<InkedUpDTO>>(),
 			currentInkedUp?.Ink.Adapt<InkDownloadDTO>(),
 			ColorHelper.GetEuclideanDistanceToReference(pen.Color),
-			pen.InsertedAt,
-			pen.ModifiedAt,
+			pen.CreatedAt,
+			pen.UpdatedAt,
 			pen.InkedUps != null && pen.InkedUps.Any() ? pen.InkedUps.Max(x => x.InkedAt) : null
 		);
 	}
@@ -54,9 +54,7 @@ public class FountainPensRepo(FountainPensContext context) {
 		var find = await context.FountainPens.FindAsync(fountainPen.Id);
 		if (find == null) throw new NotFoundException();
 		context.Entry(find).CurrentValues.SetValues(fountainPen);
-		find.ModifiedAt = DateTime.UtcNow;
 		await context.SaveChangesAsync();
-
 		return fountainPen.Adapt<FountainPenDownloadDTO>();
 	}
 

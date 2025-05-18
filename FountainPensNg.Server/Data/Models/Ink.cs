@@ -14,6 +14,4 @@ public class Ink : Entity {
     public string ImageObjectKey { get; set; } = "";
     public required NpgsqlTsVector FullText { get; set; }
     public virtual List<InkedUp>? InkedUps { get; set; }
-    public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
-    public DateTime ModifiedAt { get; set; }
 }

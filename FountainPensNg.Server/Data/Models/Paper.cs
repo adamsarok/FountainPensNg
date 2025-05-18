@@ -8,6 +8,4 @@ public class Paper : Entity {
     public int Rating { get; set; }
     public string ImageObjectKey { get; set; } = "";
     public required NpgsqlTsVector FullText { get; set; }
-    public DateTime InsertedAt { get; set; } = DateTime.UtcNow;
-    public DateTime ModifiedAt { get; set; }
 }

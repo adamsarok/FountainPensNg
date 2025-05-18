@@ -65,7 +65,6 @@ namespace FountainPensNg.Server.Data.Repos {
 				.ExecuteUpdateAsync(s => s.SetProperty(e => e.IsCurrent, false));
 		}
 		public async Task DeleteInkedUp(int id) {
-			//TODO: what if I delete the active inkedup?
 			var inkedUp = await context.InkedUps.FindAsync(id);
 			if (inkedUp == null) throw new NotFoundException();
 			inkedUp.IsDeleted = true;
