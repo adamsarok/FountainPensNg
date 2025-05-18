@@ -29,5 +29,11 @@ public class FountainPenModule : ICarterModule {
             return Results.NoContent();
         }).WithTags("FountainPens")
             .WithName("DeleteFountainPen");
-    }
+
+		app.MapPut("/api/fountain-pens/empty/{id}", async (int id, InkedUpsRepo repo) => {
+			await repo.DeactivateInkedUps(id);
+			return Results.NoContent();
+		        }).WithTags("FountainPens")
+	        .WithName("EmptyFountainPen");
+	}
 }

@@ -78,7 +78,7 @@ public class FountainPensRepo(FountainPensContext context) {
 	public async Task DeleteFountainPen(int id) {
 		var fountainPen = await context.FountainPens.FindAsync(id);
 		if (fountainPen == null) throw new NotFoundException();
-		context.FountainPens.Remove(fountainPen);
+		fountainPen.IsDeleted = true;
 		await context.SaveChangesAsync();
 	}
 }

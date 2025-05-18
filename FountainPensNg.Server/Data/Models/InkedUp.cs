@@ -1,5 +1,5 @@
 ﻿namespace FountainPensNg.Server.Data.Models;
-public class InkedUp {
+public class InkedUp : Entity {
     public int Id { get; set; }
     public DateTime InkedAt { get; set; } = DateTime.UtcNow;
     public string Comment { get; set; } = "";

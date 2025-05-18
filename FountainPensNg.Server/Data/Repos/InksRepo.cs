@@ -76,9 +76,9 @@ namespace FountainPensNg.Server.Data.Repos {
 		}
 		public async Task DeleteInk(int id) {
 			//TODO: what if I delete the active inkedup?
-			var inkedUp = await context.Inks.FindAsync(id);
-			if (inkedUp == null) throw new NotFoundException();
-			context.Inks.Remove(inkedUp);
+			var ink = await context.Inks.FindAsync(id);
+			if (ink == null) throw new NotFoundException();
+			ink.IsDeleted = true;
 			await context.SaveChangesAsync();
 		}
 		private static void FillCIELab(Ink ink) {

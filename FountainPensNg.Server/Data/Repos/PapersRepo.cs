@@ -39,9 +39,9 @@ namespace FountainPensNg.Server.Data.Repos {
             return paper.Adapt<PaperDTO>();
         }
         public async Task DeletePaper(int id) {
-            var Paper = await context.Papers.FindAsync(id);
-            if (Paper == null) throw new NotFoundException();
-			context.Papers.Remove(Paper);
+            var paper = await context.Papers.FindAsync(id);
+            if (paper == null) throw new NotFoundException();
+			paper.IsDeleted = true;
             await context.SaveChangesAsync();
         }
     }

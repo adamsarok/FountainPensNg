@@ -1,5 +1,5 @@
 ﻿namespace FountainPensNg.Server.Data.Models;
-public class FountainPen {
+public class FountainPen : Entity {
     public int Id { get; set; }
     public string Maker { get; set; } = "";
     public string ModelName { get; set; } = "";

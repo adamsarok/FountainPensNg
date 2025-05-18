@@ -14,6 +14,7 @@ public class FountainPensContext(DbContextOptions options) : DbContext(options) 
             entity.HasOne(x => x.Ink)
                 .WithMany(x => x.InkedUps)
                 .HasForeignKey(e => e.InkId);
+            entity.HasQueryFilter(x => !x.IsDeleted);
         });
         modelBuilder.Entity<Ink>(entity => {
             entity.HasIndex(p => new { p.Maker, p.InkName })
@@ -24,7 +25,8 @@ public class FountainPensContext(DbContextOptions options) : DbContext(options) 
                   p => new { p.Maker, p.InkName, p.Comment, p.Rating })
               .HasIndex(p => p.FullText)
               .HasMethod("GIN");
-        });
+			entity.HasQueryFilter(x => !x.IsDeleted);
+		});
         modelBuilder.Entity<FountainPen>(entity => {
             entity.HasGeneratedTsVectorColumn(
                   p => p.FullText,
@@ -32,7 +34,8 @@ public class FountainPensContext(DbContextOptions options) : DbContext(options) 
                   p => new { p.Maker, p.ModelName, p.Comment, p.Rating })
               .HasIndex(p => p.FullText)
               .HasMethod("GIN");
-        });
+			entity.HasQueryFilter(x => !x.IsDeleted);
+		});
         modelBuilder.Entity<Paper>(entity => {
             entity.HasGeneratedTsVectorColumn(
                   p => p.FullText,
@@ -40,6 +43,7 @@ public class FountainPensContext(DbContextOptions options) : DbContext(options) 
                   p => new { p.Maker, p.PaperName, p.Comment, p.Rating })
               .HasIndex(p => p.FullText)
               .HasMethod("GIN");
-        });
+			entity.HasQueryFilter(x => !x.IsDeleted);
+		});
     }
 }

@@ -25,4 +25,7 @@ export class PenService {
   deletePen(id: number) {
     return this.http.delete(this.baseUrl + 'fountain-pens/' + id);
   }
+  emptyPen(id: number) {
+    return this.http.put<FountainPen>(this.baseUrl + 'fountain-pens/empty/' + id, null);
+  }
 }

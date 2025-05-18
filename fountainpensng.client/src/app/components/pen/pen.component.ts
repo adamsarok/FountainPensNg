@@ -190,6 +190,18 @@ export class PenComponent implements OnInit {
       this.upsertPen();
     }
   }
+  cleanPen() {
+    if (this.pen.id != 0) {
+      this.penService.emptyPen(this.pen.id).subscribe({
+        next: () => {
+          this.showSnack('Pen is empty!');
+        },
+        error: (e) => {
+          this.showSnack(e);
+        },
+      });
+    }
+  }
   upsertPen() {
     this.pen.maker = this.penForm.get('maker')?.value;
     this.pen.modelName = this.penForm.get('modelName')?.value;
