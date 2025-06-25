@@ -1,7 +1,10 @@
 using Carter;
+using FountainPensNg.Server.API;
+using FountainPensNg.Server.Config;
 using FountainPensNg.Server.Data;
 using FountainPensNg.Server.Data.Repos;
 using FountainPensNg.Server.Helpers;
+using FountainPensNg.Server.Services;
 using HealthChecks.UI.Client;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,13 +31,20 @@ builder.Services.AddDbContextFactory<FountainPensContext>(opt => {
 builder.Services.AddHealthChecks()
 	.AddNpgSql(conn);
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.RegisterMapsterConfiguration();
 
-builder.Services.AddTransient<FinderRepo>();
-builder.Services.AddTransient<FountainPensRepo>();
-builder.Services.AddTransient<InkedUpsRepo>();
-builder.Services.AddTransient<InksRepo>();
-builder.Services.AddTransient<PapersRepo>();
+builder.Services.AddHttpClient<R2UploadService>();
+
+builder.Services.AddScoped<FinderRepo>();
+builder.Services.AddScoped<FountainPensRepo>();
+builder.Services.AddScoped<InkedUpsRepo>();
+builder.Services.AddScoped<InksRepo>();
+builder.Services.AddScoped<PapersRepo>();
+builder.Services.AddScoped<IR2UploadService, R2UploadService>();
+builder.Services.AddScoped<IPresignedUrlService, PresignedUrlService>();
+builder.Services.AddSingleton<R2Configuration>(sp =>
+	new R2Configuration(sp.GetRequiredService<IConfiguration>()));
 
 var app = builder.Build();
 
