@@ -178,6 +178,7 @@ export class PenComponent implements OnInit {
           } else if (r.guid) {
             this.showSnack('Image upload successful');
             this.pen.imageObjectKey = r.guid;
+            this.upsertPen();
             this.r2.getImageUrl(r.guid).subscribe({
               next: (r) => {
                 this.pen.imageUrl = r;
@@ -189,8 +190,9 @@ export class PenComponent implements OnInit {
           this.showSnack('Upload failed:' + err);
         },
       });
+    } else {
+      this.upsertPen();
     }
-    this.upsertPen();
   }
   cleanPen() {
     if (this.pen.id != 0) {

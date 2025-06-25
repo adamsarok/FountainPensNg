@@ -125,6 +125,7 @@ export class InkComponent implements OnInit {
           } else if (r.guid) {
             this.showSnack('Image upload successful');
             this.ink.imageObjectKey = r.guid;
+            this.upsertInk();
             this.r2.getImageUrl(r.guid).subscribe({
               next: (r) => {
                 this.ink.imageUrl = r;
@@ -136,8 +137,9 @@ export class InkComponent implements OnInit {
           this.showSnack('Upload failed:' + err);
         },
       });
+    } else {
+      this.upsertInk();
     }
-    this.upsertInk();
   }
 
   upsertInk() {

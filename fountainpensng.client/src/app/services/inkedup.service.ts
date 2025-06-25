@@ -25,7 +25,7 @@ export class InkedupService {
     return this.http.put<InkedUpUploadDTO>(`${this.baseUrl}/api/inked-ups/${inkup.id}`, inkup);
   }
   deleteInkedUp(id: number) {
-    return this.http.delete<InkedUpUploadDTO>(`${this.baseUrl}/inked-ups/${id}`);
+    return this.http.delete<InkedUpUploadDTO>(`${this.baseUrl}/api/inked-ups/${id}`);
   }
 
 }
