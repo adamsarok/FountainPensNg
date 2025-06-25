@@ -7,5 +7,6 @@ public record PaperDTO(
 	 string Photo,
 	 int Rating,
 	 string ImageObjectKey,
-	 DateTime InsertedAt,
-	 DateTime ModifiedAt);
+	 string ImageUrl,
+	 DateTime CreatedAt,
+	 DateTime UpdatedAt);

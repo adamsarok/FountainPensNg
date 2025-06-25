@@ -3,6 +3,7 @@ using FountainPensNg.Server.Data.Models;
 using FountainPensNg.Server.Exceptions;
 using FountainPensNg.Server.Helpers;
 using FountainPensNg.Server.Migrations;
+using FountainPensNg.Server.Services;
 using Humanizer;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,8 @@ using static FountainPensNg.Server.Helpers.ColorHelper;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FountainPensNg.Server.Data.Repos {
-	public class InksRepo(FountainPensContext context) {
-		private static InkDownloadDTO GetInkDownloadDTO(Ink ink) {
+	public class InksRepo(FountainPensContext context, IPresignedUrlService presignedUrlService) {
+		private InkDownloadDTO GetInkDownloadDTO(Ink ink) {
 			var pen = ink.InkedUps?.FirstOrDefault(x => x.IsCurrent)?.FountainPen;
 			return new InkDownloadDTO(
 				ink.Id,
@@ -33,6 +34,7 @@ namespace FountainPensNg.Server.Data.Repos {
 				pen?.ModelName,
 				pen?.Color,
 				ink.ImageObjectKey,
+				presignedUrlService.GetUrl(ink.ImageObjectKey, Amazon.S3.HttpVerb.GET),
 				ColorHelper.GetEuclideanDistanceToReference(ink.Color_CIELAB_L, ink.Color_CIELAB_a, ink.Color_CIELAB_b),
 				ink.InkedUps?.Adapt<List<InkedUpDTO>>(),
 				ink.InkedUps != null && ink.InkedUps.Any() ? ink.InkedUps.Max(x => x.InkedAt) : null
@@ -64,7 +66,7 @@ namespace FountainPensNg.Server.Data.Repos {
 			FillCIELab(ink);
 			context.Entry(ink).State = EntityState.Modified;
 			await context.SaveChangesAsync();
-			return ink.Adapt<InkDownloadDTO>();
+			return GetInkDownloadDTO(ink);
 		}
 		public async Task<InkDownloadDTO> AddInk(InkUploadDTO dto) {
 			var ink = dto.Adapt<Ink>();
@@ -72,7 +74,7 @@ namespace FountainPensNg.Server.Data.Repos {
 			FillCIELab(ink);
 			context.Inks.Add(ink);
 			await context.SaveChangesAsync();
-			return ink.Adapt<InkDownloadDTO>();
+			return GetInkDownloadDTO(ink);
 		}
 		public async Task DeleteInk(int id) {
 			var inUse = await context.InkedUps.AnyAsync(iu => iu.InkId == id && iu.IsCurrent);

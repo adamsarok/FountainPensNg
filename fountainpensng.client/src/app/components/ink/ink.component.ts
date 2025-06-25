@@ -100,7 +100,6 @@ export class InkComponent implements OnInit {
       this.ink$.subscribe((i) => {
         //would be better in prefetch
         this.ink = i;
-        i.imageUrl = this.r2.getImageUrl(i.imageObjectKey);
         this.form.patchValue({
           maker: i.maker,
           inkName: i.inkName,
@@ -126,16 +125,19 @@ export class InkComponent implements OnInit {
           } else if (r.guid) {
             this.showSnack('Image upload successful');
             this.ink.imageObjectKey = r.guid;
-            this.upsertInk();
+            this.r2.getImageUrl(r.guid).subscribe({
+              next: (r) => {
+                this.ink.imageUrl = r;
+              }
+            });
           }
         },
         error: (err) => {
           this.showSnack('Upload failed:' + err);
         },
       });
-    } else {
-      this.upsertInk();
     }
+    this.upsertInk();
   }
 
   upsertInk() {

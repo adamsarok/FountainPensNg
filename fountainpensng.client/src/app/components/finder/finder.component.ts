@@ -45,7 +45,6 @@ export class FinderComponent implements OnInit {
     this.finderService.getSearchResults(fulltext).subscribe({
       next: r => {
         this.showSnack('Search successful');
-        console.log(r)
         this.dataSource = r;
       },
       error: (err) => {

@@ -21,7 +21,7 @@ builder.Services.AddCarter();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-string? conn = builder.Configuration.GetConnectionString("DefaultConnection");
+string? conn = builder.Configuration.GetConnectionString("FountainPens");
 if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty");
  
 builder.Services.AddDbContextFactory<FountainPensContext>(opt => {

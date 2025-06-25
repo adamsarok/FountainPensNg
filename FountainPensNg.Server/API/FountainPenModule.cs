@@ -39,21 +39,5 @@ public class FountainPenModule : ICarterModule {
 			return Results.NoContent();
 		}).WithTags("FountainPens")
 			.WithName("EmptyFountainPen");
-
-		app.MapPut("/api/fountain-pens/{Id}/image", async (Guid id,
-			IFormFile file,
-			IR2UploadService r2UploadService,
-			ILogger<R2Module> logger,
-			FountainPensContext context) => {
-					var pen = await context.FountainPens.FindAsync(id);
-					if (pen == null) return Results.BadRequest("Fountain pen not found");
-					var result = await r2UploadService.UploadImage(file);
-					pen.ImageObjectKey = result.ToString();
-					await context.SaveChangesAsync();
-					return Results.Ok(new UploadResponse(result));
-				})
-			.WithTags("Images")
-			.WithName("UploadImage")
-			.DisableAntiforgery();
 	}
 }

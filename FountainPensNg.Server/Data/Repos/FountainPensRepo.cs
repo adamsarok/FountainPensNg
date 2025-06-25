@@ -1,6 +1,8 @@
-﻿namespace FountainPensNg.Server.Data.Repos;
-public class FountainPensRepo(FountainPensContext context) {
-	private static FountainPenDownloadDTO GetPenDownloadDTO(FountainPen pen) {
+﻿using FountainPensNg.Server.Services;
+
+namespace FountainPensNg.Server.Data.Repos;
+public class FountainPensRepo(FountainPensContext context, IPresignedUrlService presignedUrlService) {
+	private FountainPenDownloadDTO GetPenDownloadDTO(FountainPen pen) {
 		var currentInkedUp = pen.InkedUps
 			.Where(x => x.IsCurrent)
 			//.Select(x => x.Ink)
@@ -18,6 +20,7 @@ public class FountainPensRepo(FountainPensContext context) {
 			currentInkedUp?.MatchRating,
 			currentInkedUp?.Comment,
 			pen.ImageObjectKey,
+			presignedUrlService.GetUrl(pen.ImageObjectKey, Amazon.S3.HttpVerb.GET),
 			pen.InkedUps.Adapt<List<InkedUpDTO>>(),
 			currentInkedUp?.Ink.Adapt<InkDownloadDTO>(),
 			ColorHelper.GetEuclideanDistanceToReference(pen.Color),
@@ -55,7 +58,7 @@ public class FountainPensRepo(FountainPensContext context) {
 		if (find == null) throw new NotFoundException();
 		context.Entry(find).CurrentValues.SetValues(fountainPen);
 		await context.SaveChangesAsync();
-		return fountainPen.Adapt<FountainPenDownloadDTO>();
+		return GetPenDownloadDTO(fountainPen);
 	}
 
 	public async Task<FountainPenDownloadDTO> AddFountainPen(FountainPenUploadDTO dto) {
@@ -71,7 +74,7 @@ public class FountainPensRepo(FountainPensContext context) {
 		//     });
 		// }
 		await context.SaveChangesAsync();
-		return fountainPen.Adapt<FountainPenDownloadDTO>();
+		return GetPenDownloadDTO(fountainPen);
 	}
 	public async Task DeleteFountainPen(int id) {
 		var fountainPen = await context.FountainPens.FindAsync(id);
