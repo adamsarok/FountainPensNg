@@ -138,7 +138,6 @@ export class PenComponent implements OnInit {
           const inks = this.inks.filter((x) => x.id === p.currentInkId);
           if (inks) ink = inks[0];
         }
-        p.imageUrl = this.r2.getImageUrl(p.imageObjectKey);
         this.inkedUps = p.inkedUps.sort((a, b) => new Date(b.inkedAt).getTime() - new Date(a.inkedAt).getTime());
         this.penForm.patchValue({
           maker: p.maker,
@@ -180,6 +179,11 @@ export class PenComponent implements OnInit {
             this.showSnack('Image upload successful');
             this.pen.imageObjectKey = r.guid;
             this.upsertPen();
+            this.r2.getImageUrl(r.guid).subscribe({
+              next: (r) => {
+                this.pen.imageUrl = r;
+              }
+            });
           }
         },
         error: (err) => {
@@ -233,7 +237,6 @@ export class PenComponent implements OnInit {
     const inkComment = this.inkupForm.get('currentInkComment')?.value ?? '';
     const inkRating = this.inkupForm.get('currentInkRating')?.value;
     const ink = this.inkupForm.get('currentInk')?.value;
-    console.log(inkComment);
     if (!inkRating || !ink || !ink.id)
       this.showSnack('Select an ink and a match rating');
     else {

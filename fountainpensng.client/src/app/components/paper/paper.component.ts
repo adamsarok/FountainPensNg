@@ -24,21 +24,21 @@ import { MessageBoxComponent } from '../message-box/message-box.component';
 
 
 @Component({
-    selector: 'app-paper',
-    imports: [
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatError,
-        MatIcon,
-        CommonModule,
-        MatInputModule,
-        MatButtonModule,
-        MatAutocompleteModule,
-        ImageUploaderComponent,
-    ],
-    templateUrl: './paper.component.html',
-    styleUrl: './paper.component.css'
+  selector: 'app-paper',
+  imports: [
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatError,
+    MatIcon,
+    CommonModule,
+    MatInputModule,
+    MatButtonModule,
+    MatAutocompleteModule,
+    ImageUploaderComponent,
+  ],
+  templateUrl: './paper.component.html',
+  styleUrl: './paper.component.css'
 })
 export class PaperComponent implements OnInit {
   toUploadFile: File | null = null;
@@ -95,7 +95,6 @@ export class PaperComponent implements OnInit {
       this.paper$.subscribe((i) => {
         //would be better in prefetch
         this.paper = i;
-        i.imageUrl = this.r2.getImageUrl(i.imageObjectKey);
         this.form.patchValue({
           maker: i.maker,
           paperName: i.paperName,
@@ -120,6 +119,12 @@ export class PaperComponent implements OnInit {
             this.showSnack('Image upload successful');
             this.paper.imageObjectKey = r.guid;
             this.upsertPaper();
+            this.r2.getImageUrl(r.guid).subscribe({
+              next: (r) => {
+                console.log('setting image url to:', r);
+                this.paper.imageUrl = r;
+              }
+            });
           }
         },
         error: (err) => {

@@ -16,7 +16,7 @@ FountainPensNg is an Angular app for managing your fountain pen, ink, and paper 
 - Frontend: Angular 19
 - Backend: ASP.NET Core 9
 - Database: PostgreSQL
-- CDN/Storage: Go & Cloudflare R2
+- CDN/Storage: Cloudflare R2
 
 
 ## Quick Start
@@ -29,8 +29,7 @@ services:
         ports:
           - 4200:80
         environment:
-          - apiUrl=http://fountainpens-api:8080/api
-          - r2ApiUrl=http://r2-api-go:8080
+          - apiUrl=http://fountainpens-api:8080
         restart: unless-stopped
 
     fountainpens-api:
@@ -55,22 +54,6 @@ services:
       ports:
         - 5432:5432
 
-    r2-api-go:
-        image: adamsarok/r2-api-go
-        ports:
-          - 9088:8080
-        environment:
-          - R2_ENDPOINT=${R2_ENDPOINT}
-          - R2_BUCKET=test
-          - R2_REGION=auto
-          - R2_ACCESS_KEY=${R2_ACCESS_KEY}
-          - R2_SECRET_KEY=${R2_SECRET_KEY}
-          - R2_UPLOAD_EXPIRY_MINUTES=30m
-          - R2_DOWNLOAD_EXPIRY_MINUTES=30m
-          - CACHE_DIR=/config
-        volumes:
-          - ./r2-api-go/cache:/config
-        restart: unless-stopped
 ```
 
 ## Badges
@@ -82,5 +65,3 @@ services:
 Client: [![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/fountainpens-ng-cl.svg)](https://hub.docker.com/r/adamsarok/fountainpens-ng-cl)
 
 API: [![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/fountainpens-api.svg)](https://hub.docker.com/r/adamsarok/fountainpens-api)
-
-CDN: [![Docker Hub](https://img.shields.io/docker/pulls/adamsarok/r2-api-go.svg)](https://hub.docker.com/r/adamsarok/r2-api-go)

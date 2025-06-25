@@ -3,6 +3,7 @@ using FountainPensNg.Server.Data.Models;
 using FountainPensNg.Server.Exceptions;
 using FountainPensNg.Server.Helpers;
 using FountainPensNg.Server.Migrations;
+using FountainPensNg.Server.Services;
 using Humanizer;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -11,30 +12,45 @@ using static FountainPensNg.Server.Data.Repos.FountainPensRepo;
 using static FountainPensNg.Server.Data.Repos.ResultType;
 
 namespace FountainPensNg.Server.Data.Repos {
-	public class PapersRepo(FountainPensContext context) {
+	public class PapersRepo(FountainPensContext context, IPresignedUrlService presignedUrlService) {
+		private PaperDTO GetPaperDownloadDTO(Paper paper) {
+			return new PaperDTO(
+				paper.Id,
+				paper.Maker,
+				paper.PaperName,
+				paper.Comment,
+				paper.Photo,
+				paper.Rating,
+				paper.ImageObjectKey,
+				presignedUrlService.GetUrl(paper.ImageObjectKey, Amazon.S3.HttpVerb.GET),
+				paper.CreatedAt,
+				paper.UpdatedAt
+			);
+		}
+
 		public async Task<IEnumerable<PaperDTO>> GetPapers() {
-			return await context.Papers
-				.ProjectToType<PaperDTO>()
+			var p = await context.Papers
 				.ToListAsync();
+			return p.Select(x => GetPaperDownloadDTO(x));
 		}
 		public async Task<PaperDTO?> GetPaper(int id) {
-			var r = await context.Papers
+			var p = await context.Papers
 				.FirstOrDefaultAsync(x => x.Id == id);
-			return r.Adapt<PaperDTO>();
+			return GetPaperDownloadDTO(p);
 		}
 		public async Task<PaperDTO> UpdatePaper(int id, PaperDTO dto) {
 			var paper = dto.Adapt<Paper>();
 			if (paper == null || id != paper.Id) throw new NotFoundException();
 			context.Entry(paper).State = EntityState.Modified;
 			await context.SaveChangesAsync();
-			return paper.Adapt<PaperDTO>();
+			return GetPaperDownloadDTO(paper);
 		}
 		public async Task<PaperDTO> AddPaper(PaperDTO dto) {
 			var paper = dto.Adapt<Paper>();
 			if (paper == null) throw new MappingException();
 			context.Papers.Add(paper);
 			await context.SaveChangesAsync();
-			return paper.Adapt<PaperDTO>();
+			return GetPaperDownloadDTO(paper);
 		}
 		public async Task DeletePaper(int id) {
 			var paper = await context.Papers.FindAsync(id);

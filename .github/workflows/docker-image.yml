@@ -66,7 +66,7 @@ jobs:
      - name: Build API
        working-directory: ./FountainPensNg.Server
        env:
-        ConnectionStrings__DefaultConnection: ${{ secrets.POSTGRES_CONNSTR }}
+        ConnectionStrings__FountainPens: ${{ secrets.POSTGRES_CONNSTR }}
        run: dotnet build
 
      - name: Install EF Core CLI tools
@@ -75,13 +75,19 @@ jobs:
      - name: Update database
        working-directory: ./FountainPensNg.Server
        env:
-        ConnectionStrings__DefaultConnection: ${{ secrets.POSTGRES_CONNSTR }}
+        ConnectionStrings__FountainPens: ${{ secrets.POSTGRES_CONNSTR }}
        run: dotnet ef database update
 
      - name: Run tests with coverage
        working-directory: ./FountainPensNg.xTests
        env:
-        ConnectionStrings__DefaultConnection: ${{ secrets.POSTGRES_CONNSTR }}
+        ConnectionStrings__FountainPens: ${{ secrets.POSTGRES_CONNSTR }}
+        R2__AccessKey: ""
+        R2__SecretKey: ""
+        R2__AccountId: ""
+        R2__BucketName: ""
+        R2__ExpirationHours: 24
+        R2__MaxFileSizeKb: 256
        run: dotnet test --configuration Release --collect:"XPlat Code Coverage" --settings coverlet.runsettings
 
      - name: Upload coverage reports to Codecov

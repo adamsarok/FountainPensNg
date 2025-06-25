@@ -80,7 +80,7 @@ public class PaperModuleTests(WebApplicationFactory<Program> factory) : IClassFi
 		var client = factory.CreateClient();
 		var dto = new PaperDTO(
 			Id: 0, Maker: "Maker3", PaperName: Guid.NewGuid().ToString(), Comment: "test", Photo: "",
-			Rating: 1, ImageObjectKey: "", InsertedAt: DateTime.UtcNow, ModifiedAt: DateTime.UtcNow);
+			Rating: 1, ImageObjectKey: "", ImageUrl: "", CreatedAt: DateTime.UtcNow, UpdatedAt: DateTime.UtcNow);
 		var content = JsonContent.Create(dto);
 		var response = await client.PostAsync($"/api/papers", content);
 		response.EnsureSuccessStatusCode();

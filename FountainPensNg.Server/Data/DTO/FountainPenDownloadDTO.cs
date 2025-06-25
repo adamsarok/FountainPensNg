@@ -12,6 +12,7 @@ public record FountainPenDownloadDTO(
 	int? CurrentInkRating,
 	string? CurrentInkComment,
 	string ImageObjectKey,
+	string ImageUrl,
 	List<InkedUpDTO>? InkedUps,
 	InkDownloadDTO? CurrentInk,
 	double CieLch_sort,

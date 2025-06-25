@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
 
 //TODO: fix ugly styling by hiding original button
@@ -11,8 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
     styleUrl: './image-uploader.component.css'
 })
 export class ImageUploaderComponent {
-  r2ApiUrl = environment.r2ApiUrl;
-
   @Output() selectedFile = new EventEmitter<File | null>();
   
 

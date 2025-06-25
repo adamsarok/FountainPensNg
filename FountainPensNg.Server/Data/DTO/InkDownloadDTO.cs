@@ -15,6 +15,7 @@ public record InkDownloadDTO(
 	 string? OneCurrentPenModelName,
 	 string? OneCurrentPenColor,
 	 string ImageObjectKey,
+	 string ImageUrl,
 	 double? CieLch_sort,
 	 List<InkedUpDTO> InkedUpDTOs,
 	 DateTime? LastInkedAt
