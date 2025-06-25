@@ -17,6 +17,7 @@ public class R2UploadService(IPresignedUrlService presignedUrlService, ILogger<R
 	: IR2UploadService {
 	public async Task<Guid> UploadImage(IFormFile file) {
 		if (file == null || file.Length == 0) throw new BadRequestException("No file uploaded");
+		if (string.IsNullOrWhiteSpace(configuration.AccountId)) throw new ServerException("R2 not configured");
 		if (file.Length > configuration.MaxFileSizeKb * 1024) {
 			throw new BadRequestException($"File size exceeds the maximum limit of {configuration.MaxFileSizeKb}kb");
 		}

@@ -82,6 +82,12 @@ jobs:
        working-directory: ./FountainPensNg.xTests
        env:
         ConnectionStrings__FountainPens: ${{ secrets.POSTGRES_CONNSTR }}
+        R2__AccessKey: ""
+        R2__SecretKey: ""
+        R2__AccountId: ""
+        R2__BucketName: ""
+        R2__ExpirationHours: 24
+        R2__MaxFileSizeKb: 256
        run: dotnet test --configuration Release --collect:"XPlat Code Coverage" --settings coverlet.runsettings
 
      - name: Upload coverage reports to Codecov
