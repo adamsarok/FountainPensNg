@@ -38,7 +38,13 @@ services:
           - 4080:8080
         restart: unless-stopped
         environment:
-          - ConnectionStrings__DefaultConnection=Server=db; Port=5432; User Id=postgres; Password=postgres; Database=fountainpens
+          - ConnectionStrings__FountainPens=Server=db; Port=5432; User Id=postgres; Password=postgres; Database=fountainpens
+          - R2__AccessKey=${R2_ACCESS_KEY}
+          - R2__SecretKey=${R2_SECRET_KEY}
+          - R2__AccountId=${R2_ACCOUNT_ID}
+          - R2__BucketName=${R2_BUCKET_NAME}
+          - R2__ExpirationHours=24
+          - R2__MaxFileSizeKb=256
         restart: unless-stopped
 
     db:
