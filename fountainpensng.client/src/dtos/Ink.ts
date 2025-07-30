@@ -1,5 +1,5 @@
-import { InkedUp } from "./InkedUp";
 import { FountainPen } from "./FountainPen";
+import { InkedUpForListDTO } from "./InkedUpDTO";
 
 export interface Ink {
   id: number;
@@ -10,7 +10,7 @@ export interface Ink {
   color: string;
   ml: number;
   rating: number;
-  inkedUps: InkedUp[] | null;
+  inkedUps: InkedUpForListDTO[];
   currentPens: FountainPen[] | null;
   penDisplayName: string | null;
   imageObjectKey: string;

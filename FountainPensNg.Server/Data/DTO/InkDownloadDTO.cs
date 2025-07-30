@@ -17,6 +17,6 @@ public record InkDownloadDTO(
 	 string ImageObjectKey,
 	 string ImageUrl,
 	 double? CieLch_sort,
-	 List<InkedUpDTO> InkedUpDTOs,
+	 List<InkedUpDTO>? InkedUps,
 	 DateTime? LastInkedAt
 	 );

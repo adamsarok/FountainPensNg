@@ -21,6 +21,8 @@ import { ImageUploaderComponent } from '../image-uploader/image-uploader.compone
 import { R2UploadService } from '../../services/r2-upload.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageBoxComponent } from '../message-box/message-box.component';
+import { MatTableModule } from '@angular/material/table';
+import { InkedUpForListDTO } from '../../../dtos/InkedUpDTO';
 
 @Component({
     selector: 'app-ink',
@@ -35,6 +37,7 @@ import { MessageBoxComponent } from '../message-box/message-box.component';
         MatButtonModule,
         MatAutocompleteModule,
         ImageUploaderComponent,
+        MatTableModule,
     ],
     templateUrl: './ink.component.html',
     styleUrl: './ink.component.css'
@@ -68,6 +71,8 @@ export class InkComponent implements OnInit {
   ink$: Observable<Ink> | undefined;
   form: FormGroup = new FormGroup({});
   validationErrors: string[] | undefined;
+  inkedUps: InkedUpForListDTO[] = [];
+  inkedUpDisplayedColumns: string[] = ['inkedAt', 'matchRating', 'pen'];
 
   constructor(
     private fb: FormBuilder,
@@ -98,8 +103,9 @@ export class InkComponent implements OnInit {
 
     if (this.ink$) {
       this.ink$.subscribe((i) => {
-        //would be better in prefetch
+        //TODO: would be better in prefetch
         this.ink = i;
+        this.inkedUps = i.inkedUps.sort((a, b) => new Date(b.inkedAt).getTime() - new Date(a.inkedAt).getTime());
         this.form.patchValue({
           maker: i.maker,
           inkName: i.inkName,
