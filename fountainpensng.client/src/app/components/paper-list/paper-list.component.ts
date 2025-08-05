@@ -3,13 +3,13 @@ import { MatTableModule } from '@angular/material/table';
 import { Paper } from '../../../dtos/Paper';
 import { PaperService } from '../../services/paper.service';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { ComparerService } from '../../services/comparer.service';
 
 @Component({
   selector: 'app-paper-list',
-  imports: [MatTableModule, MatSortModule, CommonModule],
+  imports: [MatTableModule, MatSortModule],
   templateUrl: './paper-list.component.html',
   styleUrl: './paper-list.component.css'
 })

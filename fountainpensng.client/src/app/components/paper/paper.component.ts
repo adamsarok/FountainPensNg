@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PaperService } from '../../services/paper.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -31,12 +31,11 @@ import { MessageBoxComponent } from '../message-box/message-box.component';
     MatLabel,
     MatError,
     MatIcon,
-    CommonModule,
     MatInputModule,
     MatButtonModule,
     MatAutocompleteModule,
-    ImageUploaderComponent,
-  ],
+    ImageUploaderComponent
+],
   templateUrl: './paper.component.html',
   styleUrl: './paper.component.css'
 })

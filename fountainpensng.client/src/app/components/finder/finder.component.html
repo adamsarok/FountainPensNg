@@ -7,10 +7,10 @@
           <mat-label>Search</mat-label>
           <input matInput formControlName="fulltext" name="fulltext">
         </mat-form-field>
-    
-          <button mat-flat-button color="primary" type="submit">
-            Search
-          </button>
+
+        <button mat-flat-button color="primary" type="submit">
+          Search
+        </button>
       </div>
 
     </div>
@@ -31,7 +31,9 @@
     </ng-container>
     <ng-container matColumnDef="color">
       <th mat-header-cell *matHeaderCellDef> Color </th>
-      <td mat-cell *matCellDef="let element"> <input type="color" *ngIf="element.color" value="{{element.color}}" disabled> </td>
+      <td mat-cell *matCellDef="let element"> @if (element.color) {
+        <input type="color" value="{{element.color}}" disabled>
+      } </td>
     </ng-container>
     <ng-container matColumnDef="comment">
       <th mat-header-cell *matHeaderCellDef> Comment </th>
@@ -43,6 +45,6 @@
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr (click)="openResult(row.id, row.searchResultType)"
-        mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>

@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { InkService } from '../../services/ink.service';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -27,18 +27,17 @@ import { InkedUpForListDTO } from '../../../dtos/InkedUpDTO';
 @Component({
     selector: 'app-ink',
     imports: [
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatError,
-        MatIcon,
-        CommonModule,
-        MatInputModule,
-        MatButtonModule,
-        MatAutocompleteModule,
-        ImageUploaderComponent,
-        MatTableModule,
-    ],
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatError,
+    MatIcon,
+    MatInputModule,
+    MatButtonModule,
+    MatAutocompleteModule,
+    ImageUploaderComponent,
+    MatTableModule
+],
     templateUrl: './ink.component.html',
     styleUrl: './ink.component.css'
 })

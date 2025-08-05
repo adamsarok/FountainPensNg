@@ -3,7 +3,7 @@ import { MatTableModule } from '@angular/material/table';
 import { SearchResult } from '../../../dtos/SearchResult';
 import { FinderService } from '../../services/finder.service';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -12,13 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
     selector: 'app-finder',
-    imports: [MatTableModule,
-        CommonModule,
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatInputModule,
-        MatButtonModule,],
+    imports: [MatTableModule, ReactiveFormsModule, MatFormField, MatLabel, MatInputModule, MatButtonModule],
     templateUrl: './finder.component.html',
     styleUrl: './finder.component.css'
 })
