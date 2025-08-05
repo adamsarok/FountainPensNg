@@ -38,7 +38,7 @@ jobs:
          node-version: '22'
 
      - name: Install Angular CLI
-       run: npm install -g @angular/cli@20 #replace with your angular version
+       run: npm install -g @angular/cli@20 #???
     
      - name: Install Angular dependencies
        working-directory: fountainpensng.client
