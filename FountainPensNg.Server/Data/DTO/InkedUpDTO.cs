@@ -12,4 +12,3 @@ public record InkedUpDTO(
 	 string PenColor,
 	 string InkColor,
 	 string Comment);
-
