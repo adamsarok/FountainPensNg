@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.10.35004.147
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11206.111 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FountainPensNg.Server", "FountainPensNg.Server\FountainPensNg.Server.csproj", "{E60371AE-6882-4B32-9E0E-350D56D4B69F}"
 EndProject
@@ -10,6 +10,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FountainPensNg.xTests", "FountainPensNg.xTests\FountainPensNg.xTests.csproj", "{C0396EF1-8C67-495B-8A36-3916DA8F882F}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{98C65C68-07E0-403B-AD2F-1EF81D7382E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.coderabbit.yaml = .coderabbit.yaml
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		.github\workflows\docker-image.yml = .github\workflows\docker-image.yml
+		README.md = README.md
+		TODO.md = TODO.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

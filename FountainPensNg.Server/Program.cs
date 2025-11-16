@@ -36,6 +36,7 @@ builder.Services.RegisterMapsterConfiguration();
 
 builder.Services.AddHttpClient<R2UploadService>();
 
+builder.Services.AddScoped<RandomsRepo>();
 builder.Services.AddScoped<FinderRepo>();
 builder.Services.AddScoped<FountainPensRepo>();
 builder.Services.AddScoped<InkedUpsRepo>();
