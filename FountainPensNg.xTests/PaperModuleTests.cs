@@ -60,7 +60,7 @@ public class PaperModuleTests {
 	public async Task AddPaper() {
 		var client = _fixture.Factory.CreateClient();
 		var dto = new PaperDTO(
-			Id: 0, Maker: "Maker3", PaperName: Guid.NewGuid().ToString(), Comment: "test", Photo: "",
+			Id: 999, Maker: "Maker3", PaperName: Guid.NewGuid().ToString(), Comment: "test", Photo: "",
 			Rating: 1, ImageObjectKey: "", ImageUrl: "", CreatedAt: DateTime.UtcNow, UpdatedAt: DateTime.UtcNow);
 		var content = JsonContent.Create(dto);
 		var response = await client.PostAsync($"/api/papers", content);

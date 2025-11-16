@@ -59,7 +59,7 @@ public class InksModuleTests {
 	public async Task AddInk() {
 		var client = _fixture.Factory.CreateClient();
 		var dto = new InkUploadDTO(
-			Id: 0, Maker: "Maker3", InkName: "Model3", Comment: "test", Photo: "", Color: "#085172",
+			Id: 999, Maker: "Maker3", InkName: "Model3", Comment: "test", Photo: "", Color: "#085172",
 			Rating: 1, Ml: 50, ImageObjectKey: "");
 		var content = JsonContent.Create(dto);
 		var response = await client.PostAsync($"/api/inks", content);

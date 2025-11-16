@@ -60,7 +60,7 @@ public class InkedUpModuleTests {
 	public async Task AddInkedUp() {
 		var client = _fixture.Factory.CreateClient();
 		var example = _fixture.InkedUps.First();
-		var dto = new InkedUpUploadDto(0, DateTime.UtcNow, 5, example.FountainPenId, example.InkId, "test");
+		var dto = new InkedUpUploadDto(999, DateTime.UtcNow, 5, example.FountainPenId, example.InkId, "test");
 		var content = JsonContent.Create(dto);
 		var response = await client.PostAsync($"/api/inked-ups", content);
 		response.EnsureSuccessStatusCode();
