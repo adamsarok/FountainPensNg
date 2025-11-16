@@ -20,5 +20,11 @@ public class RandomsTests {
 		var result = await response.Content.ReadFromJsonAsync<IEnumerable<InkedUpSuggestion>>();
 		Assert.NotNull(result);
 		Assert.NotEmpty(result);
+		Assert.All(result, suggestion => {
+			Assert.True(suggestion.FountainPenId > 0);
+			Assert.True(suggestion.InkId > 0);
+			Assert.NotNull(suggestion.PenMaker);
+			Assert.NotNull(suggestion.InkMaker);
+		});
 	}
 }

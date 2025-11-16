@@ -18,8 +18,8 @@ public class PaperModuleTests {
 		var response = await client.GetAsync($"/api/papers/{paper.Id}");
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<FountainPenDownloadDTO>();
-		Assert.NotNull(inks);
+		var result = await response.Content.ReadFromJsonAsync<PaperDTO>();
+		Assert.NotNull(result);
 	}
 
 	[Fact]
@@ -29,9 +29,9 @@ public class PaperModuleTests {
 		var response = await client.GetAsync("/api/papers");
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<IEnumerable<PaperDTO>>();
-		Assert.NotNull(inks);
-		Assert.NotEmpty(inks);
+		var result = await response.Content.ReadFromJsonAsync<IEnumerable<PaperDTO>>();
+		Assert.NotNull(result);
+		Assert.NotEmpty(result);
 	}
 
 	[Fact]
@@ -43,8 +43,8 @@ public class PaperModuleTests {
 		var response = await client.PutAsync($"/api/papers/{dto.Id}", content);
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<PaperDTO>();
-		Assert.NotNull(inks);
+		var result = await response.Content.ReadFromJsonAsync<PaperDTO>();
+		Assert.NotNull(result);
 	}
 
 	[Fact]
@@ -66,7 +66,7 @@ public class PaperModuleTests {
 		var response = await client.PostAsync($"/api/papers", content);
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<PaperDTO>();
-		Assert.NotNull(inks);
+		var result = await response.Content.ReadFromJsonAsync<PaperDTO>();
+		Assert.NotNull(result);
 	}
 }

@@ -17,8 +17,8 @@ public class InksModuleTests {
 		var response = await client.GetAsync($"/api/inks/{ink.Id}");
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<FountainPenDownloadDTO>();
-		Assert.NotNull(inks);
+		var result = await response.Content.ReadFromJsonAsync<InkDownloadDTO>();
+		Assert.NotNull(result);
 	}
 
 	[Fact]
@@ -28,9 +28,9 @@ public class InksModuleTests {
 		var response = await client.GetAsync("/api/inks");
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<IEnumerable<InkDownloadDTO>>();
-		Assert.NotNull(inks);
-		Assert.NotEmpty(inks);
+		var result = await response.Content.ReadFromJsonAsync<IEnumerable<InkDownloadDTO>>();
+		Assert.NotNull(result);
+		Assert.NotEmpty(result);
 	}
 
 	[Fact]
@@ -42,8 +42,8 @@ public class InksModuleTests {
 		var response = await client.PutAsync($"/api/inks/{dto.Id}", content);
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<InkDownloadDTO>();
-		Assert.NotNull(inks);
+		var result = await response.Content.ReadFromJsonAsync<InkDownloadDTO>();
+		Assert.NotNull(result);
 	}
 
 	[Fact]
@@ -65,7 +65,7 @@ public class InksModuleTests {
 		var response = await client.PostAsync($"/api/inks", content);
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<InkDownloadDTO>();
-		Assert.NotNull(inks);
+		var result = await response.Content.ReadFromJsonAsync<InkDownloadDTO>();
+		Assert.NotNull(result);
 	}
 }

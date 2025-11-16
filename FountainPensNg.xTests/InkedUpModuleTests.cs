@@ -18,8 +18,8 @@ public class InkedUpModuleTests {
 		var response = await client.GetAsync($"/api/inked-ups/{inkedUp.Id}");
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<InkedUpDTO>();
-		Assert.NotNull(inks);
+		var result = await response.Content.ReadFromJsonAsync<InkedUpDTO>();
+		Assert.NotNull(result);
 	}
 
 	[Fact]
@@ -29,9 +29,9 @@ public class InkedUpModuleTests {
 		var response = await client.GetAsync("/api/inked-ups");
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<IEnumerable<InkedUpDTO>>();
-		Assert.NotNull(inks);
-		Assert.NotEmpty(inks);
+		var result = await response.Content.ReadFromJsonAsync<IEnumerable<InkedUpDTO>>();
+		Assert.NotNull(result);
+		Assert.NotEmpty(result);
 	}
 
 	[Fact]
@@ -43,8 +43,8 @@ public class InkedUpModuleTests {
 		var response = await client.PutAsync($"/api/inked-ups/{dto.Id}", content);
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<InkedUpDTO>();
-		Assert.NotNull(inks);
+		var result = await response.Content.ReadFromJsonAsync<InkedUpDTO>();
+		Assert.NotNull(result);
 	}
 
 	[Fact]
@@ -65,7 +65,7 @@ public class InkedUpModuleTests {
 		var response = await client.PostAsync($"/api/inked-ups", content);
 		response.EnsureSuccessStatusCode();
 
-		var inks = await response.Content.ReadFromJsonAsync<InkedUpDTO>();
-		Assert.NotNull(inks);
+		var result = await response.Content.ReadFromJsonAsync<InkedUpDTO>();
+		Assert.NotNull(result);
 	}
 }

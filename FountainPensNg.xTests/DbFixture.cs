@@ -84,9 +84,6 @@ public class DbFixture : IAsyncLifetime
         // Run once before all tests in this collection
         using var scope = Factory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetRequiredService<FountainPensContext>();
-        await TruncatePapers(context);
-        await TruncateInks(context);
-        await TruncateFountainPens(context);
         await SeedInks(context);
         await SeedFountainPens(context);
         await SeedPapers(context);
@@ -139,9 +136,13 @@ public class DbFixture : IAsyncLifetime
         await context.Database.ExecuteSqlRawAsync(sql);
     }
 
-    public async Task SeedInkups(FountainPensContext context) {
-        var sql = "truncate table \"public\".\"InkedUps\" cascade;";
-        await context.Database.ExecuteSqlRawAsync(sql);
+	public async Task TruncateInkups(FountainPensContext context) {
+		var sql = "truncate table \"public\".\"InkedUps\" cascade;";
+		await context.Database.ExecuteSqlRawAsync(sql);
+	}
+
+	public async Task SeedInkups(FountainPensContext context) {
+		await TruncateInkups(context);
         
         var pens = await context.FountainPens.ToListAsync();
         var inks = await context.Inks.ToListAsync();
@@ -165,15 +166,5 @@ public class DbFixture : IAsyncLifetime
         }
         
         context.InkedUps.AddRange(InkedUps);
-    }
-
-    // Method to configure counts before initialization
-    public DbFixture WithCounts(int fountainPenCount = 2, int inkCount = 3, int paperCount = 2, int inkedUpCount = 2)
-    {
-        FountainPenCount = fountainPenCount;
-        InkCount = inkCount;
-        PaperCount = paperCount;
-        InkedUpCount = inkedUpCount;
-        return this;
     }
 }
