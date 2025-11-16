@@ -1,5 +1,9 @@
 namespace FountainPensNg.xTests;
 
+
+[CollectionDefinition("InkedUp Tests")]
+public class InkedUpCollection : ICollectionFixture<InkedUpModuleFixture>;
+
 [Collection("InkedUp Tests")]
 public class InkedUpModuleTests {
 	private readonly InkedUpModuleFixture _fixture;
@@ -9,7 +13,7 @@ public class InkedUpModuleTests {
 
 	[Fact]
 	public async Task GetInkedUp() {
-		var inkedUp = _fixture.TestSeed.InkedUps.First();
+		var inkedUp = _fixture.InkedUps.First();
 		var client = _fixture.Factory.CreateClient();
 		var response = await client.GetAsync($"/api/inked-ups/{inkedUp.Id}");
 		response.EnsureSuccessStatusCode();
@@ -33,7 +37,7 @@ public class InkedUpModuleTests {
 	[Fact]
 	public async Task UpdateInkedUp() {
 		var client = _fixture.Factory.CreateClient();
-		var inkedUp = _fixture.TestSeed.InkedUps.First();
+		var inkedUp = _fixture.InkedUps.First();
 		var dto = inkedUp.Adapt<InkedUpUploadDto>();
 		var content = JsonContent.Create(dto);
 		var response = await client.PutAsync($"/api/inked-ups/{dto.Id}", content);
@@ -45,7 +49,7 @@ public class InkedUpModuleTests {
 
 	[Fact]
 	public async Task DeleteInkedUp() {
-		var inkedup = _fixture.TestSeed.InkedUps[1];
+		var inkedup = _fixture.InkedUps[1];
 		var client = _fixture.Factory.CreateClient();
 		var response = await client.DeleteAsync($"/api/inked-ups/{inkedup.Id}");
 		response.EnsureSuccessStatusCode();
@@ -55,7 +59,7 @@ public class InkedUpModuleTests {
 	[Fact]
 	public async Task AddInkedUp() {
 		var client = _fixture.Factory.CreateClient();
-		var example = _fixture.TestSeed.InkedUps.First();
+		var example = _fixture.InkedUps.First();
 		var dto = new InkedUpUploadDto(0, DateTime.UtcNow, 5, example.FountainPenId, example.InkId, "test");
 		var content = JsonContent.Create(dto);
 		var response = await client.PostAsync($"/api/inked-ups", content);

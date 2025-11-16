@@ -1,16 +1,19 @@
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace FountainPensNg.xTests;
 
+[CollectionDefinition("Paper Tests")]
+public class PaperCollection : ICollectionFixture<InkedUpModuleFixture>;
+
 [Collection("Paper Tests")]
 public class PaperModuleTests {
-	private readonly PaperModuleFixture _fixture;
-	public PaperModuleTests(PaperModuleFixture fixture) {
+	private readonly InkedUpModuleFixture _fixture;
+	public PaperModuleTests(InkedUpModuleFixture fixture) {
 		_fixture = fixture;
 	}
 
 	[Fact]
 	public async Task GetPaper() {
-		var paper = _fixture.TestSeed.Papers.First();
+		var paper = _fixture.Papers.First();
 		var client = _fixture.Factory.CreateClient();
 		var response = await client.GetAsync($"/api/papers/{paper.Id}");
 		response.EnsureSuccessStatusCode();
@@ -34,7 +37,7 @@ public class PaperModuleTests {
 	[Fact]
 	public async Task UpdatePaper() {
 		var client = _fixture.Factory.CreateClient();
-		var paper = _fixture.TestSeed.Papers.First();
+		var paper = _fixture.Papers.First();
 		var dto = paper.Adapt<PaperDTO>();
 		var content = JsonContent.Create(dto);
 		var response = await client.PutAsync($"/api/papers/{dto.Id}", content);
@@ -46,7 +49,7 @@ public class PaperModuleTests {
 
 	[Fact]
 	public async Task DeletePaper() {
-		var paper = _fixture.TestSeed.Papers[1];
+		var paper = _fixture.Papers[1];
 		var client = _fixture.Factory.CreateClient();
 		var response = await client.DeleteAsync($"/api/papers/{paper.Id}");
 		response.EnsureSuccessStatusCode();

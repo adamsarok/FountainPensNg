@@ -1,8 +1,12 @@
 namespace FountainPensNg.xTests;
+
+[CollectionDefinition("Randoms Tests")]
+public class RandomsCollection : ICollectionFixture<InkedUpModuleFixture>;
+
 [Collection("Randoms Tests")]
 public class RandomsTests {
-	private readonly RandomsFixture _fixture;
-	public RandomsTests(RandomsFixture fixture) {
+	private readonly InkedUpModuleFixture _fixture;
+	public RandomsTests(InkedUpModuleFixture fixture) {
 		_fixture = fixture;
 	}
 	[Fact]

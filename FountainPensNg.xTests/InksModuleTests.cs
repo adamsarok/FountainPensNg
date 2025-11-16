@@ -1,14 +1,18 @@
 namespace FountainPensNg.xTests;
+
+[CollectionDefinition("Inks Tests")]
+public class InksCollection : ICollectionFixture<InkedUpModuleFixture>;
+
 [Collection("Inks Tests")]
 public class InksModuleTests {
-	private readonly InksModuleFixture _fixture;
-	public InksModuleTests(InksModuleFixture fixture) {
+	private readonly InkedUpModuleFixture _fixture;
+	public InksModuleTests(InkedUpModuleFixture fixture) {
 		_fixture = fixture;
 	}
 
 	[Fact]
 	public async Task GetInk() {
-		var ink = _fixture.TestSeed.Inks.First();
+		var ink = _fixture.Inks.First();
 		var client = _fixture.Factory.CreateClient();
 		var response = await client.GetAsync($"/api/inks/{ink.Id}");
 		response.EnsureSuccessStatusCode();
@@ -32,7 +36,7 @@ public class InksModuleTests {
 	[Fact]
 	public async Task UpdateInk() {
 		var client = _fixture.Factory.CreateClient();
-		var ink = _fixture.TestSeed.Inks.First();
+		var ink = _fixture.Inks.First();
 		var dto = ink.Adapt<InkUploadDTO>();
 		var content = JsonContent.Create(dto);
 		var response = await client.PutAsync($"/api/inks/{dto.Id}", content);
@@ -44,7 +48,7 @@ public class InksModuleTests {
 
 	[Fact]
 	public async Task DeleteInk() {
-		var ink = _fixture.TestSeed.Inks[1];
+		var ink = _fixture.Inks[2];
 		var client = _fixture.Factory.CreateClient();
 		var response = await client.DeleteAsync($"/api/inks/{ink.Id}");
 		response.EnsureSuccessStatusCode();
