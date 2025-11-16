@@ -1,8 +1,8 @@
 namespace FountainPensNg.xTests;
-public class InkedUpModuleFixture : IAsyncLifetime
+public class DbFixture : IAsyncLifetime
 {
     public WebApplicationFactory<Program> Factory { get; }
-    public InkedUpModuleFixture()
+    public DbFixture()
     {
         Factory = new WebApplicationFactory<Program>();
     }

@@ -2,12 +2,12 @@
 namespace FountainPensNg.xTests;
 
 [CollectionDefinition("Paper Tests")]
-public class PaperCollection : ICollectionFixture<InkedUpModuleFixture>;
+public class PaperCollection : ICollectionFixture<DbFixture>;
 
 [Collection("Paper Tests")]
 public class PaperModuleTests {
-	private readonly InkedUpModuleFixture _fixture;
-	public PaperModuleTests(InkedUpModuleFixture fixture) {
+	private readonly DbFixture _fixture;
+	public PaperModuleTests(DbFixture fixture) {
 		_fixture = fixture;
 	}
 
