@@ -1,4 +1,5 @@
 using Bogus;
+using Microsoft.AspNetCore.Hosting;
 
 namespace FountainPensNg.xTests;
 
@@ -19,7 +20,15 @@ public class DbFixture : IAsyncLifetime {
 	private readonly Faker<InkedUp> _inkedUpFaker;
 
 	public DbFixture() {
-		Factory = new WebApplicationFactory<Program>();
+		Factory = new WebApplicationFactory<Program>()
+			  .WithWebHostBuilder(builder => {
+				  builder.UseEnvironment("Test");
+
+				  // Optional: Override services for testing
+				  //builder.ConfigureServices(services => {
+				  // // Can replace services here if needed
+				  //});
+			  });
 
 		// Configure Faker for FountainPen
 		_fountainPenFaker = new Faker<FountainPen>()
