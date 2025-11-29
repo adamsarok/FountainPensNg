@@ -1,6 +1,7 @@
 using Bogus;
 using Microsoft.AspNetCore.Hosting;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace FountainPensNg.xTests;
 
 public class DbFixture : IAsyncLifetime {
@@ -23,11 +24,6 @@ public class DbFixture : IAsyncLifetime {
 		Factory = new WebApplicationFactory<Program>()
 			  .WithWebHostBuilder(builder => {
 				  builder.UseEnvironment("Test");
-
-				  // Optional: Override services for testing
-				  //builder.ConfigureServices(services => {
-				  // // Can replace services here if needed
-				  //});
 			  });
 
 		// Configure Faker for FountainPen
