@@ -1,9 +1,18 @@
 ﻿namespace FountainPensNg.xTests;
 
-public class HealthTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
+[CollectionDefinition("Health Tests")]
+public class HealthCollection : ICollectionFixture<DbFixture>;
+
+[Collection("Health Tests")]
+public class HealthTests {
+	private readonly DbFixture _fixture;
+	public HealthTests(DbFixture fixture) {
+		_fixture = fixture;
+	}
+
 	[Fact]
 	public async Task GetHealth() {
-		var client = factory.CreateClient();
+		var client = _fixture.Factory.CreateClient();
 		var response = await client.GetAsync($"/api/health");
 		response.EnsureSuccessStatusCode();
 
