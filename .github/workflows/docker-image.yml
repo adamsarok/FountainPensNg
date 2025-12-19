@@ -33,12 +33,12 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
      - name: Set up Node.js
-       uses: actions/setup-node@v4
+       uses: actions/setup-node@v6
        with:
-         node-version: '22'
+         node-version: '24'
 
      - name: Install Angular CLI
-       run: npm install -g @angular/cli@20 #???
+       run: npm install -g @angular/cli@21
     
      - name: Install Angular dependencies
        working-directory: fountainpensng.client
@@ -59,9 +59,9 @@ jobs:
          tags: adamsarok/fountainpens-ng-cl:latest
 
      - name: Setup .NET SDK
-       uses: actions/setup-dotnet@v3
+       uses: actions/setup-dotnet@v5
        with:
-        dotnet-version: 9.0
+        dotnet-version: 10.0
 
      - name: Build API
        working-directory: ./FountainPensNg.Server
@@ -71,7 +71,7 @@ jobs:
        run: dotnet build
 
      - name: Install EF Core CLI tools
-       run: dotnet tool install --global dotnet-ef --version 9.0.11
+       run: dotnet tool install --global dotnet-ef --version 10.0.0
 
      - name: Update database
        working-directory: ./FountainPensNg.Server
