@@ -1,12 +1,7 @@
-using Carter;
-using FountainPensNg.Server.API;
 using FountainPensNg.Server.Config;
 using FountainPensNg.Server.Data;
-using FountainPensNg.Server.Data.Repos;
-using FountainPensNg.Server.Helpers;
 using FountainPensNg.Server.Services;
 using HealthChecks.UI.Client;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,19 +9,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {
-    options.CustomSchemaIds(type => type.ToString());
+	options.CustomSchemaIds(type => type.ToString());
 });
 builder.Services.AddCarter();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-string? conn = builder.Configuration.GetConnectionString("FountainPens");
+string db = "FountainPens";
+if (builder.Environment.IsEnvironment("Test")) db = "FountainPensTest";
+
+string? conn = builder.Configuration.GetConnectionString(db);
 if (string.IsNullOrWhiteSpace(conn)) throw new Exception("Connection string is empty");
- 
+
 builder.Services.AddDbContextFactory<FountainPensContext>(opt => {
-    opt.UseNpgsql(conn);
-    opt.AddInterceptors(new EntityInterceptor());
+	opt.UseNpgsql(conn);
+	opt.AddInterceptors(new EntityInterceptor());
 });
 builder.Services.AddHealthChecks()
 	.AddNpgSql(conn);
@@ -58,16 +56,16 @@ using (var scope = app.Services.CreateScope()) {
 }
 
 app.UseCors(x => x.AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials()
-    .WithOrigins("http://localhost", "http://192.168.1.79:4200", "https://192.168.1.79:4200", "https://localhost:4200", "http://localhost:4200", "http://localhost:8080"));
+	.AllowAnyMethod()
+	.AllowCredentials()
+	.WithOrigins("http://localhost", "http://192.168.1.79:4200", "https://192.168.1.79:4200", "https://localhost:4200", "http://localhost:4200", "http://localhost:8080"));
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment()) {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseAuthorization();

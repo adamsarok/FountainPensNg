@@ -1,8 +1,18 @@
 namespace FountainPensNg.xTests;
-public class ColorTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>> {
+
+[CollectionDefinition("Color Tests")]
+public class ColorTestsCollection : ICollectionFixture<DbFixture>;
+
+[Collection("Color Tests")]
+public class ColorTests {
+	private readonly DbFixture _fixture;
+	public ColorTests(DbFixture fixture) {
+		_fixture = fixture;
+	}
+
 	[Fact]
 	public async Task GetCielchDistance() {
-		var client = factory.CreateClient();
+		var client = _fixture.Factory.CreateClient();
 		var response = await client.GetAsync($"/api/colors/cie-lch-distance?color=%23FFFFFF");
 		response.EnsureSuccessStatusCode();
 		var result = await response.Content.ReadFromJsonAsync<float>();

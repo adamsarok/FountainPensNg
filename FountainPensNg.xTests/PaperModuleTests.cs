@@ -1,4 +1,3 @@
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace FountainPensNg.xTests;
 
 [CollectionDefinition("Paper Tests")]
