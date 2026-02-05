@@ -7,4 +7,6 @@ export interface InkedUpSuggestionDTO {
   inkName: string;
   penColor: string;
   inkColor: string;
+  penNib: string;
+  inkLastInkedAt: Date | null;
 }

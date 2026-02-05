@@ -7,4 +7,6 @@ public record InkedUpSuggestion(
 	 string InkMaker,
 	 string InkName,
 	 string PenColor,
-	 string InkColor);
+	 string InkColor,
+	 string PenNib,
+	 DateTime? InkLastInkedAt);

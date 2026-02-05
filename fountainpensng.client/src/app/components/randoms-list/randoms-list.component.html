@@ -19,6 +19,13 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="penNib">
+      <th mat-header-cell *matHeaderCellDef> Nib </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.penNib}}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="penColor">
       <th mat-header-cell *matHeaderCellDef> Pen Color </th>
       <td mat-cell *matCellDef="let element">
@@ -33,10 +40,27 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="inkLastInkedAt">
+      <th mat-header-cell *matHeaderCellDef> Last Used </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="element.inkLastInkedAt; else neverUsed">{{element.inkLastInkedAt | date}}</span>
+        <ng-template #neverUsed><em>Never</em></ng-template>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="inkColor">
       <th mat-header-cell *matHeaderCellDef> Ink Color </th>
       <td mat-cell *matCellDef="let element">
         <input type="color" [value]="element.inkColor" disabled>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Ink Up </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="createInkedUp(element)" matTooltip="Create Inked-Up">
+          <mat-icon>add_circle</mat-icon>
+        </button>
       </td>
     </ng-container>
 
