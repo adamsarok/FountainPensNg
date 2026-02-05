@@ -1,0 +1,18 @@
+table {
+  width: 100%;
+}
+
+input[type="color"] {
+  border: none;
+  width: 40px;
+  height: 30px;
+  cursor: default;
+}
+
+input[type="color"]:disabled {
+  opacity: 1;
+}
+
+mat-form-field {
+  margin-right: 10px;
+}

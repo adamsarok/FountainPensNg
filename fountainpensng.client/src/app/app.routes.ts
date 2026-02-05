@@ -11,6 +11,7 @@ import { InkedupComponent } from './components/inkedup/inkedup.component';
 import { PaperListComponent } from './components/paper-list/paper-list.component';
 import { PaperComponent } from './components/paper/paper.component';
 import { FinderComponent } from './components/finder/finder.component';
+import { RandomsListComponent } from './components/randoms-list/randoms-list.component';
 
 export const routes: Routes = [
   { path: '', component: FinderComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'pen-list', component: PenListComponent },
   { path: 'paper-list', component: PaperListComponent },
   { path: 'ink-list', component: InkListComponent, resolve: {inks: inksResolver} },
+  { path: 'randoms-list', component: RandomsListComponent },
   { path: 'pen', component: PenComponent, resolve: {inks: inksResolver} },
   { path: 'pen/:id', component: PenComponent, resolve: {inks: inksResolver } },
   { path: 'ink', component: InkComponent },

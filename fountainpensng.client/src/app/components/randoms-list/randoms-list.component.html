@@ -1,0 +1,46 @@
+<div style="padding: 20px;">
+  <h2>Random Pen & Ink Suggestions</h2>
+  
+  <div style="margin-bottom: 20px;">
+    <mat-form-field>
+      <mat-label>Number of suggestions</mat-label>
+      <input matInput type="number" [(ngModel)]="count" min="1" max="20">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="refreshRandoms()" style="margin-left: 10px;">
+      Get Suggestions
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource()">
+    <ng-container matColumnDef="pen">
+      <th mat-header-cell *matHeaderCellDef> Pen </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.penMaker}} {{element.penName}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="penColor">
+      <th mat-header-cell *matHeaderCellDef> Pen Color </th>
+      <td mat-cell *matCellDef="let element">
+        <input type="color" [value]="element.penColor" disabled>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ink">
+      <th mat-header-cell *matHeaderCellDef> Ink </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.inkMaker}} {{element.inkName}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="inkColor">
+      <th mat-header-cell *matHeaderCellDef> Ink Color </th>
+      <td mat-cell *matCellDef="let element">
+        <input type="color" [value]="element.inkColor" disabled>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
