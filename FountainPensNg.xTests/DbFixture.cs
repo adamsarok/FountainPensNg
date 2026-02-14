@@ -83,7 +83,7 @@ public class DbFixture : IAsyncLifetime {
 			.RuleFor(iu => iu.UpdatedAt, f => DateTime.SpecifyKind(f.Date.Recent(30), DateTimeKind.Utc));
 	}
 
-	public async Task InitializeAsync() {
+	public async ValueTask InitializeAsync() {
 		// Run once before all tests in this collection
 		using var scope = Factory.Services.CreateScope();
 		using var context = scope.ServiceProvider.GetRequiredService<FountainPensContext>();
@@ -103,7 +103,7 @@ public class DbFixture : IAsyncLifetime {
 		await context.SaveChangesAsync();
 	}
 
-	public async Task DisposeAsync() {
+	public async ValueTask DisposeAsync() {
 		await Factory.DisposeAsync();
 	}
 
