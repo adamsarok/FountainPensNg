@@ -264,3 +264,4 @@ appsettings.Development.json
 appsettings.Test.json
 
 docker-compose.override.yml
+settings.local.json
