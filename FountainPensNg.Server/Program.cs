@@ -58,7 +58,7 @@ using (var scope = app.Services.CreateScope()) {
 app.UseCors(x => x.AllowAnyHeader()
 	.AllowAnyMethod()
 	.AllowCredentials()
-	.WithOrigins("http://localhost", "http://192.168.1.79:4200", "https://192.168.1.79:4200", "https://localhost:4200", "http://localhost:4200", "http://localhost:8080"));
+	.WithOrigins("http://localhost", "http://192.168.1.67:4200", "https://192.168.1.67:4200", "https://localhost:4200", "http://localhost:4200", "http://localhost:8080"));
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
