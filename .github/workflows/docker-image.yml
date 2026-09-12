@@ -91,7 +91,12 @@ jobs:
         R2__BucketName: ""
         R2__ExpirationHours: 24
         R2__MaxFileSizeKb: 256
-       run: dotnet test --configuration Release --collect:"XPlat Code Coverage" --settings coverlet.runsettings
+       run: >-
+         dotnet test --configuration Release
+         --coverlet --coverlet-output-format cobertura
+         --coverlet-exclude-by-file "**/Migrations/*.cs"
+         --coverlet-exclude "[*]FountainPensNg.Server.Migrations.*"
+         --results-directory TestResults
 
      - name: Upload coverage reports to Codecov
        uses: codecov/codecov-action@v5
