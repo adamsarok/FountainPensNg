@@ -9,4 +9,5 @@ export interface InkedUpSuggestionDTO {
   inkColor: string;
   penNib: string;
   inkLastInkedAt: Date | null;
+  strategy: 'favorites' | 'least-used' | 'new-combinations' | 'neglected-pens';
 }

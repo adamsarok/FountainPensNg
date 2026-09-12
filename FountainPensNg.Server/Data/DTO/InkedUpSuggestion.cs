@@ -9,4 +9,5 @@ public record InkedUpSuggestion(
 	 string PenColor,
 	 string InkColor,
 	 string PenNib,
-	 DateTime? InkLastInkedAt);
+	 DateTime? InkLastInkedAt,
+	 string Strategy = "least-used");
