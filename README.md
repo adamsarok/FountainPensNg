@@ -1,6 +1,6 @@
 ## What is FountainPensNg?
 
-FountainPensNg is an Angular app for managing your fountain pen, ink, and paper collection. Organize inks by color, save swatches, and keep track of which pens are currently inked.
+FountainPensNg lets you manage your fountain pen, ink, and paper collection. Organize inks by color, save swatches, and keep track of which pens are currently inked.
 
 ## Features
 
@@ -10,14 +10,11 @@ FountainPensNg is an Angular app for managing your fountain pen, ink, and paper 
 
 ✅ Usage Logging → "Inked Up" function lets you track usage.
 
-✅ Full-Text Search → Find perfumes to review or check perfumes with zero stock.
-
 ## Tech Stack
-- Frontend: Angular 19
-- Backend: ASP.NET Core 9
+- Frontend: Angular 22
+- Backend: ASP.NET Core 10
 - Database: PostgreSQL
 - CDN/Storage: Cloudflare R2
-
 
 ## Quick Start
 Example docker-compose:

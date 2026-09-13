@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { RandomsService } from '../../services/randoms.service';
 import { MatTableModule } from '@angular/material/table';
 import { InkedUpSuggestionDTO } from '../../../dtos/InkedUpSuggestionDTO';
@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { InkedupService } from '../../services/inkedup.service';
 import { InkedUpUploadDTO } from '../../../dtos/InkedUpDTO';
-import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -22,26 +21,39 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class RandomsListComponent implements OnInit {
 
-  displayedColumns: string[] = ['pen', 'penNib', 'penColor', 'ink', 'inkLastInkedAt', 'inkColor', 'actions'];
-  dataSource = signal<InkedUpSuggestionDTO[]>([]);
-  count: number = 10;
+  displayedColumns: string[] = ['strategy', 'pen', 'penNib', 'penColor', 'ink', 'inkLastInkedAt', 'inkColor', 'actions'];
+  strategies = {
+    'favorites': { order: 0, icon: 'favorite', label: 'Favorites - The pen and ink pairings you keep coming back to.' },
+    'new-combinations': { order: 1, icon: 'auto_awesome', label: 'Discovery - Highly rated pens and inks in new combinations.' },
+    'least-used': { order: 2, icon: 'history', label: 'Hidden ink - A forgotten ink with a favorite pen.' },
+    'neglected-pens': { order: 3, icon: 'hourglass_empty', label: 'Hidden pen - A forgotten pen with a favorite ink' }
+  };
 
-  constructor(
-    private randomsService: RandomsService,
-    private inkedupService: InkedupService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) { }
+  strategyDetails(strategy: InkedUpSuggestionDTO['strategy']) {
+    return this.strategies[strategy];
+  }
+  dataSource = signal<InkedUpSuggestionDTO[]>([]);
+  count = 10;
+
+  private randomsService = inject(RandomsService);
+  private inkedupService = inject(InkedupService);
+  private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
     this.loadRandoms();
   }
 
   loadRandoms(): void {
+    if (!Number.isInteger(this.count) || this.count < 1 || this.count > 20) {
+      this.snackBar.open('Choose between 1 and 20 suggestions.', 'Close', { duration: 3000 });
+      return;
+    }
     this.randomsService.getRandoms(this.count).subscribe({
       next: r => {
-        this.dataSource.set(r);
-      }
+        this.dataSource.set([...r].sort((a, b) =>
+          this.strategies[a.strategy].order - this.strategies[b.strategy].order));
+      },
+      error: () => this.snackBar.open('Could not load suggestions. Please try again.', 'Close', { duration: 5000 })
     });
   }
 

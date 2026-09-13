@@ -1,5 +1,6 @@
 <div style="padding: 20px;">
-  <h2>Random Pen & Ink Suggestions</h2>
+  <h2>Pen & Ink Suggestions</h2>
+  <p>Favorites, Discovery, Hidden ink, and Hidden pen: find your next pen and ink pairing.</p>
   
   <div style="margin-bottom: 20px;">
     <mat-form-field>
@@ -12,6 +13,15 @@
   </div>
 
   <table mat-table [dataSource]="dataSource()">
+    <ng-container matColumnDef="strategy">
+      <th mat-header-cell *matHeaderCellDef> Strategy </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon class="strategy-icon" role="img" [attr.aria-label]="strategyDetails(element.strategy).label"
+          [matTooltip]="strategyDetails(element.strategy).label" [attr.aria-hidden]="false">
+          {{strategyDetails(element.strategy).icon}}
+        </mat-icon>
+      </td>
+    </ng-container>
     <ng-container matColumnDef="pen">
       <th mat-header-cell *matHeaderCellDef> Pen </th>
       <td mat-cell *matCellDef="let element">
@@ -43,8 +53,11 @@
     <ng-container matColumnDef="inkLastInkedAt">
       <th mat-header-cell *matHeaderCellDef> Last Used </th>
       <td mat-cell *matCellDef="let element">
-        <span *ngIf="element.inkLastInkedAt; else neverUsed">{{element.inkLastInkedAt | date}}</span>
-        <ng-template #neverUsed><em>Never</em></ng-template>
+        @if (element.inkLastInkedAt) {
+          <span>{{element.inkLastInkedAt | date}}</span>
+        } @else {
+          <em>Never</em>
+        }
       </td>
     </ng-container>
 
@@ -66,5 +79,6 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr *matNoDataRow><td [attr.colspan]="displayedColumns.length">No suggestions available. Suggestions need an uninked pen and an unused ink with ink remaining.</td></tr>
   </table>
 </div>

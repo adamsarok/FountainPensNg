@@ -14,7 +14,8 @@ import { FinderComponent } from './components/finder/finder.component';
 import { RandomsListComponent } from './components/randoms-list/randoms-list.component';
 
 export const routes: Routes = [
-  { path: '', component: FinderComponent },
+  { path: '', component: RandomsListComponent },
+  { path: 'finder', component: FinderComponent },
   { path: 'inkedup-list', component: InkedupListComponent },
   { path: 'pen-list', component: PenListComponent },
   { path: 'paper-list', component: PaperListComponent },
