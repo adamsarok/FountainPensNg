@@ -4,9 +4,6 @@ import { MatTableModule } from '@angular/material/table';
 import { InkedUpSuggestionDTO } from '../../../dtos/InkedUpSuggestionDTO';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
 import { InkedupService } from '../../services/inkedup.service';
 import { InkedUpUploadDTO } from '../../../dtos/InkedUpDTO';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,7 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-randoms-list',
-  imports: [MatTableModule, CommonModule, MatButtonModule, MatFormFieldModule, MatInputModule, FormsModule, MatIconModule, MatSnackBarModule, MatTooltipModule],
+  imports: [MatTableModule, CommonModule, MatButtonModule, MatIconModule, MatSnackBarModule, MatTooltipModule],
   templateUrl: './randoms-list.component.html',
   styleUrl: './randoms-list.component.css'
 })
@@ -33,7 +30,6 @@ export class RandomsListComponent implements OnInit {
     return this.strategies[strategy];
   }
   dataSource = signal<InkedUpSuggestionDTO[]>([]);
-  count = 10;
 
   private randomsService = inject(RandomsService);
   private inkedupService = inject(InkedupService);
@@ -44,11 +40,7 @@ export class RandomsListComponent implements OnInit {
   }
 
   loadRandoms(): void {
-    if (!Number.isInteger(this.count) || this.count < 1 || this.count > 20) {
-      this.snackBar.open('Choose between 1 and 20 suggestions.', 'Close', { duration: 3000 });
-      return;
-    }
-    this.randomsService.getRandoms(this.count).subscribe({
+    this.randomsService.getRandoms(8).subscribe({
       next: r => {
         this.dataSource.set([...r].sort((a, b) =>
           this.strategies[a.strategy].order - this.strategies[b.strategy].order));

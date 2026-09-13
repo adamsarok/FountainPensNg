@@ -3,11 +3,7 @@
   <p>Favorites, Discovery, Hidden ink, and Hidden pen: find your next pen and ink pairing.</p>
   
   <div style="margin-bottom: 20px;">
-    <mat-form-field>
-      <mat-label>Number of suggestions</mat-label>
-      <input matInput type="number" [(ngModel)]="count" min="1" max="20">
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="refreshRandoms()" style="margin-left: 10px;">
+    <button mat-raised-button color="primary" (click)="refreshRandoms()">
       Get Suggestions
     </button>
   </div>

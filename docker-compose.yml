@@ -11,11 +11,11 @@ services:
       - CONNECTION_STRING=${CONNECTION_STRING}
   fountainpens-ng-cl:
     image: adamsarok/fountainpens-ng-cl
+    depends_on:
+      - fountainpens-api
     build:
       context: .
       dockerfile: fountainpensng.client/Dockerfile
     ports:
       - 4200:80
     restart: unless-stopped
-    environment:
-      - apiUrl=${apiUrl}

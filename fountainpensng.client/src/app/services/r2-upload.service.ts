@@ -1,6 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 import { catchError, map, Observable, of } from 'rxjs';
 
 interface UploadResult {
@@ -12,17 +11,12 @@ interface UploadResult {
   providedIn: 'root',
 })
 export class R2UploadService {
-  apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {
-    if (!this.apiUrl) {
-      throw new Error('API URL is not set in environment configuration.');
-    }
-  }
+  constructor(private http: HttpClient) { }
 
   uploadFile(file: File | null): Observable<UploadResult> {
     if (!file) return of({ errorMsg: 'File not selected' });
-    const url = `${this.apiUrl}/api/images`;
+    const url = '/api/images';
     const formData = new FormData();
     formData.append('file', file);
     return this.http.put<UploadResult>(`${url}`, formData, {}).pipe(
@@ -41,7 +35,7 @@ export class R2UploadService {
 
   getImageUrl(imageObjectKey: string | undefined): Observable<string> {
     if (!imageObjectKey) return of('');
-    const url = `${this.apiUrl}/api/images/${encodeURIComponent(
+    const url = `/api/images/${encodeURIComponent(
       imageObjectKey
     )}`;
     return this.http.get(`${url}`, { responseType: 'text' }).pipe(

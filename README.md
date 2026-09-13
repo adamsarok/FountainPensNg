@@ -25,8 +25,6 @@ services:
         image: adamsarok/fountainpens-ng-cl
         ports:
           - 4200:80
-        environment:
-          - apiUrl=http://fountainpens-api:8080
         restart: unless-stopped
 
     fountainpens-api:
