@@ -13,10 +13,6 @@ input[type="color"]:disabled {
   opacity: 1;
 }
 
-mat-form-field {
-  margin-right: 10px;
-}
-
 .strategy-icon {
   font-size: 20px;
   width: 20px;

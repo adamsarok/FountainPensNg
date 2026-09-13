@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Paper } from '../../dtos/Paper';
 import { Observable } from 'rxjs';
@@ -9,22 +8,21 @@ import { Observable } from 'rxjs';
 })
 export class PaperService {
 
-  baseUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
   getPapers(): Observable<Paper[]> {
-    return this.http.get<Paper[]>(`${this.baseUrl}/api/papers/`);
+    return this.http.get<Paper[]>('/api/papers/');
   }
   createPaper(model: Paper) {
-    return this.http.post<Paper>(`${this.baseUrl}/api/papers/`, model);
+    return this.http.post<Paper>('/api/papers/', model);
   }
   getPaper(id: number) {
-    return this.http.get<Paper>(`${this.baseUrl}/api/papers/${id}`);
+    return this.http.get<Paper>(`/api/papers/${id}`);
   }
   updatePaper(paper: Paper) {
-    return this.http.put<Paper>(`${this.baseUrl}/api/papers/${paper.id}`, paper);
+    return this.http.put<Paper>(`/api/papers/${paper.id}`, paper);
   }
   deletePaper(id: number) {
-    return this.http.delete(`${this.baseUrl}/api/papers/${id}`);
+    return this.http.delete(`/api/papers/${id}`);
   }
 }

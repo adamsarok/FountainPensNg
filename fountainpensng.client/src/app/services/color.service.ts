@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ColorService {
-  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -15,6 +13,6 @@ export class ColorService {
     const params = new HttpParams()
       .set('color', colorHex);
     
-    return this.http.get<number>(`${this.baseUrl}/api/colors/cie-lch-distance`, { params });
+    return this.http.get<number>('/api/colors/cie-lch-distance', { params });
   }
 }
